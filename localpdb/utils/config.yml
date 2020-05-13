@@ -1,0 +1,27 @@
+---
+mirrors:
+  rcsb:
+    ftp_url: "ftp.rcsb.org/pub/pdb"
+    rsync_url: "rsync.rcsb.org::ftp_data/structures/divided"
+    rsync_opts: "--port=33444"
+
+  pdbe:
+    ftp_url: "ftp.ebi.ac.uk/pub/databases/pdb"
+    rsync_url: "ftp.ebi.ac.uk::pub/databases/pdb/data/structures/divided"
+    rsync_opts: ""
+
+  pdbj:
+    ftp_url: "ftp.pdbj.org/pub/pdb"
+    rsync_url: "ftp.pdbj.org::ftp_data/structures/divided"
+    rsync_opts: ""
+
+clust_url: "resources.rcsb.org/sequence/clusters/"
+
+ftp_locs:
+  entries: "derived_data/pdb_entry_type.txt"
+  bundles: "compatible/pdb_bundle/pdb_bundle_index.txt"
+  resolution: "derived_data/index/resolu.idx"
+  seqres: "derived_data/pdb_seqres.txt.gz"
+  updates: "data/status/"
+
+
