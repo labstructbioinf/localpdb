@@ -131,7 +131,7 @@ def os_cmd(cmd):
     @param cmd: command to be run
     @return: exit code of the process and tuple of stdout and stderr of the process
     """
-    p = subprocess.run(shlex.split(cmd), capture_output=True)
+    p = subprocess.run(shlex.split(cmd), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     return p.returncode, (p.stdout.decode('utf-8').split('\n'), p.stderr.decode('utf-8').split('\n'))
 
 def multiprocess(func, cmd_dict, np=20, return_type='', print_progress=True, ok_status=0, process_executor=False):
