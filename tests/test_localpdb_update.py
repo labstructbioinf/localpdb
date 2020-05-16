@@ -155,7 +155,7 @@ class TestUpdateSkipOneVersion:
                     f'-rsync_url {config["pdb_20200501"]["rsync_url"]} ' \
                     f'-rsync_opts \'{config["pdb_20200501"]["rsync_opts"]}\''
 
-        p = subprocess.run(shlex.split(setup_cmd), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        p = subprocess.run(shlex.split(update_cmd), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout = p.stdout.decode('utf-8')
 
         assert p.returncode == 0
