@@ -32,7 +32,7 @@ class TestSetupBasic:
                     f'-rsync_url {config["pdb_20200417"]["rsync_url"]} ' \
                     f'-rsync_opts \'{config["pdb_20200417"]["rsync_opts"]}\''
 
-        p = subprocess.run(shlex.split(setup_cmd), capture_output=True)
+        p = subprocess.run(shlex.split(setup_cmd), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout = p.stdout.decode('utf-8')
 
         assert p.returncode == 0
@@ -46,7 +46,7 @@ class TestSetupBasic:
                     f'-clust_url {config["pdb_20200417"]["clust_url"]} ' \
                     f'-rsync_url {config["pdb_20200417"]["rsync_url"]} ' \
                     f'-rsync_opts \'{config["pdb_20200417"]["rsync_opts"]}\''
-        p = subprocess.run(shlex.split(setup_cmd), capture_output=True)
+        p = subprocess.run(shlex.split(setup_cmd), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout = p.stdout.decode('utf-8')
 
         assert p.returncode == 0
@@ -60,7 +60,7 @@ class TestSetupBasic:
                     f'-clust_url {config["pdb_20200424"]["clust_url"]} ' \
                     f'-rsync_url {config["pdb_20200424"]["rsync_url"]} ' \
                     f'-rsync_opts \'{config["pdb_20200424"]["rsync_opts"]}\''
-        p = subprocess.run(shlex.split(setup_cmd), capture_output=True)
+        p = subprocess.run(shlex.split(setup_cmd), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout = p.stdout.decode('utf-8')
 
         assert p.returncode == 0
@@ -113,7 +113,7 @@ class TestSetupWrongBaseUrl:
                     f'-rsync_url {config["pdb_20200417"]["rsync_url"]} ' \
                     f'-rsync_opts \'{config["pdb_20200417"]["rsync_opts"]}\''
 
-        p = subprocess.run(shlex.split(setup_cmd), capture_output=True)
+        p = subprocess.run(shlex.split(setup_cmd), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout = p.stdout.decode('utf-8')
 
         assert p.returncode == 1
@@ -139,7 +139,7 @@ class TestSetupWrongBaseDir:
                     f'-rsync_url {config["pdb_20200417"]["rsync_url"]} ' \
                     f'-rsync_opts \'{config["pdb_20200417"]["rsync_opts"]}\''
 
-        p = subprocess.run(shlex.split(setup_cmd), capture_output=True)
+        p = subprocess.run(shlex.split(setup_cmd), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout = p.stdout.decode('utf-8')
 
         assert p.returncode == 1
@@ -165,7 +165,7 @@ class TestSetupWrongTimestamp:
                     f'-rsync_url {config["pdb_20200417"]["rsync_url"]} ' \
                     f'-rsync_opts \'{config["pdb_20200417"]["rsync_opts"]}\''
 
-        p = subprocess.run(shlex.split(setup_cmd), capture_output=True)
+        p = subprocess.run(shlex.split(setup_cmd), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout = p.stdout.decode('utf-8')
 
         assert p.returncode == 1
@@ -196,7 +196,7 @@ class TestSetupWrongRsyncUrl:
                     f'-rsync_url {config["pdb_20200417"]["rsync_url"][:-2]} ' \
                     f'-rsync_opts \'{config["pdb_20200417"]["rsync_opts"]}\''
 
-        p = subprocess.run(shlex.split(setup_cmd), capture_output=True)
+        p = subprocess.run(shlex.split(setup_cmd), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout = p.stdout.decode('utf-8')
 
         assert p.returncode == 1
@@ -223,7 +223,7 @@ class TestSetupRealPDBMirror:
         setup_cmd = f'localpdb_setup.py ' \
                     f'-db_path {tmp_path} '
 
-        p = subprocess.run(shlex.split(setup_cmd), capture_output=True)
+        p = subprocess.run(shlex.split(setup_cmd), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout = p.stdout.decode('utf-8')
 
         assert p.returncode == 0 or p.returncode == 1

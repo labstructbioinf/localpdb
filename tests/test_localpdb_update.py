@@ -32,7 +32,7 @@ class TestUpdateBasic:
                     f'-rsync_url {config["pdb_20200417"]["rsync_url"]} ' \
                     f'-rsync_opts \'{config["pdb_20200417"]["rsync_opts"]}\''
 
-        p = subprocess.run(shlex.split(setup_cmd), capture_output=True)
+        p = subprocess.run(shlex.split(setup_cmd), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         assert p.returncode == 0
 
         update_cmd = f'localpdb_update.py ' \
@@ -42,7 +42,7 @@ class TestUpdateBasic:
                     f'-rsync_url {config["pdb_20200424"]["rsync_url"]} ' \
                     f'-rsync_opts \'{config["pdb_20200424"]["rsync_opts"]}\''
 
-        p = subprocess.run(shlex.split(update_cmd), capture_output=True)
+        p = subprocess.run(shlex.split(setup_cmd), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout = p.stdout.decode('utf-8')
 
         assert p.returncode == 0
@@ -57,7 +57,7 @@ class TestUpdateBasic:
                      f'-clust_url {config["pdb_20200424"]["clust_url"]} ' \
                      f'-rsync_url {config["pdb_20200424"]["rsync_url"]} ' \
                      f'-rsync_opts \'{config["pdb_20200424"]["rsync_opts"]}\''
-        p = subprocess.run(shlex.split(update_cmd), capture_output=True)
+        p = subprocess.run(shlex.split(update_cmd), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout = p.stdout.decode('utf-8')
 
         assert p.returncode == 0
@@ -98,7 +98,7 @@ class TestUpdateBasic:
                      f'-clust_url {config["pdb_20200501"]["clust_url"]} ' \
                      f'-rsync_url {config["pdb_20200501"]["rsync_url"]} ' \
                      f'-rsync_opts \'{config["pdb_20200501"]["rsync_opts"]}\''
-        p = subprocess.run(shlex.split(update_cmd), capture_output=True)
+        p = subprocess.run(shlex.split(update_cmd), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout = p.stdout.decode('utf-8')
 
         assert p.returncode == 0
@@ -145,7 +145,7 @@ class TestUpdateSkipOneVersion:
                     f'-rsync_url {config["pdb_20200417"]["rsync_url"]} ' \
                     f'-rsync_opts \'{config["pdb_20200417"]["rsync_opts"]}\''
 
-        p = subprocess.run(shlex.split(setup_cmd), capture_output=True)
+        p = subprocess.run(shlex.split(setup_cmd), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         assert p.returncode == 0
 
         update_cmd = f'localpdb_update.py ' \
@@ -155,7 +155,7 @@ class TestUpdateSkipOneVersion:
                     f'-rsync_url {config["pdb_20200501"]["rsync_url"]} ' \
                     f'-rsync_opts \'{config["pdb_20200501"]["rsync_opts"]}\''
 
-        p = subprocess.run(shlex.split(update_cmd), capture_output=True)
+        p = subprocess.run(shlex.split(setup_cmd), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout = p.stdout.decode('utf-8')
 
         assert p.returncode == 0
