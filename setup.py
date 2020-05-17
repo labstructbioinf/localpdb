@@ -14,6 +14,6 @@ setup(name='localpdb',
       packages=find_packages(),
       install_requires=install_reqs,
       scripts=['bin/localpdb_setup.py', 'bin/localpdb_update.py'],
-      package_data={'localpdb.utils': ['config.yml']},
+      package_data={'localpdb.utils': ['remote_sources.yml']},
       include_package_data=True,
       )
