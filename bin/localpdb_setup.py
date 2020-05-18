@@ -62,6 +62,7 @@ print()
 
 try:
     pdbv = PDBVersioneer(db_path=args.db_path, config=remote_source)
+    current_remote_version = pdbv.current_remote_version
 except socket.timeout:
     logger.error('Could not connect to the FTP server. Please check the URL details:')
     url = remote_source['ftp_url']
@@ -86,11 +87,11 @@ else:
 # Check if localpdb is not set up already...
 if pdbv.current_local_version is None:
 
-    pdbd = PDBDownloader(db_path=args.db_path, version=pdbv.current_remote_version, config=remote_source)
+    pdbd = PDBDownloader(db_path=args.db_path, version=current_remote_version, config=remote_source)
 
     # Create directories
-    dirs = ['data', 'mirror', 'logs', f'data/{pdbv.current_remote_version}',
-            'clustering', f'clustering/{pdbv.current_remote_version}']
+    dirs = ['data', 'mirror', 'logs', f'data/{current_remote_version}',
+            'clustering', f'clustering/{current_remote_version}']
     if args.fetch_pdb:
         dirs += ['mirror/pdb']
     if args.fetch_cif:
@@ -101,8 +102,8 @@ if pdbv.current_local_version is None:
 
     # Download PDB files
     logger.debug(f'Using \'{args.mirror}\' mirror for downloads.')
-    logger.debug(f'Current remote PDB version is \'{pdbv.current_remote_version}\'')
-    logger.info(f'Downloading release data for the PDB version: \'{pdbv.current_remote_version}\'...')
+    logger.debug(f'Current remote PDB version is \'{current_remote_version}\'')
+    logger.info(f'Downloading release data for the PDB version: \'{current_remote_version}\'...')
     pdbd.set_lock()
 
     # Run the downloads in the 'exit' context to eventually clean partially downloaded files if whole run does not succeed
@@ -149,8 +150,8 @@ if pdbv.current_local_version is None:
         log_path = args.db_path / 'logs'
         shutil.move(fn_log, log_path)
 
-elif pdbv.current_remote_version == pdbv.current_local_version:
+elif current_remote_version == pdbv.current_local_version:
     logger.info(f'localpdb is up to date and set up in the directory \'{args.db_path}\'.')
 
-elif pdbv.current_remote_version > pdbv.current_local_version:
+elif current_remote_version > pdbv.current_local_version:
     logger.info(f'localpdb is set up in the directory \'{args.db_path}\' but is not up to date. Consider an update!')

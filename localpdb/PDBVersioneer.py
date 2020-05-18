@@ -15,17 +15,6 @@ class PDBVersioneer:
     def __init__(self, db_path, config):
         self.config = config
         self.db_path = Path(db_path)
-
-        # Check remote PDB version with the PDB ftp mirror
-        p = urlparse('ftp://' + self.config['ftp_url'])
-        ftp = ftplib.FTP(p.netloc, timeout=10)
-        ftp.login("anonymous", "")
-        raw_data = []
-        ftp.dir(f'{p.path}/data/status/', raw_data.append)
-        self.remote_pdb_versions = sorted([int(entry.split(' ')[-1]) for entry in raw_data
-                                           if entry.split(' ')[-1].isnumeric()])
-        if len(self.remote_pdb_versions) == 0:
-            raise ValueError('No valid PDB versions found in the remote source!')
         # Check local versions (list directories)
         try:
             local_versions_dirs = sorted(
@@ -116,3 +105,19 @@ If this warning persists inspect the directories in \'{self.db_path}/data\' and 
         """
         return self.remote_pdb_versions[self.remote_pdb_versions.index(self.current_local_version)+1:
                                         self.remote_pdb_versions.index(self.current_remote_version)+1]
+
+    @property
+    def remote_pdb_versions(self):
+        """
+        Checks for the remote PDB versions in the PDB ftp mirror
+        @return: sorted list of the remote PDB versions available in the PDB ftp mirror
+        """
+        p = urlparse('ftp://' + self.config['ftp_url'])
+        ftp = ftplib.FTP(p.netloc, timeout=10)
+        ftp.login("anonymous", "")
+        raw_data = []
+        ftp.dir(f'{p.path}/data/status/', raw_data.append)
+        remote_pdb_versions = sorted([int(entry.split(' ')[-1]) for entry in raw_data if entry.split(' ')[-1].isnumeric()])
+        if len(remote_pdb_versions) == 0:
+            raise ValueError('No valid PDB versions found in the remote source!')
+        return remote_pdb_versions
