@@ -18,7 +18,8 @@ mirrors:
 clust_url: "resources.rcsb.org/sequence/clusters/"
 
 ftp_locs:
-  entries: "derived_data/pdb_entry_type.txt"
+  entries_type: "derived_data/pdb_entry_type.txt"
+  entries: "derived_data/index/entries.idx"
   bundles: "compatible/pdb_bundle/pdb_bundle_index.txt"
   resolution: "derived_data/index/resolu.idx"
   seqres: "derived_data/pdb_seqres.txt.gz"

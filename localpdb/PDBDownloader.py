@@ -45,7 +45,7 @@ class PDBDownloader:
         """
         root = self.config['ftp_url']
         method = 'ftp'
-        if file_type in ['entries', 'bundles', 'resolution', 'seqres']:
+        if file_type in ['entries', 'entries_type', 'bundles', 'resolution', 'seqres']:
             ext = self.config['ftp_locs'][file_type]
             url = f'{method}://{root}/{ext}'
         elif file_type == 'updates':
@@ -91,7 +91,7 @@ class PDBDownloader:
         @param file_type: file type to download.
         @return: True if downloaded was completed and validated.
         """
-        if file_type in ['entries', 'bundles', 'resolution', 'seqres']:
+        if file_type in ['entries', 'bundles', 'entries_type', 'resolution', 'seqres']:
             dest = '{}/data/{}/pdb_{}.txt'.format(self.db_path, self.version, file_type) # TODO
             if file_type == 'seqres':
                 dest = '{}.gz'.format(dest)
