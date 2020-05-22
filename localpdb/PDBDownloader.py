@@ -124,12 +124,12 @@ class PDBDownloader:
                     tmp_dest = '{}/data/{}/tmp_{}_added.txt'.format(self.db_path, self.version, version) # TODO
                     url = self.__gen__url(file_type=file_type, version=version)
                     download_url(url, tmp_dest, ftp=True)
-                    last_modified = get_last_modified(url)
                     results.append(self.__verify_timestamp(tmp_dest, version=version))
                     f_tmp = open(tmp_dest)
                     f.write(f_tmp.read())
                     f_tmp.close()
                     os.remove(tmp_dest)
+                last_modified = get_last_modified(url, ftp=True)
                 set_last_modified('{}/data/{}/added.txt'.format(self.db_path, self.version), last_modified) #TODO
                 return all(results)
 

@@ -80,14 +80,15 @@ elif current_remote_version == pdbv.current_local_version:
 
 elif current_remote_version > pdbv.current_local_version:
 
-    pdbd = PDBDownloader(db_path=args.db_path, version=current_remote_version, config=remote_source)
     config = Config(db_path=args.db_path)
 
     n_missing_versions = len(pdbv.missing_remote_versions)
     if n_missing_versions == 1:
         logger.info(f'localpdb is {n_missing_versions} update behind with the remote source, updating...')
+        pdbd = PDBDownloader(db_path=args.db_path, version=current_remote_version, config=remote_source)
     else:
         logger.info(f'localpdb is {n_missing_versions} updates behind with the remote source, updating...')
+        pdbd = PDBDownloader(db_path=args.db_path, version=pdbv.missing_remote_versions, config=remote_source)
     print()
 
     # Create directories
