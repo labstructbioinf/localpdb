@@ -109,7 +109,7 @@ if pdbv.current_local_version is None:
     # Run the downloads in the 'exit' context to eventually clean partially downloaded files if whole run does not succeed
     with clean_exit(callback=pdbd.clean_unsuccessful):
         clust_types = [f'clust_{p}' for p in [30, 40, 50, 70, 90, 95, 100]]
-        file_types = ['entries', 'entries_type', 'bundles', 'resolution', 'seqres'] + clust_types
+        file_types = ['entries', 'entries_type', 'bundles', 'resolution', 'seqres', 'updates'] + clust_types
         for file_type in tqdm(file_types, unit='item'):
             result = pdbd.download(file_type=file_type)
             if not result:
