@@ -77,10 +77,8 @@ except ValueError:
 # Check if directory already exists - won't ask this question if run is restarted because of cancelling / failure
 if os.path.exists(args.db_path) and os.path.isdir(args.db_path) and not pdbv.check_init():
     if len(os.listdir(args.db_path)):
-        if not ask('Specified directory exists and is not empty. Do you want to continue?'):
-            sys.exit(1)
-        else:
-            print()
+        logger.warning(f'Specified directory \'{args.db_path}\'exists and is not empty!')
+        print()
 else:
     create_directory(args.db_path)
 

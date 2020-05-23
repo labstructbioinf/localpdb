@@ -12,21 +12,6 @@ from termcolor import cprint
 
 logger = logging.getLogger(__name__)
 
-def ask(question):
-    """
-    Prints the question string and waits for the user yes or no answer
-    @param question: question to ask
-    @return: user answer
-    """
-    while True:
-        answer = str(input(question + ' (Y/n): ')).strip()
-        try:
-            if answer[0].lower() == 'y':
-                return True
-            if answer[0].lower() == 'n':
-                return False
-        except IndexError:
-            pass
 
 def setup_logging_handlers(tmp_path='/tmp'):
     """
