@@ -27,10 +27,6 @@ def get_last_modified(url, ftp=False):
                                                                mm=ts[10:12], ss=ts[12:14])
         last_modified = datetime.strptime(last_modified, '%Y-%m-%d %H:%M:%S')
 
-    else:
-        with urllib.request.urlopen(url) as f:
-            last_modified = datetime.strptime(dict(f.getheaders())['Last-Modified'], '%a, %d %b %Y %H:%M:%S GMT')
-
     last_modified = time.mktime(last_modified.timetuple())
     return last_modified
 
