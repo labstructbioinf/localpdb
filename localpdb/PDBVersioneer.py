@@ -3,7 +3,6 @@ import ftplib
 import logging
 import json
 import datetime
-import yaml
 import warnings
 from pathlib import Path
 from urllib.parse import urlparse
@@ -12,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 class PDBVersioneer:
 
-    def __init__(self, db_path, config):
+    def __init__(self, db_path, config=None):
         self.config = config
         self.db_path = Path(db_path)
         # Check local versions (list directories)
