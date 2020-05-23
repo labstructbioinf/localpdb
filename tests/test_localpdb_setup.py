@@ -25,22 +25,20 @@ class TestSetupBasic:
 
     @pytest.mark.dependency()
     def test_setup_run(self, tmp_path):
-        setup_cmd = f'localpdb_setup.py --fetch_pdb --fetch_cif ' \
+        setup_cmd = f'bin/localpdb_setup.py --fetch_pdb --fetch_cif ' \
                     f'-db_path {tmp_path} ' \
                     f'-ftp_url {config["pdb_20200417"]["url"]} ' \
                     f'-clust_url {config["pdb_20200417"]["clust_url"]} ' \
                     f'-rsync_url {config["pdb_20200417"]["rsync_url"]} ' \
                     f'-rsync_opts \'{config["pdb_20200417"]["rsync_opts"]}\''
-
         p = subprocess.run(shlex.split(setup_cmd), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout = p.stdout.decode('utf-8')
-
         assert p.returncode == 0
         assert 'Successfully set up localpdb' in stdout
 
     @pytest.mark.dependency(depends=['TestSetupBasic::test_setup_run'])
     def test_setup_in_already_setup_dir(self, tmp_path):
-        setup_cmd = f'localpdb_setup.py --fetch_pdb --fetch_cif ' \
+        setup_cmd = f'bin/localpdb_setup.py --fetch_pdb --fetch_cif ' \
                     f'-db_path {tmp_path} ' \
                     f'-ftp_url {config["pdb_20200417"]["url"]} ' \
                     f'-clust_url {config["pdb_20200417"]["clust_url"]} ' \
@@ -54,7 +52,7 @@ class TestSetupBasic:
 
     @pytest.mark.dependency(depends=['TestSetupBasic::test_setup_run'])
     def test_setup_in_already_setup_outdated(self, tmp_path):
-        setup_cmd = f'localpdb_setup.py --fetch_pdb --fetch_cif ' \
+        setup_cmd = f'bin/localpdb_setup.py --fetch_pdb --fetch_cif ' \
                     f'-db_path {tmp_path} ' \
                     f'-ftp_url {config["pdb_20200424"]["url"]} ' \
                     f'-clust_url {config["pdb_20200424"]["clust_url"]} ' \
@@ -106,7 +104,7 @@ class TestSetupWrongBaseUrl:
 
     @pytest.mark.dependency()
     def test_setup_run(self, tmp_path):
-        setup_cmd = f'localpdb_setup.py --fetch_pdb --fetch_cif ' \
+        setup_cmd = f'bin/localpdb_setup.py --fetch_pdb --fetch_cif ' \
                     f'-db_path {tmp_path} ' \
                     f'-ftp_url {config["pdb_20200417"]["url"][1:]} ' \
                     f'-clust_url {config["pdb_20200417"]["clust_url"]} ' \
@@ -132,7 +130,7 @@ class TestSetupWrongBaseDir:
 
     @pytest.mark.dependency()
     def test_setup_run(self, tmp_path):
-        setup_cmd = f'localpdb_setup.py --fetch_pdb --fetch_cif ' \
+        setup_cmd = f'bin/localpdb_setup.py --fetch_pdb --fetch_cif ' \
                     f'-db_path {tmp_path} ' \
                     f'-ftp_url {config["pdb_20200417"]["url"][:-2]} ' \
                     f'-clust_url {config["pdb_20200417"]["clust_url"]} ' \
@@ -158,7 +156,7 @@ class TestSetupWrongTimestamp:
 
     @pytest.mark.dependency()
     def test_setup_run(self, tmp_path):
-        setup_cmd = f'localpdb_setup.py --fetch_pdb --fetch_cif ' \
+        setup_cmd = f'bin/localpdb_setup.py --fetch_pdb --fetch_cif ' \
                     f'-db_path {tmp_path} ' \
                     f'-ftp_url {config["pdb_20200417"]["url"]} ' \
                     f'-clust_url {config["pdb_20200424"]["clust_url"]} ' \
@@ -189,7 +187,7 @@ class TestSetupWrongRsyncUrl:
 
     @pytest.mark.dependency()
     def test_setup_run(self, tmp_path):
-        setup_cmd = f'localpdb_setup.py --fetch_pdb --fetch_cif ' \
+        setup_cmd = f'bin/localpdb_setup.py --fetch_pdb --fetch_cif ' \
                     f'-db_path {tmp_path} ' \
                     f'-ftp_url {config["pdb_20200417"]["url"]} ' \
                     f'-clust_url {config["pdb_20200417"]["clust_url"]} ' \
@@ -220,7 +218,7 @@ class TestSetupRealPDBMirror:
 
     @pytest.mark.dependency()
     def test_setup_run(self, tmp_path):
-        setup_cmd = f'localpdb_setup.py ' \
+        setup_cmd = f'bin/localpdb_setup.py ' \
                     f'-db_path {tmp_path} '
 
         p = subprocess.run(shlex.split(setup_cmd), stdout=subprocess.PIPE, stderr=subprocess.PIPE)

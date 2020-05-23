@@ -5,3 +5,4 @@ termcolor>=1.1.0
 coloredlogs>=10.0
 pytest>=4.0
 pytest-dependency>=0.3
+pytest_cov>=2.8

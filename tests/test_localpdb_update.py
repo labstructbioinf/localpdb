@@ -7,7 +7,7 @@ import pytest
 import json
 import tempfile
 from pathlib import Path
-from localpdb.utils.config import Config
+
 
 my_path = os.path.dirname(os.path.realpath(__file__))
 with open('{}/test_config.yml'.format(my_path)) as f:
@@ -25,7 +25,7 @@ class TestUpdateBasic:
 
     @pytest.mark.dependency()
     def test_update_run(self, tmp_path):
-        setup_cmd = f'localpdb_setup.py --fetch_pdb --fetch_cif ' \
+        setup_cmd = f'bin/localpdb_setup.py --fetch_pdb --fetch_cif ' \
                     f'-db_path {tmp_path} ' \
                     f'-ftp_url {config["pdb_20200417"]["url"]} ' \
                     f'-clust_url {config["pdb_20200417"]["clust_url"]} ' \
@@ -35,7 +35,7 @@ class TestUpdateBasic:
         p = subprocess.run(shlex.split(setup_cmd), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         assert p.returncode == 0
 
-        update_cmd = f'localpdb_update.py ' \
+        update_cmd = f'bin/localpdb_update.py ' \
                     f'-db_path {tmp_path} ' \
                     f'-ftp_url {config["pdb_20200424"]["url"]} ' \
                     f'-clust_url {config["pdb_20200424"]["clust_url"]} ' \
@@ -51,7 +51,7 @@ class TestUpdateBasic:
 
     @pytest.mark.dependency(depends=['TestUpdateBasic::test_update_run'])
     def test_update_in_already_updated_dir(self, tmp_path):
-        update_cmd = f'localpdb_update.py ' \
+        update_cmd = f'bin/localpdb_update.py ' \
                      f'-db_path {tmp_path} ' \
                      f'-ftp_url {config["pdb_20200424"]["url"]} ' \
                      f'-clust_url {config["pdb_20200424"]["clust_url"]} ' \
@@ -92,7 +92,7 @@ class TestUpdateBasic:
 
     @pytest.mark.dependency(depends=['TestUpdateBasic::test_update_run'])
     def test_second_update(self, tmp_path):
-        update_cmd = f'localpdb_update.py ' \
+        update_cmd = f'bin/localpdb_update.py ' \
                      f'-db_path {tmp_path} ' \
                      f'-ftp_url {config["pdb_20200501"]["url"]} ' \
                      f'-clust_url {config["pdb_20200501"]["clust_url"]} ' \
@@ -138,7 +138,7 @@ class TestUpdateSkipOneVersion:
 
     @pytest.mark.dependency()
     def test_update_run(self, tmp_path):
-        setup_cmd = f'localpdb_setup.py --fetch_pdb --fetch_cif ' \
+        setup_cmd = f'bin/localpdb_setup.py --fetch_pdb --fetch_cif ' \
                     f'-db_path {tmp_path} ' \
                     f'-ftp_url {config["pdb_20200417"]["url"]} ' \
                     f'-clust_url {config["pdb_20200417"]["clust_url"]} ' \
@@ -148,7 +148,7 @@ class TestUpdateSkipOneVersion:
         p = subprocess.run(shlex.split(setup_cmd), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         assert p.returncode == 0
 
-        update_cmd = f'localpdb_update.py ' \
+        update_cmd = f'bin/localpdb_update.py ' \
                     f'-db_path {tmp_path} ' \
                     f'-ftp_url {config["pdb_20200501"]["url"]} ' \
                     f'-clust_url {config["pdb_20200501"]["clust_url"]} ' \
