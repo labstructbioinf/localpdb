@@ -10,7 +10,7 @@ import yaml
 from tqdm import tqdm
 from pathlib import Path
 from localpdb import PDBVersioneer, PDBDownloader
-from localpdb.utils.os import create_directory, ask, setup_logging_handlers, clean_exit
+from localpdb.utils.os import create_directory, setup_logging_handlers, clean_exit
 from localpdb.utils.config import load_remote_source
 
 # Parse arguments
