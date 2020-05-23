@@ -16,13 +16,19 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip setuptools wheel
-        pip install requirements.txt
+        pip install -r requirements.txt
+    - name: Set environment
+      run: |
+        echo "::set-env name=PYTHONPATH::/home/runner/work/localpdb/localpdb"
     - name: Test with pytest
       run: |
-        echo "::set-env name=PYTHONPATH::home/runner/work/labstructbioinf/localpdb"
-        pytest --cov=localpdb -v
-    - name: coveralls
+        pytest --cov-report=xml --cov=localpdb -v
+    - name: Codecov
       if: ${{ matrix.python-version == '3.8' && matrix.os == 'ubuntu-latest' }}
-      uses: coverallsapp/github-action@master
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+      uses: codecov/codecov-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        file: ./coverage.xml
+        flags: unittests
+        name: codecov-umbrella
+        fail_ci_if_error: false
