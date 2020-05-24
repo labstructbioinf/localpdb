@@ -13,6 +13,7 @@ my_path = os.path.dirname(os.path.realpath(__file__))
 with open('{}/test_config.yml'.format(my_path)) as f:
     config = yaml.safe_load(f)
 
+
 @pytest.fixture(scope='class', autouse=True)
 def tmp_path():
     tmp_path = f'{config["tmp_path"]}/{next(tempfile._get_candidate_names())}'

@@ -148,4 +148,3 @@ class PDB:
             data = pd.DataFrame.from_dict({key: [value] for key, value in data.items()}, orient='index',
                                           columns=added_col_name)
         self.__chains = pd.merge(self.chains, data, left_index=True, right_index=True, how='left')
-

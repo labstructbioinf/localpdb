@@ -2,6 +2,7 @@ import yaml
 import os
 from pathlib import Path
 
+
 class Config:
 
     def __init__(self, db_path):
@@ -14,6 +15,7 @@ class Config:
     def commit(self):
         with open(self.config_fn, 'w') as f:
             yaml.dump(self.data, f, default_flow_style=False)
+
 
 def load_remote_source(mirror=''):
     """

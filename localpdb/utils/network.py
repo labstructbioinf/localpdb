@@ -2,13 +2,13 @@ import logging
 import urllib.request
 import urllib.error
 import time
-import sys
 from ftplib import FTP
 from urllib.parse import urlparse
 from datetime import datetime
 from localpdb.utils.os import set_last_modified
 
 logger = logging.getLogger(__name__)
+
 
 def get_last_modified(url, ftp=False):
     """
@@ -29,6 +29,7 @@ def get_last_modified(url, ftp=False):
 
     last_modified = time.mktime(last_modified.timetuple())
     return last_modified
+
 
 def download_url(url, dest, ftp=False):
     """

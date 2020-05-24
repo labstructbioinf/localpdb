@@ -1,7 +1,5 @@
-import yaml
 import logging
 import os
-import time
 import datetime
 import sys
 import shutil

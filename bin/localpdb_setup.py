@@ -3,7 +3,6 @@ import os
 import argparse
 import logging
 import sys
-import signal
 import shutil
 import socket
 import yaml

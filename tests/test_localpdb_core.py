@@ -7,7 +7,6 @@ import pytest
 import tempfile
 from localpdb import PDB
 
-
 my_path = os.path.dirname(os.path.realpath(__file__))
 with open('{}/test_config.yml'.format(my_path)) as f:
     config = yaml.safe_load(f)

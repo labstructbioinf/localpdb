@@ -8,7 +8,6 @@ import shlex
 import subprocess
 from datetime import datetime
 from pathlib import Path
-from termcolor import cprint
 
 logger = logging.getLogger(__name__)
 
@@ -27,6 +26,7 @@ def setup_logging_handlers(tmp_path='/tmp'):
     cnsl_hdlr.setLevel(logging.INFO)
     cnsl_hdlr.setFormatter(coloredlogs.ColoredFormatter('%(message)s'))
     return fn_log, (fh_hdlr, cnsl_hdlr)
+
 
 def create_directory(path):
     """
@@ -51,6 +51,7 @@ def create_directory(path):
             logger.error(f'Cannot create directory: \'{path}\' - file with this name already exist.')
             sys.exit(1)
 
+
 def set_last_modified(fn, date):
     """
     Sets the last modified date of the local file
@@ -59,9 +60,11 @@ def set_last_modified(fn, date):
     """
     os.utime(fn, (date, date))
 
+
 def _sigterm_handler(signum, frame):
     sys.exit(0)
 _sigterm_handler.__enter_ctx__ = False
+
 
 @contextlib.contextmanager
 def clean_exit(callback=None, append=False):
@@ -109,6 +112,7 @@ def clean_exit(callback=None, append=False):
         if callback is not None and killed:
             logger.error('Script abruptly terminated! Cleaning temporary files...')
             callback()
+
 
 def os_cmd(cmd):
     """
