@@ -2,7 +2,7 @@ import os
 import pandas as pd
 import numpy as np
 from localpdb import PDBVersioneer
-from localpdb.utils.pdb import parse_pdb_data, parse_cluster_data
+from localpdb.utils.prot import parse_pdb_data, parse_cluster_data
 from localpdb.utils.config import Config
 
 
