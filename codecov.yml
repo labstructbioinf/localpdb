@@ -1,0 +1,2 @@
+ignore:
+  - "localpdb/utils/os.py"  # ignore os utils
