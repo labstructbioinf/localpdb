@@ -47,33 +47,33 @@ class PDB:
                     self.version))
 
         # Create dataframes with per-structure and per-chain data
-        self.__structures, self.__chains = parse_pdb_data(pdb_entries_fn, pdb_entries_type_fn, pdb_res_fn, pdb_seqres_fn)
+        self.__entries, self.__chains = parse_pdb_data(pdb_entries_fn, pdb_entries_type_fn, pdb_res_fn, pdb_seqres_fn)
 
         # Basic check for corrupt files
-        if self.__structures.shape[1] != 4:
+        if self.__entries.shape[1] != 4:
             raise ValueError(
                 f'PDB raw files for version \'{self.version}\' are corrupt! Try rerunning setup or update scripts!')
 
         # Set according filenames pointing to the structures
         if self.__config['mirror_pdb']:
-            self.__structures['pdb_fn'] = self.__structures.index.map(
+            self.__entries['pdb_fn'] = self.__entries.index.map(
                 lambda x: f'{self.db_path}/mirror/pdb/{x[1:3]}/pdb{x}.ent.gz' if os.path.isfile(
-                f'{self.db_path}/mirror/pdb/{x[1:3]}/pdb{x}.ent.gz') else np.nan)
+                    f'{self.db_path}/mirror/pdb/{x[1:3]}/pdb{x}.ent.gz') else np.nan)
         if self.__config['mirror_cif']:
-            self.__structures['mmcif_fn'] = self.__structures.index.map(
+            self.__entries['mmcif_fn'] = self.__entries.index.map(
                 lambda x: f'{self.db_path}/mirror/mmCIF/{x[1:3]}/{x}.cif.gz' if os.path.isfile(
-                f'{self.db_path}/mirror/mmCIF/{x[1:3]}/{x}.cif.gz') else np.nan)
+                    f'{self.db_path}/mirror/mmCIF/{x[1:3]}/{x}.cif.gz') else np.nan)
 
         # Keep copy of dataframes to allow for reseting the selections
-        self.__structures_copy = self.__structures.copy()
+        self.__entries_copy = self.__entries.copy()
         self.__chains_copy = self.__chains.copy()
 
         # Workaround to run setters only once
         self.chains = self.__chains
-        self.structures == self.__structures
+        self.entries == self.__entries
 
     def __repr__(self):
-        return f'localpdb database (v{self.version}) holding {len(self.structures)} entries ({len(self.chains)} chains)'
+        return f'localpdb database (v{self.version}) holding {len(self.entries)} entries ({len(self.chains)} chains)'
 
     def load_clustering_data(self, cutoff=50):
         """
@@ -98,17 +98,17 @@ class PDB:
         """
         with open('{}/data/{}/added.txt'.format(self.db_path, self.version)) as f:
             idents = [line.rstrip() for line in f.readlines()]
-        curr_idx = set(self.structures.index.values)
+        curr_idx = set(self.entries.index.values)
         pdb_ids_clean = [ident for ident in idents if ident in curr_idx]
-        self.structures = self.structures.loc[pdb_ids_clean]
+        self.entries = self.entries.loc[pdb_ids_clean]
 
     def reset(self):
         """
         Resets the selections done on lpdb.structures and lpdb.chains and restores the initial state of the localpdb.
         """
-        del self.__structures
+        del self.__entries
         del self.__chains
-        self.__structures = self.__structures_copy.copy()
+        self.__entries = self.__entries_copy.copy()
         self.__chains = self.__chains_copy.copy()
 
     @property
@@ -116,30 +116,30 @@ class PDB:
         return self.__chains
 
     @property
-    def structures(self):
-        return self.__structures
+    def entries(self):
+        return self.__entries
 
     @chains.setter
     def chains(self, chains):
         if self.auto_filter:
             new_pdb_ids = set(chains['pdb'].tolist())
-            self.__structures = self.__structures[self.__structures.index.isin(new_pdb_ids)]
+            self.__entries = self.__entries[self.__entries.index.isin(new_pdb_ids)]
         self.__chains = chains
 
-    @structures.setter
-    def structures(self, structures):
+    @entries.setter
+    def entries(self, entries):
         if self.auto_filter:
-            new_pdb_ids = set(structures.index.tolist())
+            new_pdb_ids = set(entries.index.tolist())
             self.__chains = self.__chains[self.__chains['pdb'].isin(new_pdb_ids)]
-        self.__structures = structures
+        self.__entries = entries
 
     def _add_col_structures(self, data, added_col_name=[]):
-        if len(set(added_col_name) & set(self.__structures.columns)) > 0:
+        if len(set(added_col_name) & set(self.__entries.columns)) > 0:
             raise ValueError('At least one added column name is already present in \'lpdb.structures\' df!')
         if isinstance(data, dict):
             data = pd.DataFrame.from_dict({key: [value] for key, value in data.items()}, orient='index',
                                           columns=added_col_name)
-        self.__structures = pd.merge(self.structures, data, left_index=True, right_index=True, how='left')
+        self.__entries = pd.merge(self.entries, data, left_index=True, right_index=True, how='left')
 
     def _add_col_chains(self, data, added_col_name=[]):
         if len(set(added_col_name) & set(self.__chains.columns)) > 0:

@@ -36,21 +36,21 @@ class TestCorePDB:
         lpdb = PDB(db_path=tmp_path)
 
         # Assert lengths of df's (total data loaded)
-        assert len(lpdb.structures) == 159299
+        assert len(lpdb.entries) == 159299
         assert len(lpdb.chains) == 515201
 
         # Assert number of avaialble structures from the mocked RCSB mirror
-        assert len(lpdb.structures[lpdb.structures['pdb_fn'].notnull()]) == 246
-        assert len(lpdb.structures[lpdb.structures['mmcif_fn'].notnull()]) == 247
+        assert len(lpdb.entries[lpdb.entries['pdb_fn'].notnull()]) == 246
+        assert len(lpdb.entries[lpdb.entries['mmcif_fn'].notnull()]) == 247
 
-        # Assert for simple quer
-        lpdb.structures = lpdb.structures.query('resolution <= 2.5')
-        assert len(lpdb.structures) == 111598
+        # Assert for simple query
+        lpdb.entries = lpdb.entries.query('resolution <= 2.5')
+        assert len(lpdb.entries) == 111598
         assert len(lpdb.chains) == 257821
 
         # Check reset behaviour
         lpdb.reset()
-        assert len(lpdb.structures) == 159299
+        assert len(lpdb.entries) == 159299
         assert len(lpdb.chains) == 515201
 
         # Check clustering data handling
@@ -68,7 +68,7 @@ class TestCorePDB:
         assert '20200417' in str(lpdb)
 
         lpdb.select_updates()
-        assert len(lpdb.structures) == 325
+        assert len(lpdb.entries) == 325
 
     def test_lpdb_loading_wrong_dir(self, tmp_path):
         with pytest.raises(Exception):
