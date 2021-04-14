@@ -111,7 +111,7 @@ If this warning persists inspect the directories in \'{self.db_path}/data\' and 
         Checks for the remote PDB versions in the PDB ftp mirror
         @return: sorted list of the remote PDB versions available in the PDB ftp mirror
         """
-        p = urlparse('ftp://' + self.config['ftp_url'])
+        p = urlparse('ftp://' + self.config['url'])
         ftp = ftplib.FTP(p.netloc, timeout=10)
         ftp.login("anonymous", "")
         raw_data = []

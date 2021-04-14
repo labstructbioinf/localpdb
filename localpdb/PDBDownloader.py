@@ -41,21 +41,21 @@ class PDBDownloader:
         @param file_type: file type
         @return: url to download the file
         """
-        root = self.config['ftp_url']
-        method = 'ftp'
+        root = self.config['url']
+        proto = self.config['download_proto']
         if file_type in ['entries', 'entries_type', 'bundles', 'resolution', 'seqres']:
             ext = self.config['ftp_locs'][file_type]
-            url = f'{method}://{root}/{ext}'
+            url = f'{proto}://{root}/{ext}'
         elif file_type == 'updates':
             ext = self.config['ftp_locs'][file_type]
             if version is None:
                 raise ValueError('PDB version needs to be specified!')
-            url = f'{method}://{root}/{ext}/{version}/added.pdb'
+            url = f'{proto}://{root}/{ext}/{version}/added.pdb'
         elif file_type.startswith('clust_'):
             redundancy = file_type.split('_')[1]
-            root = self.config['clust_url']
-            method = 'ftp'
-            url = f'{method}://{root}/bc-{redundancy}.out'
+            root = self.config['clust']['url']
+            proto = self.config['clust']['download_proto']
+            url = f'{proto}://{root}/bc-{redundancy}.out'
             return url
         else:
             raise ValueError('Unknown file type, cannot generate download url!')
@@ -72,6 +72,8 @@ class PDBDownloader:
             version = self.version
         timestamp = datetime.datetime.fromtimestamp((os.path.getmtime(fn)))
         timestamp = f'{timestamp.year}{str(timestamp.month).zfill(2)}{str(timestamp.day).zfill(2)}'
+        print(version)
+        print(timestamp)
         out = timestamp == str(version)
         if out:
             logger.debug(f'Timestamp of the file: \'{fn}\' matches the PDB version: \'{version}\'')
@@ -94,7 +96,7 @@ class PDBDownloader:
             if file_type == 'seqres':
                 dest = '{}.gz'.format(dest)
             url = self.__gen__url(file_type=file_type)
-            if download_url(url, dest, ftp=True):
+            if download_url(url, dest):
                 return self.__verify_timestamp(dest)
             else:
                 return False
@@ -102,7 +104,7 @@ class PDBDownloader:
         elif file_type.startswith('clust_'):
             url = self.__gen__url(file_type)
             dest = '{}/clustering/{}/{}.out'.format(self.db_path, self.version, file_type) # TODO
-            if download_url(url, dest, ftp=True):
+            if download_url(url, dest):
                 return self.__verify_timestamp(dest)
             else:
                 return False
@@ -111,7 +113,7 @@ class PDBDownloader:
             if self.versions is None:
                 url = self.__gen__url(file_type=file_type, version=self.version)
                 dest = '{}/data/{}/added.txt'.format(self.db_path, self.version) # TODO
-                if download_url(url, dest, ftp=True):
+                if download_url(url, dest):
                     return self.__verify_timestamp(dest)
                 else:
                     return False
@@ -121,13 +123,13 @@ class PDBDownloader:
                 for version in self.versions:
                     tmp_dest = '{}/data/{}/tmp_{}_added.txt'.format(self.db_path, self.version, version) # TODO
                     url = self.__gen__url(file_type=file_type, version=version)
-                    download_url(url, tmp_dest, ftp=True)
+                    download_url(url, tmp_dest)
                     results.append(self.__verify_timestamp(tmp_dest, version=version))
                     f_tmp = open(tmp_dest)
                     f.write(f_tmp.read())
                     f_tmp.close()
                     os.remove(tmp_dest)
-                last_modified = get_last_modified(url, ftp=True)
+                last_modified = get_last_modified(url)
                 set_last_modified('{}/data/{}/added.txt'.format(self.db_path, self.version), last_modified) #TODO
                 return all(results)
 

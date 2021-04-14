@@ -47,13 +47,13 @@ remote_source = load_remote_source(args.mirror)
 
 # Override config options if custom urls were provided
 if args.ftp_url:
-    remote_source['ftp_url'] = args.ftp_url
+    remote_source['url'] = args.ftp_url
 if args.rsync_url:
     remote_source['rsync_url'] = args.rsync_url
 if args.rsync_opts:
     remote_source['rsync_opts'] = args.rsync_opts
 if args.clust_url:
-    remote_source['clust_url'] = args.clust_url
+    remote_source['clust']['url'] = args.clust_url
 
 print()
 print(f'This script will setup the localpdb database in the directory:\n{args.db_path}')

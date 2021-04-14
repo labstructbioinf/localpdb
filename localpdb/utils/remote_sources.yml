@@ -1,21 +1,26 @@
 ---
 mirrors:
   rcsb:
-    ftp_url: "ftp.rcsb.org/pub/pdb"
+    url: "ftp.rcsb.org/pub/pdb"
+    download_proto: "https"
     rsync_url: "rsync.rcsb.org::ftp_data/structures/divided"
     rsync_opts: "--port=33444"
 
   pdbe:
-    ftp_url: "ftp.ebi.ac.uk/pub/databases/pdb"
+    url: "ftp.ebi.ac.uk/pub/databases/pdb"
+    download_proto: "http"
     rsync_url: "ftp.ebi.ac.uk::pub/databases/pdb/data/structures/divided"
     rsync_opts: ""
 
   pdbj:
-    ftp_url: "ftp.pdbj.org/pub/pdb"
+    url: "ftp.pdbj.org/pub/pdb"
+    download_proto: "http"
     rsync_url: "ftp.pdbj.org::ftp_data/structures/divided"
     rsync_opts: ""
 
-clust_url: "resources.rcsb.org/sequence/clusters/"
+clust:
+  url: "cdn.rcsb.org/resources/sequence/clusters/"
+  download_proto: "https"
 
 ftp_locs:
   entries_type: "derived_data/pdb_entry_type.txt"

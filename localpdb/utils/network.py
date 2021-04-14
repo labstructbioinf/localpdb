@@ -26,24 +26,26 @@ def get_last_modified(url, ftp=False):
         last_modified = '{yy}-{mo}-{dd} {hh}:{mm}:{ss}'.format(yy=ts[:4], mo=ts[4:6], dd=ts[6:8], hh=ts[8:10],
                                                                mm=ts[10:12], ss=ts[12:14])
         last_modified = datetime.strptime(last_modified, '%Y-%m-%d %H:%M:%S')
+        return time.mktime(last_modified.timetuple())
+    else:
+        conn = urllib.request.urlopen(url, timeout=30)
+        last_modified = time.strptime(conn.headers['last-modified'], '%a, %d %b %Y %H:%M:%S %Z')
+        conn.close()
+        return time.mktime(last_modified)
 
-    last_modified = time.mktime(last_modified.timetuple())
-    return last_modified
 
-
-def download_url(url, dest, ftp=False):
+def download_url(url, dest):
     """
     Method for handling downloads and replicating modification timestamps
     @param url: url to download
     @param dest: destination of the downloaded file
-    @param ftp: denotes FTP protocol used for download
     @return True/False denoting whether download was successful or not
     """
     try:
         urllib.request.urlretrieve(url, dest)
         logger.debug(f'Downloaded url: \'{url}\' to destination: \'{dest}\'')
         # Set remote 'last-modified' date for verification purposes
-        last_modified = get_last_modified(url, ftp=ftp)
+        last_modified = get_last_modified(url)
         set_last_modified(dest, last_modified)
         return True
     except (urllib.error.URLError, urllib.error.HTTPError):
