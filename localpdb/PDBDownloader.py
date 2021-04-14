@@ -72,8 +72,6 @@ class PDBDownloader:
             version = self.version
         timestamp = datetime.datetime.fromtimestamp((os.path.getmtime(fn)))
         timestamp = f'{timestamp.year}{str(timestamp.month).zfill(2)}{str(timestamp.day).zfill(2)}'
-        print(version)
-        print(timestamp)
         out = timestamp == str(version)
         if out:
             logger.debug(f'Timestamp of the file: \'{fn}\' matches the PDB version: \'{version}\'')
