@@ -42,8 +42,7 @@ def download(args, mode=''):
     pdbd.set_lock()
     if mode == 'files':
         with clean_exit(callback=pdbd.clean_unsuccessful):
-            clust_types = [f'clust_{p}' for p in [30, 40, 50, 70, 90, 95, 100]]
-            file_types = ['entries', 'entries_type', 'bundles', 'resolution', 'seqres', 'updates'] + clust_types
+            file_types = ['entries', 'entries_type', 'bundles', 'resolution', 'seqres', 'updates']
             for file_type in tqdm(file_types, unit='item'):
                 result = pdbd.download(file_type=file_type)
                 if not result:
@@ -112,8 +111,7 @@ def main(args):
         print()
 
         # Create directories
-        dirs = ['data', 'mirror', 'mirror/pdb', 'mirror/mmCIF', 'logs', f'data/{args.current_remote_version}',
-                'clustering', f'clustering/{args.current_remote_version}']
+        dirs = ['data', 'mirror', 'mirror/pdb', 'mirror/mmCIF', 'logs', f'data/{args.current_remote_version}']
         for _dir in dirs:
             create_directory('{}/{}'.format(args.db_path, _dir))
         pdbv.init()

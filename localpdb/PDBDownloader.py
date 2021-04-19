@@ -54,12 +54,6 @@ class PDBDownloader:
             if version is None:
                 raise ValueError('PDB version needs to be specified!')
             url = f'{proto}://{root}/{ext}/{version}/added.pdb'
-        elif file_type.startswith('clust_'):
-            redundancy = file_type.split('_')[1]
-            root = self.config['clust']['url']
-            proto = self.config['clust']['download_proto']
-            url = f'{proto}://{root}/bc-{redundancy}.out'
-            return url
         else:
             raise ValueError('Unknown file type, cannot generate download url!')
         return url
@@ -97,14 +91,6 @@ class PDBDownloader:
             if file_type == 'seqres':
                 dest = '{}.gz'.format(dest)
             url = self.__gen__url(file_type=file_type)
-            if download_url(url, dest):
-                return self.__verify_timestamp(dest)
-            else:
-                return False
-
-        elif file_type.startswith('clust_'):
-            url = self.__gen__url(file_type)
-            dest = '{}/clustering/{}/{}.out'.format(self.db_path, self.version, file_type) # TODO
             if download_url(url, dest):
                 return self.__verify_timestamp(dest)
             else:

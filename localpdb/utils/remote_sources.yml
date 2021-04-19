@@ -18,10 +18,6 @@ mirrors:
     rsync_url: "ftp.pdbj.org::ftp_data/structures/divided"
     rsync_opts: ""
 
-clust:
-  url: "cdn.rcsb.org/resources/sequence/clusters/"
-  download_proto: "https"
-
 ftp_locs:
   entries_type: "derived_data/pdb_entry_type.txt"
   entries: "derived_data/index/entries.idx"
