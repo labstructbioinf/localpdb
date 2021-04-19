@@ -75,23 +75,6 @@ class PDB:
     def __repr__(self):
         return f'localpdb database (v{self.version}) holding {len(self.entries)} entries ({len(self.chains)} chains)'
 
-    def load_clustering_data(self, cutoff=50):
-        """
-        Loads protein chains clustering data available from the RCSB FTP server
-        @cutoff: Clustering identity cutoff to use when loading data. Valid cutoffs are: 30, 40, 50, 70, 90, 95, 100.
-        """
-        col_name = f'clust-{cutoff}'
-        if col_name in self.__chains.columns:
-            raise RuntimeError(f'Clustering data for identity cutoff \'{cutoff}\' is already loaded!')
-        valid_cutoffs = ['30', '40', '50', '70', '90', '95', '100']
-        if not str(cutoff) in valid_cutoffs:
-            raise ValueError(f'Cutoff \'{cutoff}\' is not a valid PDB clustering cutoff!')
-        fn = f'{self.db_path}/clustering/{self.version}/clust_{cutoff}.out'
-        valid_indexes = set(self.chains.index.values)
-        cluster_data = parse_cluster_data(fn)
-        cluster_data_filt = {key: value for key, value in cluster_data.items() if key in valid_indexes}
-        self._add_col_chains(cluster_data_filt, [col_name])
-
     def select_updates(self):
         """
         Selects only new entries that were added during the last PDB update
