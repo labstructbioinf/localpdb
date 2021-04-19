@@ -5,12 +5,11 @@ from pathlib import Path
 
 class Config:
 
-    def __init__(self, db_path):
+    def __init__(self, db_path, init=False):
         self.config_fn = Path(db_path) / 'config.yml'
-        with open(self.config_fn) as f:
-            self.data = yaml.safe_load(f)
-        assert 'mirror_pdb' in self.data.keys()
-        assert 'mirror_cif' in self.data.keys()
+        if not init:
+            with open(self.config_fn) as f:
+                self.data = yaml.safe_load(f)
 
     def commit(self):
         with open(self.config_fn, 'w') as f:

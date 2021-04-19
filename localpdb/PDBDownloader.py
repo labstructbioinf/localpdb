@@ -14,14 +14,17 @@ class PDBDownloader:
     Class for handling downloads from the PDB servers.
     """
 
-    def __init__(self, db_path, version, config):
+    def __init__(self, db_path, version, config, remove_unsuccessful=False):
         """
         @param db_path: localpdb database path
         @param version: PDB version or versions (if in update mode with multiple missing versions)
         @param mirror: PDB mirror to download from
+        @param config: Config dict with remote source information
+        @param remove_unsuccessful: Remove downloaded files in case of download failure (True/False)
         """
         self.config = config
         self.db_path = Path(db_path)
+        self.remove_unsuccessful = remove_unsuccessful
         self.versions = None
         if type(version) == list:
             self.version = version[-1]
@@ -185,6 +188,7 @@ class PDBDownloader:
         Cleans the files downloaded during the session.
         This function is run when some part of the download session has failed.
         """
-        shutil.rmtree(self.db_path / 'data' / str(self.version))
-        shutil.rmtree(self.db_path / 'clustering' / str(self.version))
+        if self.remove_unsuccessful:
+            shutil.rmtree(self.db_path / 'data' / str(self.version))
+            shutil.rmtree(self.db_path / 'clustering' / str(self.version))
         self.remove_lock()
