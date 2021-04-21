@@ -18,9 +18,12 @@ def get_params():
     # Parse arguments
     parser = argparse.ArgumentParser(description='localpdb setup script')
     parser.add_argument('-db_path', help='Path to store localpdb database', required=True, metavar='DB_PATH')
+    parser.add_argument('-plugins', help='Names of plugins to set up', metavar='PLUGINS', nargs='+',
+                        default=[])
     parser.add_argument('-mirror', help='''PDB mirror used to download the protein structures.
     Valid options are \'rcsb\' (RCSB PDB - US), \'pdbe\' (PDBe - UK) or \'pdbj\' (PDBj - Japan)''',
                         default='rcsb', metavar='MIRROR', choices=['rcsb', 'pdbe', 'pdbj'])
+    parser.add_argument('--update', help='Update existing localpdb database', action='store_true')
     parser.add_argument('--fetch_pdb', help='Download the protein structures in the PDB format', action='store_true')
     parser.add_argument('--fetch_cif', help='Download the protein structures in the mmCIF format', action='store_true')
 
@@ -66,6 +69,9 @@ def download(args, mode=''):
                 sys.exit(1)
     pdbd.remove_lock()
 
+def install_plugins(args):
+    pass
+
 def main(args):
 
     # Load config
@@ -103,9 +109,11 @@ def main(args):
     else:
         create_directory(args.db_path)
 
-    # Check if localpdb is not set up already...
+    # localpdb is not set up - start from scratch
     if pdbv.current_local_version is None:
-
+        if args.update:
+            logger.error(f'localpdb is not set up in the directory: \'{args.db_path}\'!')
+            sys.exit(1)
         print()
         print(f'This script will setup the localpdb database in the directory:\n{args.db_path}')
         print()
@@ -133,6 +141,7 @@ def main(args):
             print()
         if args.fetch_cif:
             download(args, mode='rsync_cif')
+            print()
 
         # Finally - setup config, log and report success
         pdbv.update_logs(first=True)
@@ -140,7 +149,7 @@ def main(args):
                                                                                 'pdb_init_ver': args.current_remote_version if args.fetch_pdb else None,
                                                                                 'cif': args.fetch_cif,
                                                                                 'cif_init_ver': args.current_remote_version if args.fetch_cif else None}}
-        config = Config(args.db_path, init=True)
+        config = Config(args.db_path / 'config.yml', init=True)
         config.data = conf_dict
         config.commit()
         print()
@@ -150,23 +159,58 @@ def main(args):
         log_path = args.db_path / 'logs'
         shutil.move(fn_log, log_path)
 
+    # localpdb is set up and up to date
     elif args.current_remote_version == pdbv.current_local_version:
-        config = Config(args.db_path)
-        if not config.data['struct_mirror']['pdb'] and args.fetch_pdb:
+        config = Config(args.db_path / 'config.yml')
+        # check if structure sync is requested on the already set up localpdb
+
+        if not config.data['struct_mirror']['pdb'] and args.fetch_pdb and not args.update:
             download(args, mode='rsync_pdb')
+            print()
             config.data['struct_mirror']['pdb'] = True
             config.data['struct_mirror']['pdb_init_ver'] = args.current_remote_version
-        if not config.data['struct_mirror']['cif'] and args.fetch_cif:
+        if not config.data['struct_mirror']['cif'] and args.fetch_cif and not args.update:
             download(args, mode='rsync_cif')
+            print()
             config.data['struct_mirror']['cif'] = True
             config.data['struct_mirror']['cif_init_ver'] = args.current_remote_version
         else:
             logger.info(f'localpdb is up to date and set up in the directory \'{args.db_path}\'.')
         config.commit()
 
+    # localpdb is set up but there's a newer remote version available
     elif args.current_remote_version > pdbv.current_local_version:
-        logger.info(
-            f'localpdb is set up in the directory \'{args.db_path}\' but is not up to date. Consider an update!')
+        if args.update:
+            logger.info(
+                'localpdb is {} update(s) behind with the remote source, updating to version {}...'.format(
+                    len(pdbv.missing_remote_versions), pdbv.current_remote_version))
+            print()
+            config = Config(args.db_path / 'config.yml').data
+            # Create directories
+            dirs = ['data', 'mirror', 'mirror/pdb', 'mirror/mmCIF', 'logs', f'data/{args.current_remote_version}']
+            for _dir in dirs:
+                create_directory('{}/{}'.format(args.db_path, _dir))
+
+            # Download PDB files
+            logger.debug(f'Using \'{args.mirror}\' mirror for downloads.')
+            download(args, mode='files')
+            if not any([config['struct_mirror']['pdb'], config['struct_mirror']['cif']]):
+                logger.debug('Skipping structure files syncing...')
+            if config['struct_mirror']['pdb']:
+                download(args, mode='rsync_pdb')
+            if config['struct_mirror']['cif']:
+                download(args, mode='rsync_cif')
+
+            pdbv.update_logs()
+            logger.info(
+                f'Successfully updated localpdb in \'{args.db_path}\' to version \'{pdbv.current_remote_version}\'!')
+            # Move log file to localpdb dir
+            logging.shutdown()
+            log_path = args.db_path / 'logs'
+            shutil.move(fn_log, log_path)
+        else:
+            logger.info(
+                f'localpdb is set up in the directory \'{args.db_path}\' but is not up to date. Consider an update!')
 
 if __name__ == "__main__":
     # Get commandline arguments
