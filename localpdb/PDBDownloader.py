@@ -175,6 +175,9 @@ class PDBDownloader:
         This function is run when some part of the download session has failed.
         """
         if self.remove_unsuccessful:
-            shutil.rmtree(self.db_path / 'data' / str(self.version))
-            shutil.rmtree(self.db_path / 'clustering' / str(self.version))
+            try:
+                shutil.rmtree(self.db_path / 'data' / str(self.version))
+                shutil.rmtree(self.db_path / 'clustering' / str(self.version))
+            except FileNotFoundError:
+                pass
         self.remove_lock()
