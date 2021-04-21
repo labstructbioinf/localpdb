@@ -16,7 +16,7 @@ from localpdb.utils.config import load_remote_source, Config
 
 def get_params():
     # Parse arguments
-    parser = argparse.ArgumentParser(description='localpdb setup script')
+    parser = argparse.ArgumentParser(description='localpdb setup/update script')
     parser.add_argument('-db_path', help='Path to store localpdb database', required=True, metavar='DB_PATH')
     parser.add_argument('-plugins', help='Names of plugins to set up', metavar='PLUGINS', nargs='+',
                         default=[])
@@ -36,12 +36,15 @@ def get_params():
     parser.add_argument('-clust_url', help=argparse.SUPPRESS)
     args = parser.parse_args()
     args.db_path = Path(os.path.abspath(args.db_path))
+    if args.update and any([args.fetch_pdb, args.fetch_cif]):
+        print('\nOptions \'--update\' and any of the (\'--fetch_pdb\', \'--fetch_cif\') are mutually exclusive!\n')
+        parser.print_help()
+        sys.exit(1)
     return args
 
-def download(args, mode=''):
-    remove_unsuccessful = True if mode == 'files' else False
+def download(args, mode='', clean=True):
     pdbd = PDBDownloader(db_path=args.db_path, version=args.current_remote_version, config=args.remote_source,
-                         remove_unsuccessful=remove_unsuccessful)
+                         remove_unsuccessful=clean)
     pdbd.set_lock()
     if mode == 'files':
         with clean_exit(callback=pdbd.clean_unsuccessful):
@@ -137,10 +140,10 @@ def main(args):
                         ' If the run will be stopped it can be restarted later.)')
             print()
         if args.fetch_pdb:
-            download(args, mode='rsync_pdb')
+            download(args, mode='rsync_pdb', clean=False)
             print()
         if args.fetch_cif:
-            download(args, mode='rsync_cif')
+            download(args, mode='rsync_cif', clean=False)
             print()
 
         # Finally - setup config, log and report success
@@ -165,12 +168,12 @@ def main(args):
         # check if structure sync is requested on the already set up localpdb
 
         if not config.data['struct_mirror']['pdb'] and args.fetch_pdb and not args.update:
-            download(args, mode='rsync_pdb')
+            download(args, mode='rsync_pdb', clean=False)
             print()
             config.data['struct_mirror']['pdb'] = True
             config.data['struct_mirror']['pdb_init_ver'] = args.current_remote_version
         if not config.data['struct_mirror']['cif'] and args.fetch_cif and not args.update:
-            download(args, mode='rsync_cif')
+            download(args, mode='rsync_cif', clean=False)
             print()
             config.data['struct_mirror']['cif'] = True
             config.data['struct_mirror']['cif_init_ver'] = args.current_remote_version
@@ -197,9 +200,9 @@ def main(args):
             if not any([config['struct_mirror']['pdb'], config['struct_mirror']['cif']]):
                 logger.debug('Skipping structure files syncing...')
             if config['struct_mirror']['pdb']:
-                download(args, mode='rsync_pdb')
+                download(args, mode='rsync_pdb', clean=True)
             if config['struct_mirror']['cif']:
-                download(args, mode='rsync_cif')
+                download(args, mode='rsync_cif', clean=True)
 
             pdbv.update_logs()
             logger.info(
@@ -211,6 +214,8 @@ def main(args):
         else:
             logger.info(
                 f'localpdb is set up in the directory \'{args.db_path}\' but is not up to date. Consider an update!')
+            if any([args.fetch_pdb, args.fetch_cif]):
+                logger.warning('Structure files cannot be synced when local version is outdated. Update localpdb first.')
 
 if __name__ == "__main__":
     # Get commandline arguments
