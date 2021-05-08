@@ -5,8 +5,8 @@ from pathlib import Path
 
 class Config:
 
-    def __init__(self, db_path, init=False):
-        self.config_fn = Path(db_path) / 'config.yml'
+    def __init__(self, fn, init=False):
+        self.config_fn = fn
         if not init:
             with open(self.config_fn) as f:
                 self.data = yaml.safe_load(f)
