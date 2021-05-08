@@ -25,3 +25,7 @@ ftp_locs:
   resolution: "derived_data/index/resolu.idx"
   seqres: "derived_data/pdb_seqres.txt.gz"
   updates: "data/status/"
+
+api:
+  url: "https://search.rcsb.org/rcsbsearch"
+  version: "v1"
