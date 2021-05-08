@@ -7,12 +7,20 @@ import shutil
 import socket
 import yaml
 import ftplib
+import importlib
 from tqdm import tqdm
 from pathlib import Path
-from localpdb import PDBVersioneer, PDBDownloader
+from localpdb import PDB, PDBVersioneer, PDBDownloader
+from localpdb.plugins import PluginVersioneer
 from localpdb.utils.os import create_directory, setup_logging_handlers, clean_exit
 from localpdb.utils.config import load_remote_source, Config
+from localpdb.utils.errors import *
 
+def pr_header():
+    print('''
+┬  ┌─┐┌─┐┌─┐┬  ┌─┐┌┬┐┌┐ 
+│  │ ││  ├─┤│  ├─┘ ││├┴┐
+┴─┘└─┘└─┘┴ ┴┴─┘┴  ─┴┘└─┘''')
 
 def get_params():
     # Parse arguments
@@ -41,6 +49,22 @@ def get_params():
         parser.print_help()
         sys.exit(1)
     return args
+
+def setup_versioneer(args):
+    try:
+        pdbv = PDBVersioneer(db_path=args.db_path, config=args.remote_source)
+        remote_ver = pdbv.current_remote_version
+        return pdbv, remote_ver
+    except (socket.timeout, ftplib.error_temp, socket.gaierror):
+        logger.error('Could not connect to the FTP server. Please check the URL details and connectivity:')
+        url = args.remote_source['url']
+        logger.error(f'ftp://{url}')
+        sys.exit(1)
+    except ValueError:
+        logger.error('No valid PDB data found in the remote source. Please check the URL details and connectivity:')
+        url = args.remote_source['url']
+        logger.error(f'ftp://{url}')
+        sys.exit(1)
 
 def download(args, mode='', clean=True):
     pdbd = PDBDownloader(db_path=args.db_path, version=args.current_remote_version, config=args.remote_source,
@@ -73,7 +97,33 @@ def download(args, mode='', clean=True):
     pdbd.remove_lock()
 
 def install_plugins(args):
-    pass
+
+    pdbv, args.current_remote_version = setup_versioneer(args)
+    for plugin in args.plugins:
+        if args.update:
+            print()
+            logger.info(f'Updating plugin: \'{plugin}\'...')
+        else:
+            print()
+            logger.info(f'Setting up plugin: \'{plugin}\'...')
+
+        Plugin = getattr(importlib.import_module('localpdb.plugins.{}'.format(plugin)), plugin)
+        plugin_dir = args.db_path / Plugin.plugin_dir  # Absolute directory where plugins are stored
+        plv = PluginVersioneer(plugin_dir) # Plugin versioneer
+
+        # Iterate only over the lpdb versions that the plugin wasn't already setup for.
+        lpdb_versions = set(pdbv.local_pdb_versions) - plv.installed_plugin_versions
+        for lpdb_version in lpdb_versions:
+            lpdb = PDB(args.db_path, version=lpdb_version)
+            pl = Plugin(lpdb)
+            try:
+                pl.setup() if int(lpdb_version) == pdbv.first_local_version else pl.update()
+                logger.info(f'Successfully set up plugin \'{plugin}\' for the localpdb version \'{lpdb_version}\'')
+            except PluginAlreadyInstalledOutdated:
+                logger.info(f'Plugin \'{plugin}\' is already installed for the localpdb version \'{lpdb_version}\' OUTDATED')
+            except PluginInstallError:
+                logger.info(f'Could not set up plugin \'{plugin}\' for the localpdb version \'{lpdb_version}\'')
+
 
 def main(args):
 
@@ -90,19 +140,7 @@ def main(args):
     if args.clust_url:
         args.remote_source['clust']['url'] = args.clust_url
 
-    try:
-        pdbv = PDBVersioneer(db_path=args.db_path, config=args.remote_source)
-        args.current_remote_version = pdbv.current_remote_version
-    except (socket.timeout, ftplib.error_temp):
-        logger.error('Could not connect to the FTP server. Please check the URL details:')
-        url = args.remote_source['ftp_url']
-        logger.error(f'ftp://{url}')
-        sys.exit(1)
-    except ValueError:
-        logger.error('No valid PDB data found in the remote source. Please check the URL details:')
-        url = args.remote_source['ftp_url']
-        logger.error(f'ftp://{url}')
-        sys.exit(1)
+    pdbv, args.current_remote_version = setup_versioneer(args)
 
     # Check if directory already exists - won't ask this question if run is restarted because of cancelling / failure
     if os.path.exists(args.db_path) and os.path.isdir(args.db_path) and not pdbv.check_init():
@@ -157,6 +195,10 @@ def main(args):
         config.commit()
         print()
         logger.info(f'Successfully set up localpdb in \'{args.db_path}\'')
+
+        if args.plugins is not None:
+            install_plugins(args)
+
         # Move log file to localpdb dir
         logging.shutdown()
         log_path = args.db_path / 'logs'
@@ -177,6 +219,9 @@ def main(args):
             print()
             config.data['struct_mirror']['cif'] = True
             config.data['struct_mirror']['cif_init_ver'] = args.current_remote_version
+
+        if args.plugins is not None:
+            install_plugins(args)
         else:
             logger.info(f'localpdb is up to date and set up in the directory \'{args.db_path}\'.')
         config.commit()
@@ -218,9 +263,9 @@ def main(args):
                 logger.warning('Structure files cannot be synced when local version is outdated. Update localpdb first.')
 
 if __name__ == "__main__":
+    pr_header()
     # Get commandline arguments
     arg = get_params()
-
     # Setup logging
     fn_log, handlers = setup_logging_handlers(tmp_path=arg.tmp_path)
     logging.basicConfig(level=logging.DEBUG, handlers=handlers, datefmt='%Y-%m-%d %H:%M:%S')
