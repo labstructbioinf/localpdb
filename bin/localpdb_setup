@@ -135,6 +135,7 @@ def install_plugins(args):
             ver_string = ' '.join([str(ver) for ver in lpdb_versions])
             logger.info(f'Attempting to install plugin \'{plugin}\' for localpdb versions: {ver_string}')
             for lpdb_version in lpdb_versions:
+                print()
                 lpdb = PDB(args.db_path, version=lpdb_version)
                 pl = Plugin(lpdb)
                 try:
@@ -144,7 +145,7 @@ def install_plugins(args):
                         config.data['plugins'].append(plugin)
                         config.commit()
                 except PluginAlreadyInstalledOutdated:
-                    logger.info(f'Plugin \'{plugin}\' is already installed for the localpdb version \'{lpdb_version}\' OUTDATED')
+                    logger.info(f'Plugin \'{plugin}\' is already installed for the localpdb version \'{lpdb_version}\' but the version is outdated.')
                 except PluginInstallError:
                     logger.info(f'Could not set up plugin \'{plugin}\' for the localpdb version \'{lpdb_version}\'')
         print()

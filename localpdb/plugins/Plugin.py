@@ -5,7 +5,8 @@ from localpdb import PDBVersioneer
 from localpdb.utils.errors import *
 from localpdb.utils.os import create_directory
 from localpdb.utils.config import Config
-
+import logging
+logger = logging.getLogger(__name__)
 
 class Plugin:
 
@@ -60,9 +61,16 @@ class Plugin:
                 self._prep_paths()
                 info = self._setup()
                 self.plv.update_logs(version=self.plugin_version, additional_info=info)
+                if self.plugin_version != self.lpdb.version:
+                    logger.warning(f'Installed plugin \'{self.plugin_name}\' version \'{self.plugin_version}\'' +
+                                   f' does not match localpdb (version \'{self.lpdb.version}\') however plugin permits it.' +
+                                   ' This is typical for plugins handling the data that is not released in a weekly cycle.')
             except:
                 raise PluginInstallError()
         else:
+            logger.warning(f'Installed plugin \'{self.plugin_name}\' version \'{self.plugin_version}\'' +
+                           f' does not match localpdb (version \'{self.lpdb.version}\') however plugin permits it.' +
+                           ' This is typical for plugins handling the data that is not released in a weekly cycle.')
             raise PluginAlreadyInstalledOutdated()
 
     def set_version(self, versions):
