@@ -30,10 +30,7 @@ class ECOD(Plugin):
     def _load(self):
         # Load ecod dataframe
         ecod_fn = 'ecod_domains_{}.txt'.format(self.plugin_version)
-        print(ecod_fn)
         tmp_df = pd.read_csv(str(self.plugin_dir) + '/data/' + ecod_fn, sep='\t', skiprows=4, index_col=1)
-        print(tmp_df.columns)
-        print(tmp_df)
         tmp_df = tmp_df[tmp_df['chain'] != '.']
         tmp_df['pdb_chain'] = tmp_df['pdb'] + '_' + tmp_df['chain']
         del tmp_df['chain']
