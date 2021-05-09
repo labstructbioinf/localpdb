@@ -84,23 +84,6 @@ def is_nonstd_seq(seq):
     return not bool(res)
 
 
-def parse_cluster_data(fn):
-    """
-    Parse PDB protein sequences clustering data available from the RCSB website
-    @param fn: filename with clustering data
-    @return: dictionary with pdb_chain as keys and cluster number (integer)
-    """
-    f = open(fn, 'r')
-    data = [line.rstrip() for line in f.readlines()]
-    f.close()
-    cluster_data = {}
-    for c in range(1, len(data)+1):
-        for entry in data[c-1].split(' '):
-            pdb, chain = entry.split('_')
-            cluster_data['{}_{}'.format(pdb.lower(), chain)] = str(c)
-    return cluster_data
-
-
 def parse_gz_fasta(fn):
     """
     Parser for PDB seqres fasta files. Faster than the Bio.SeqIO due to cleaned input format.
