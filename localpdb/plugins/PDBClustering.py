@@ -1,14 +1,13 @@
 import logging
 import os
-import pandas as pd
-from pathlib import Path
 from .Plugin import Plugin
-from .PluginVersioneer import PluginVersioneer
+from localpdb.utils.config import Config
 from localpdb.utils.os import create_directory
 from localpdb.utils.network import download_url
-from localpdb.utils.config import Config
-from localpdb.utils.errors import *
+
 logger = logging.getLogger(__name__)
+
+# Plugin specific imports
 
 
 class PDBClustering(Plugin):

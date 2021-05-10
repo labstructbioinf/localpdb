@@ -1,17 +1,17 @@
 import logging
 import os
-import pandas as pd
-from pathlib import Path
 from .Plugin import Plugin
-from .PluginVersioneer import PluginVersioneer
+from localpdb.utils.config import Config
 from localpdb.utils.os import create_directory
 from localpdb.utils.network import download_url
-from localpdb.utils.config import Config
-from localpdb.utils.errors import *
+
 logger = logging.getLogger(__name__)
+
+# Plugin specific imports
+import gzip
+import pandas as pd
 from urllib.parse import urlparse
 
-import gzip
 
 class SIFTS(Plugin):
 
