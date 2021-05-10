@@ -1,0 +1,5 @@
+path: 'biounit'
+allow_loading_outdated: False
+available_historical_versions: True
+requires_pdb: True
+requires_cif: False
