@@ -2,3 +2,5 @@ path: 'clustering'
 allow_loading_outdated: False
 available_historical_versions: False
 clust_url: "https://cdn.rcsb.org/resources/sequence/clusters/"
+requires_pdb: False
+requires_cif: False

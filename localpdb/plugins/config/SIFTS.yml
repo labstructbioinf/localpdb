@@ -1,7 +1,8 @@
 path: 'sifts'
 allow_loading_outdated: False
 available_historical_versions: False
-'taxonomy_url': 'ftp://ftp.ebi.ac.uk/pub/databases/msd/sifts/flatfiles/tsv/pdb_chain_taxonomy.tsv.gz'
+requires_pdb: False
+requires_cif: False
 urls:
   'taxonomy': 'ftp://ftp.ebi.ac.uk/pub/databases/msd/sifts/flatfiles/tsv/pdb_chain_taxonomy.tsv.gz'
   'ec': 'ftp://ftp.ebi.ac.uk/pub/databases/msd/sifts/flatfiles/tsv/pdb_chain_enzyme.tsv.gz'
