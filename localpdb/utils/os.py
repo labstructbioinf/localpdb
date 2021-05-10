@@ -122,3 +122,7 @@ def os_cmd(cmd):
     """
     p = subprocess.run(shlex.split(cmd), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     return p.returncode, (p.stdout.decode('utf-8').split('\n'), p.stderr.decode('utf-8').split('\n'))
+
+
+def custom_warning(message, category, filename, lineno, file=None, line=None):
+    print(f'{filename}:{lineno} - {message}')

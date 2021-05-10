@@ -1,11 +1,11 @@
 import warnings
 import logging
 from .PluginVersioneer import PluginVersioneer
-from localpdb.utils.os import create_directory
+from localpdb.utils.os import create_directory, custom_warning
 from localpdb.utils.errors import *
 
 logger = logging.getLogger(__name__)
-
+warnings.showwarning = custom_warning
 
 class Plugin:
 
