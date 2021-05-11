@@ -34,18 +34,19 @@ def get_last_modified(url, ftp=False):
         return time.mktime(last_modified)
 
 
-def download_url(url, dest):
+def download_url(url, dest, ftp=False):
     """
     Method for handling downloads and replicating modification timestamps
     @param url: url to download
     @param dest: destination of the downloaded file
+    @param ftp: True if ftp protocol is used for downloads.
     @return True/False denoting whether download was successful or not
     """
     try:
         urllib.request.urlretrieve(url, dest)
         logger.debug(f'Downloaded url: \'{url}\' to destination: \'{dest}\'')
         # Set remote 'last-modified' date for verification purposes
-        last_modified = get_last_modified(url)
+        last_modified = get_last_modified(url, ftp=ftp)
         set_last_modified(dest, last_modified)
         return True
     except (urllib.error.URLError, urllib.error.HTTPError):

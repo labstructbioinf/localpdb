@@ -95,7 +95,6 @@ def download(args, mode='', clean=True):
     pdbd.remove_lock()
 
 def install_plugins(args):
-    print()
     pdbv, args.current_remote_version = setup_versioneer(args)
     config = Config(args.db_path / 'config.yml')
 
@@ -121,21 +120,51 @@ def install_plugins(args):
         Plugin = getattr(importlib.import_module('localpdb.plugins.{}'.format(plugin)), plugin)
         plugin_dir = args.db_path / Plugin.plugin_dir  # Absolute directory where plugins are stored
         plv = PluginVersioneer(plugin_dir) # Plugin versioneer
+        lpdb_versions = set(pdbv.local_pdb_versions)
+
+        if not Plugin.plugin_config['available_historical_versions'] and len(
+                lpdb_versions - plv.installed_plugin_versions) > 1:
+            logger.warning(f'Plugin \'{plugin}\' does not support the history versioning. Only version corresponding to the current PDB release can be installed.')
+            lpdb_versions = lpdb_versions & {pdbv.current_remote_version}
+
+        # Handle plugins requiring PDB files copy
+        if Plugin.plugin_config['requires_pdb']:
+            if not config.data['struct_mirror']['pdb']:
+                logger.error(f'Plugin \'{plugin}\' requires a local copy of structure files in the PDB format. Run \'localpdb_setup --fetch_pdb\' first.')
+                lpdb_versions = set()
+            else:
+                if not config.data['struct_mirror']['pdb_init_ver'] == config.data['init_ver']:
+                    versions_wo_struct = {ver for ver in pdbv.local_pdb_versions if
+                                          ver < config.data['struct_mirror']['pdb_init_ver']}
+                    if len(versions_wo_struct) > 0:
+                        versions_wo_struct_str = ', '.join(sorted([str(ver) for ver in versions_wo_struct]))
+                        logger.warning(f'Plugin \'{plugin}\' cannot be installed for version(s): {versions_wo_struct_str}, because structures (PDB format) were synced in the version \'{pdbv.first_local_version}\'.')
+                        lpdb_versions = lpdb_versions - versions_wo_struct
+
+        # Handle plugins requiring mmCIF files copy
+        if Plugin.plugin_config['requires_cif']:
+            if not config.data['struct_mirror']['cif']:
+                logger.error(f'Plugin \'{plugin}\' requires a local copy of structure files in the mmCIF format. Run \'localpdb_setup --fetch_cif\' first.')
+                lpdb_versions = set()
+            else:
+                if not config.data['struct_mirror']['cif_init_ver'] == config.data['init_ver']:
+                    versions_wo_struct = {ver for ver in pdbv.local_pdb_versions if
+                                          ver < config.data['struct_mirror']['cif_init_ver']}
+                    if len(versions_wo_struct) > 0:
+                        versions_wo_struct_str = ', '.join(sorted([str(ver) for ver in versions_wo_struct]))
+                        logger.warning(f'Plugin \'{plugin}\' cannot be installed for version(s): {versions_wo_struct_str}, because structures (mmCIF format) were synced in the version \'{pdbv.first_local_version}\'.')
+                        lpdb_versions = lpdb_versions - versions_wo_struct
 
         # Iterate only over the lpdb versions that the plugin wasn't already setup for.
-        lpdb_versions = set(pdbv.local_pdb_versions) - plv.installed_plugin_versions
-        if not Plugin.plugin_config['available_historical_versions']:
-            logger.warning(f'Plugin \'{plugin}\' does not support the history versioning.')
-            logger.warning('Only version corresponding to the current PDB release can be installed.')
-            lpdb_versions = lpdb_versions & {pdbv.current_remote_version}
+        lpdb_versions = lpdb_versions - plv.installed_plugin_versions
+
         if len(lpdb_versions) == 0:
-            logger.info(f'Plugin \'{plugin}\' is already setup for all possible localpdb versions.')
+            logger.info(f'Plugin \'{plugin}\' is set up for all currently possible localpdb versions.')
         else:
             lpdb_versions = sorted(list(lpdb_versions))  # Sort to go from oldest to newest
             ver_string = ' '.join([str(ver) for ver in lpdb_versions])
-            logger.info(f'Attempting to install plugin \'{plugin}\' for localpdb versions: {ver_string}')
+            logger.info(f'Attempting to install plugin \'{plugin}\' for localpdb version(s): {ver_string}')
             for lpdb_version in lpdb_versions:
-                print()
                 lpdb = PDB(args.db_path, version=lpdb_version)
                 pl = Plugin(lpdb)
                 try:

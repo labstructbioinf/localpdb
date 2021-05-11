@@ -1,16 +1,16 @@
 import logging
 import os
-from bs4 import BeautifulSoup
-import urllib.request
-import pandas as pd
-from pathlib import Path
 from .Plugin import Plugin
-from .PluginVersioneer import PluginVersioneer
+from localpdb.utils.config import Config
 from localpdb.utils.os import create_directory
 from localpdb.utils.network import download_url
-from localpdb.utils.config import Config
-from localpdb.utils.errors import *
+
 logger = logging.getLogger(__name__)
+
+# Plugin specific imports
+import pandas as pd
+import urllib.request
+from bs4 import BeautifulSoup
 
 
 class ECOD(Plugin):

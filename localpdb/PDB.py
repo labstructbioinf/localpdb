@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 from pathlib import Path
 from localpdb import PDBVersioneer
-from localpdb.utils.prot import parse_pdb_data, parse_cluster_data
+from localpdb.utils.prot import parse_pdb_data
 from localpdb.utils.config import Config
 
 
