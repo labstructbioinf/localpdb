@@ -49,11 +49,11 @@ class PDBDownloader:
         if file_type in ['entries', 'entries_type', 'bundles', 'resolution', 'seqres']:
             ext = self.config['ftp_locs'][file_type]
             url = f'{proto}://{root}/{ext}'
-        elif file_type == 'updates':
+        elif file_type in ['added', 'modified']:
             ext = self.config['ftp_locs'][file_type]
             if version is None:
                 raise ValueError('PDB version needs to be specified!')
-            url = f'{proto}://{root}/{ext}/{version}/added.pdb'
+            url = f'{proto}://{root}/{ext}/{version}/{file_type}.pdb'
         else:
             raise ValueError('Unknown file type, cannot generate download url!')
         return url
@@ -87,7 +87,7 @@ class PDBDownloader:
         @return: True if downloaded was completed and validated.
         """
         if file_type in ['entries', 'bundles', 'entries_type', 'resolution', 'seqres']:
-            dest = '{}/data/{}/pdb_{}.txt'.format(self.db_path, self.version, file_type) # TODO
+            dest = f'{self.db_path}/data/{self.version}/pdb_{file_type}.txt'
             if file_type == 'seqres':
                 dest = '{}.gz'.format(dest)
             url = self.__gen__url(file_type=file_type)
@@ -96,29 +96,28 @@ class PDBDownloader:
             else:
                 return False
 
-        elif file_type == 'updates':
-            if self.versions is None:
-                url = self.__gen__url(file_type=file_type, version=self.version)
-                dest = '{}/data/{}/added.txt'.format(self.db_path, self.version) # TODO
-                if download_url(url, dest):
-                    return self.__verify_timestamp(dest)
-                else:
-                    return False
-            else:
-                results = []
-                f = open('{}/data/{}/added.txt'.format(self.db_path, self.version), 'w')
+        elif file_type in ['added', 'modified']:
+
+            url = self.__gen__url(file_type=file_type, version=self.version)
+            dest = f'{self.db_path}/data/{self.version}/{file_type}.txt'
+            results = [self.__verify_timestamp(dest) if download_url(url, dest) else False]
+            print(self.version, self.versions)
+            if self.versions is not None:
+                dest_merged = f'{self.db_path}/data/{self.version}/{file_type}_merged.txt'
+                f = open(dest_merged, 'w')
                 for version in self.versions:
-                    tmp_dest = '{}/data/{}/tmp_{}_added.txt'.format(self.db_path, self.version, version) # TODO
+                    tmp_dest = f'{self.db_path}/data/{self.version}/tmp_{version}_{file_type}.txt'
                     url = self.__gen__url(file_type=file_type, version=version)
-                    download_url(url, tmp_dest)
-                    results.append(self.__verify_timestamp(tmp_dest, version=version))
-                    f_tmp = open(tmp_dest)
-                    f.write(f_tmp.read())
-                    f_tmp.close()
-                    os.remove(tmp_dest)
+                    if download_url(url, tmp_dest):
+                        results.append(self.__verify_timestamp(tmp_dest, version=version))
+                        with open(tmp_dest) as f_tmp:
+                            f.write(f_tmp.read())
+                        os.remove(tmp_dest)
+                    else:
+                        results.append(False)
                 last_modified = get_last_modified(url)
-                set_last_modified('{}/data/{}/added.txt'.format(self.db_path, self.version), last_modified) #TODO
-                return all(results)
+                set_last_modified(dest_merged, last_modified) #TODO
+            return all(results)
 
     def rsync_pdb_mirror(self, format='pdb'):
         """
