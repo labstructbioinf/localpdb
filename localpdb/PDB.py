@@ -4,7 +4,7 @@ import numpy as np
 from localpdb import PDBVersioneer
 from localpdb.utils.prot import parse_pdb_data, parse_cluster_data
 from localpdb.utils.config import Config
-
+from localpdb.utils.search_api.search import SearchMotifCommand, SequenceSimilarityCommand, StructureSimilarityCommand
 
 class PDB:
 
@@ -131,3 +131,15 @@ class PDB:
             data = pd.DataFrame.from_dict({key: [value] for key, value in data.items()}, orient='index',
                                           columns=added_col_name)
         self.__chains = pd.merge(self.chains, data, left_index=True, right_index=True, how='left')
+
+    def search_seq_motif(self, query, type_='prosite'):
+        command = SearchMotifCommand(query, type_)
+        return command.execute()
+
+    def search_seq(self, sequence, evalue=1, identity=0.9):
+        command = SequenceSimilarityCommand(sequence, evalue, identity)
+        return command.execute()
+
+    def search_struct(self, pdb_id, assembly_id=1, operator = 'strict_shape_match'):
+        command = StructureSimilarityCommand(pdb_id, assembly_id, operator)
+        return command.execute()

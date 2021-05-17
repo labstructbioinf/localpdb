@@ -1,8 +1,3 @@
-import requests
-import pandas as pd
-import json
-
-
 class ServiceUtils:
     def __init__(self, search_attrs, service):
         self.search_attrs = search_attrs
@@ -22,53 +17,31 @@ class SeqmotifService:
         self.search_attrs = ['value', 'pattern_type', 'target']
         self.service_util = ServiceUtils(self.search_attrs, self)
 
-    def parse_response(self, response):
-        if response.status_code == 200:
-            return None
-        return pd.DataFrame(response.json()['result_set'])
+
+class SequenceService:
+    def __init__(self, value, evalue_cutoff=1, identity_cutoff=0.9, target="pdb_protein_sequence"):
+        self.value = value
+        self.evalue_cutoff = evalue_cutoff
+        self.identity_cutoff = identity_cutoff
+        self.target = target
+        self.name = 'sequence'
+        self.search_attrs = ['value', 'identity_cutoff', 'evalue_cutoff', 'target']
+        self.service_util = ServiceUtils(self.search_attrs, self)
 
 
-class TerminalQuery:
-    def __init__(self, service, return_type):
-        self.service = service
-        self.return_type = return_type
-        self.__type = "terminal"
-
-    def build(self):
-        query_dict = {"type": self.__type, "service": self.service.name}
-        query_dict = {**query_dict, **self.service.service_util.to_dict()}
-        return {"query": query_dict, "return_type": self.return_type}
+class StructureService:
+    def __init__(self, entry_id, assembly_id=1, operator='strict_shape_match'):
+        self.value = {'entry_id': entry_id, 'assembly_id': str(assembly_id)}
+        self.operator = operator
+        self.name = 'structure'
+        self.search_attrs = ['value', 'operator']
+        self.service_util = ServiceUtils(self.search_attrs, self)
 
 
-class SyncSearch:
-    def __init__(self, url, queries):
-        self.url = url
-        self.queries = queries
-
-    def search(self):
-        responses = []
-        with requests.Session() as session:
-            for query in self.queries:
-                response = session.get(self.url, json=query.build())
-                responses.append(query.service.parse_response(response))
-        return responses
-
-
-class Searcher:
-    def __init__(self, url, queries):
-        self.queries = queries
-        self.search_strategy = None
-        self.set_strategy(url, queries)
-
-    def set_strategy(self, url, queries):
-        self.search_strategy = SyncSearch(url, queries)
-
-    def perform_search(self):
-        return self.search_strategy.search()
-
-
-w = Searcher("https://search.rcsb.org/rcsbsearch/v1/query?",
-             [TerminalQuery(
-                 SeqmotifService("CA", 'prosite', "pdb_protein_sequence"),
-                 "polymer_entity")])
-print(w.perform_search())
+class StructMotifService:
+    def __init__(self, entry_id, residue_ids, score_cutoff=0, exchanges=None):
+        self.value = {'data': entry_id, 'residue_ids': residue_ids, 'score_cutoff': str(score_cutoff),
+                      'exchanges': exchanges or {}}
+        self.name = 'strucmotif'
+        self.search_attrs = ['value']
+        self.service_util = ServiceUtils(self.search_attrs, self)
