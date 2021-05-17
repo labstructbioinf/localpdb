@@ -26,3 +26,4 @@ ftp_locs:
   seqres: "derived_data/pdb_seqres.txt.gz"
   added: "data/status/"
   modified: "data/status/"
+  obsolete: "data/status"

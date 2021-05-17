@@ -74,7 +74,7 @@ def download(args, mode='', clean=True):
     pdbd.set_lock()
     if mode == 'files':
         with clean_exit(callback=pdbd.clean_unsuccessful):
-            file_types = ['entries', 'entries_type', 'bundles', 'resolution', 'seqres', 'added', 'modified']
+            file_types = ['entries', 'entries_type', 'bundles', 'resolution', 'seqres', 'added', 'modified', 'obsolete']
             for file_type in tqdm(file_types, unit='item'):
                 result = pdbd.download(file_type=file_type)
                 if not result:
@@ -82,6 +82,7 @@ def download(args, mode='', clean=True):
                     sys.exit(1)
     elif mode == 'rsync_pdb':
         with clean_exit(callback=pdbd.clean_unsuccessful):
+            print()
             logger.info('Syncing protein structures in the \'pdb\' format...')
             result = pdbd.rsync_pdb_mirror(format='pdb')
             if result != 0:
@@ -89,6 +90,7 @@ def download(args, mode='', clean=True):
                 sys.exit(1)
     elif mode == 'rsync_cif':
         with clean_exit(callback=pdbd.clean_unsuccessful):
+            print()
             logger.info('Syncing protein structures in the \'mmCIF\' format...')
             result = pdbd.rsync_pdb_mirror(format='mmCIF')
             if result != 0:
@@ -125,7 +127,7 @@ def install_plugins(args):
         lpdb_versions = set(pdbv.local_pdb_versions)
 
         if not Plugin.plugin_config['available_historical_versions'] and len(
-                lpdb_versions - plv.installed_plugin_versions) > 1:
+                lpdb_versions - plv.installed_plugin_versions) > 0:
             logger.warning(f'Plugin \'{plugin}\' does not support the history versioning. Only version corresponding to the current PDB release can be installed.')
             lpdb_versions = lpdb_versions & {pdbv.current_remote_version}
 
@@ -298,6 +300,7 @@ def main(args):
             if config['struct_mirror']['cif']:
                 download(args, mode='rsync_cif', clean=True)
             pdbv.update_logs()
+            print()
             logger.info(
                 f'Successfully updated localpdb in \'{args.db_path}\' to version \'{pdbv.current_remote_version}\'!')
         else:

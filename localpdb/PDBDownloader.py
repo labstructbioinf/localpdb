@@ -3,9 +3,13 @@ import os
 import datetime
 import sys
 import shutil
+import json
+import requests
 from pathlib import Path
-from localpdb.utils.os import set_last_modified, os_cmd
+from .PDBVersioneer import PDBVersioneer
+from localpdb.utils.os import set_last_modified, os_cmd, parse_simple
 from localpdb.utils.network import get_last_modified, download_url
+from localpdb.utils.config import Config
 
 logger = logging.getLogger(__name__)
 
@@ -26,6 +30,7 @@ class PDBDownloader:
         self.db_path = Path(db_path)
         self.remove_unsuccessful = remove_unsuccessful
         self.versions = None
+        self.pdbv = PDBVersioneer(db_path, config=config)
         if type(version) == list:
             self.version = version[-1]
             self.versions = version
@@ -37,6 +42,11 @@ class PDBDownloader:
             logger.error('You can manually override this error by running:')
             logger.error(f'rm {self.db_path}/.lock')
             sys.exit(1)
+        try:
+            shutil.copy(f'{self.db_path}/data/versioning.log', f'{self.db_path}/data/.versioning.log.bk')
+        except FileNotFoundError:
+            pass
+        self.cp_files = []
 
     def __gen__url(self, file_type='', version=None):
         """
@@ -49,7 +59,7 @@ class PDBDownloader:
         if file_type in ['entries', 'entries_type', 'bundles', 'resolution', 'seqres']:
             ext = self.config['ftp_locs'][file_type]
             url = f'{proto}://{root}/{ext}'
-        elif file_type in ['added', 'modified']:
+        elif file_type in ['added', 'modified', 'obsolete']:
             ext = self.config['ftp_locs'][file_type]
             if version is None:
                 raise ValueError('PDB version needs to be specified!')
@@ -96,28 +106,78 @@ class PDBDownloader:
             else:
                 return False
 
-        elif file_type in ['added', 'modified']:
-
+        elif file_type in ['added', 'modified', 'obsolete']:
             url = self.__gen__url(file_type=file_type, version=self.version)
             dest = f'{self.db_path}/data/{self.version}/{file_type}.txt'
             results = [self.__verify_timestamp(dest) if download_url(url, dest) else False]
-            print(self.version, self.versions)
+            if file_type == 'modified':
+                modified_dict, status = self.fetch_major_revisions()
+                results.append(status)
             if self.versions is not None:
                 dest_merged = f'{self.db_path}/data/{self.version}/{file_type}_merged.txt'
-                f = open(dest_merged, 'w')
-                for version in self.versions:
-                    tmp_dest = f'{self.db_path}/data/{self.version}/tmp_{version}_{file_type}.txt'
-                    url = self.__gen__url(file_type=file_type, version=version)
-                    if download_url(url, tmp_dest):
-                        results.append(self.__verify_timestamp(tmp_dest, version=version))
-                        with open(tmp_dest) as f_tmp:
-                            f.write(f_tmp.read())
-                        os.remove(tmp_dest)
-                    else:
-                        results.append(False)
+                with open(dest_merged, 'w') as f:
+                    for version in self.versions:
+                        tmp_dest = f'{self.db_path}/data/{self.version}/tmp_{version}_{file_type}.txt'
+                        url = self.__gen__url(file_type=file_type, version=version)
+                        if download_url(url, tmp_dest):
+                            results.append(self.__verify_timestamp(tmp_dest, version=version))
+                            with open(tmp_dest) as f_tmp:
+                                f.write(f_tmp.read())
+                            os.remove(tmp_dest)
+                        else:
+                            results.append(False)
                 last_modified = get_last_modified(url)
-                set_last_modified(dest_merged, last_modified) #TODO
+                set_last_modified(dest_merged, last_modified)
+                if file_type == 'modified':
+                    modified_dict, status = self.fetch_major_revisions(merged=True)
+                    results.append(status)
+            if all(results) and file_type == 'modified':
+                results.append(self.update_versioning_log(modified_dict))
             return all(results)
+
+    def fetch_major_revisions(self, merged=False):
+        """
+        Check with RCSB graphql API for major revisions (i.e. the coordinate changes) for modified entries downloaded
+        by the self.download() function.
+        @param merged: Denotes whether modified entries are a weekly RCSB update or merged updates over multiple versions.
+        @return: True if check succeeded, False otherwise
+        """
+        in_fn = f'{self.db_path}/data/{self.version}/modified_merged.txt' \
+            if merged else f'{self.db_path}/data/{self.version}/modified.txt'
+        out_fn = f'{self.db_path}/data/{self.version}/modified_major_merged.txt' \
+            if merged else f'{self.db_path}/data/{self.version}/modified_major.txt'
+        with open(in_fn) as f:
+            entries = {line.rstrip() for line in f}
+        try:
+            modified_dict = query_major_revisions(entries, self.versions[0], self.versions[-1]) \
+                if merged else query_major_revisions(entries, self.version, self.version)
+        except requests.exceptions.RequestException:
+            return {}, False
+        with open(out_fn, 'w') as f:
+            for id_ in modified_dict.keys():
+                f.write(f'{id_}\n')
+        return modified_dict, True
+
+    def update_versioning_log(self, modified_dict):
+        """
+        Updates the versioning.log file that keeps the major modifications of PDB entries.
+        @param modified_dict: Revision data (dictionary from the self.fetch_major_revisions)
+        @return: True if update succeeded, False otherwise
+        """
+        logs_fn = f'{self.db_path}/data/versioning.log'
+        try:
+            with open(logs_fn) as f:
+                ver_history = json.loads(f.read())
+            for pdb_id, rev_ver in modified_dict.items():
+                if pdb_id in ver_history.keys():
+                    ver_history[pdb_id].append(rev_ver)
+                else:
+                    ver_history[pdb_id] = [rev_ver]
+        except FileNotFoundError:
+            ver_history = {}
+        with open(logs_fn, 'w') as f:
+            f.write(json.dumps(ver_history, indent=4))
+        return True
 
     def rsync_pdb_mirror(self, format='pdb'):
         """
@@ -141,6 +201,30 @@ class PDBDownloader:
         n_structs = len([line for line in stdout])
         if result != 0:
             return 1
+
+        fn_modified = f'{self.db_path}/data/{self.version}/modified_major.txt' if self.versions is None \
+            else f'{self.db_path}/data/{self.version}/modified_major_merged.txt'
+        modified = parse_simple(fn_modified)
+        fn_obsolete = f'{self.db_path}/data/{self.version}/obsolete.txt' if self.versions is None \
+            else f'{self.db_path}/data/{self.version}/obsolete_merged.txt'
+        obsolete = parse_simple(fn_obsolete)
+        bundles = parse_simple(f'{self.db_path}/data/{self.version}/pdb_bundles.txt')
+
+        ids = list(modified-bundles-obsolete) if format == 'pdb' else list(modified-obsolete)
+        _, map_dict = self.pdbv.adjust_pdb_ids({id_: id_ for id_ in ids}, self.version)
+        logger.info(f'{len(ids)} entries had major coordinate revision without PDB id changes. '
+                    f'Accounting for this during the mirror update.')
+        for pdb_id in map_dict.keys():
+            if format == 'pdb':
+                org_fn = f'{self.db_path}/mirror/pdb/{pdb_id[1:3]}/pdb{pdb_id}.ent.gz'
+                dest_fn = f'{self.db_path}/mirror/pdb/{pdb_id[1:3]}/pdb{map_dict[pdb_id]}.ent.gz'
+                self.cp_files.append((org_fn, dest_fn))
+            else:
+                org_fn = f'{self.db_path}/mirror/mmCIF/{pdb_id[1:3]}/{pdb_id}.cif.gz'
+                dest_fn = f'{self.db_path}/mirror/mmCIF/{pdb_id[1:3]}/{map_dict[pdb_id]}.cif.gz'
+                self.cp_files.append((org_fn, dest_fn))
+            logger.debug(f'Moved file\'{org_fn}\' to \'{dest_fn}\'.')
+            shutil.copy2(org_fn, dest_fn)
 
         # Now run main rsync process with the tqdm progress bar
         tqdm_str = f'tqdm --unit_scale --unit=item --dynamic_ncols=True --total={n_structs} >> /dev/null '
@@ -174,9 +258,42 @@ class PDBDownloader:
         This function is run when some part of the download session has failed.
         """
         if self.remove_unsuccessful:
+            rm_strings = [f'{self.db_path}/data/{self.version}', f'{self.db_path}/clustering{self.version}']
             try:
-                shutil.rmtree(self.db_path / 'data' / str(self.version))
-                shutil.rmtree(self.db_path / 'clustering' / str(self.version))
+                shutil.move(f'{self.db_path}/data/.versioning.log.bk', f'{self.db_path}/data/versioning.log')
             except FileNotFoundError:
                 pass
+            for s in rm_strings:
+                try:
+                    shutil.rmtree(s)
+                except FileNotFoundError:
+                    pass
+            for org_fn, dest_fn in self.cp_files:
+                try:
+                    shutil.copy2(dest_fn, org_fn)
+                    logger.debug(f'Moved file\'{dest_fn}\' to \'{org_fn}\'.')
+                    os.remove(dest_fn)
+                except FileNotFoundError:
+                    pass
+
         self.remove_lock()
+
+def convert_iso_date(date):
+    d = datetime.datetime.strptime(date,"%Y-%m-%dT%H:%M:%SZ")
+    timestamp = d - datetime.timedelta(days=5)
+    return int(f'{timestamp.year}{str(timestamp.month).zfill(2)}{str(timestamp.day).zfill(2)}')
+
+def query_major_revisions(entries, min_version=None, max_version=None):
+    query = """{entries(entry_ids: %s){rcsb_id, pdbx_audit_revision_history {major_revision, minor_revision, revision_date}}}""" % json.dumps(
+        list(entries))
+    r = requests.post("https://data.rcsb.org/graphql", json={"query": query}).json()
+
+    data = {entry['rcsb_id'].lower(): [(convert_iso_date(rev_data['revision_date']), rev_data['major_revision'],
+                                        rev_data['minor_revision'])
+                                       for i, rev_data in enumerate(entry['pdbx_audit_revision_history'])]
+            for entry in r['data']['entries']}
+    data_filt = {key: [history[i][0] for i in range(1, len(history))
+                       if max_version >= history[i][0] >= min_version
+                       and history[i][1] != history[i - 1][1]] for key, history in data.items()}
+    revisions = {key: value[-1] for key, value in data_filt.items() if len(value) > 0}
+    return revisions
