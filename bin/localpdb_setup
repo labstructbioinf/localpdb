@@ -16,11 +16,6 @@ from localpdb.utils.os import create_directory, setup_logging_handlers, clean_ex
 from localpdb.utils.config import load_remote_source, Config
 from localpdb.utils.errors import *
 
-def pr_header():
-    print('''
-┬  ┌─┐┌─┐┌─┐┬  ┌─┐┌┬┐┌┐ 
-│  │ ││  ├─┤│  ├─┘ ││├┴┐
-┴─┘└─┘└─┘┴ ┴┴─┘┴  ─┴┘└─┘''')
 
 def get_params():
     # Parse arguments
@@ -205,7 +200,6 @@ def main(args):
     if os.path.exists(args.db_path) and os.path.isdir(args.db_path) and not pdbv.check_init():
         if len(os.listdir(args.db_path)):
             logger.warning(f'Specified directory \'{args.db_path}\' exists and is not empty!')
-            print()
     else:
         create_directory(args.db_path)
 
@@ -232,16 +226,14 @@ def main(args):
 
         # RSYNC PDB structures
         if any((args.fetch_pdb, args.fetch_cif)):
-            logger.info(f'Downloading protein structures...')
-            logger.info('(This can take around 2-4 hours depending on the selected mirror.'
-                        ' If the run will be stopped it can be restarted later.)')
             print()
+            logger.info(f'Downloading protein structures...')
+            logger.info('This can take around 1 hour depending on your internet connection.'
+                        ' If the run will be stopped it can be restarted later.')
         if args.fetch_pdb:
             download(args, mode='rsync_pdb', clean=False)
-            print()
         if args.fetch_cif:
             download(args, mode='rsync_cif', clean=False)
-            print()
 
         # Finally - setup config, log and report success
         pdbv.update_logs(first=True)
@@ -316,7 +308,6 @@ def main(args):
     shutil.move(fn_log, log_path)
 
 if __name__ == "__main__":
-    pr_header()
     # Get commandline arguments
     arg = get_params()
     # Setup logging
