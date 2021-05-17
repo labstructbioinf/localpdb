@@ -31,21 +31,21 @@ class PDBVersioneer:
                 local_versions_json = [int(key) for key, value in data.items() if value[0] == 'OK']
         except FileNotFoundError:
             local_versions_json = []
+        self.local_pdb_versions = sorted(local_versions_json)
 
         # Raise warning if there is inconsistency between present directories and log
         # This will happen if setup / update run will be terminated abruptly and cleaning method will not manage to
         # delete the temporary files for the failed run.
-        if local_versions_dirs != local_versions_json:
-            warn_str = f'''Detected inconsistency between the localpdb versions according to the directory listings and the setup/update log file.
-This can be a result of a failed setup / update run or using the localpdb during the setup or update.
-If this warning persists inspect the directories in \'{self.db_path}/data\' and \'{self.db_path}/data/status.log\' to find inconsistencies.'''
+        if local_versions_dirs != local_versions_json and len(self.local_pdb_versions) > 0:
+            warn_str = f'Detected inconsistency between the localpdb versions according to the directory listings and the setup/update log file. ' \
+                       f'This can be a result of a failed setup / update run or using the localpdb during the setup or update. ' \
+                       f'If this warning persists inspect the directories in \'{self.db_path}/data\' ' \
+                       f'and \'{self.db_path}/data/status.log\' to find inconsistencies.'
             warnings.warn(warn_str)
             logger.debug(warn_str)
 
-        self.local_pdb_versions = sorted(local_versions_json)
-
     def update_logs(self, first=False):
-        logs_fn = '{}/data/status.log'.format(self.db_path) # TODO
+        logs_fn = f'{self.db_path}/data/status.log'
         status = ['OK', datetime.datetime.now().strftime("%Y-%m-%d %H:%M")]
         if first:
             logs = {self.current_remote_version: status}
@@ -55,6 +55,24 @@ If this warning persists inspect the directories in \'{self.db_path}/data\' and 
             logs[self.current_remote_version] = status
         with open(logs_fn, 'w') as f:
             f.write(json.dumps(logs, indent=4))
+
+    def adjust_pdb_ids(self, id_dict, version):
+        """
+        @param entries: Entries - dict {id: id} format
+        @param version: localpdb version to check
+        @returns Modified entries dict {id: adjusted_id)
+        """
+        curr_ids = set(id_dict.keys())
+        log_fn = f'{self.db_path}/data/versioning.log'
+        change_dict = {}
+        with open(log_fn) as f:
+            history = json.loads(f.read())
+        for key, h in history.items():
+            vers = [ver for ver in h if ver <= version]
+            if len(vers) > 0 and key in curr_ids:
+                id_dict[key] = f'{key}_b{max(vers)}'
+                change_dict[key] = f'{key}_b{max(vers)}'
+        return id_dict, change_dict
 
     def init(self):
         """

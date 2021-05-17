@@ -166,3 +166,13 @@ def multiprocess(func, cmd_dict, np=None, return_type='', print_progress=True, o
         return failed_jobs
     elif return_type == 'all':
         return results
+
+def parse_simple(fn):
+    """
+    Parses simple txt files containing single PDB id in each line.
+    @param fn: Name of the file to parse
+    @returns: set with parse PDB ids
+    """
+    with open(fn) as f:
+        entries = {line.rstrip() for line in f}
+    return entries

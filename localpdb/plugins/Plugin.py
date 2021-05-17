@@ -1,5 +1,7 @@
 import warnings
 import logging
+import shutil
+import os
 from .PluginVersioneer import PluginVersioneer
 from localpdb.utils.os import create_directory, custom_warning
 from localpdb.utils.errors import *
@@ -24,13 +26,18 @@ class Plugin:
         self.plugin_version = None
         self.set_version(self.plv.installed_plugin_versions)
         self.history = self._get_historical_versions()
+        self.cp_files = []
+        if self.plugin_config['requires_pdb'] or self.plugin_config['requires_cif']:
+            self.id_dict, self.map_dict = self.lpdb._pdbv.adjust_pdb_ids({id_: id_ for id_ in self.lpdb.entries.index},
+                                                                          self.plugin_version)
 
     def load(self):
         # Generic loader for plugins. Calls individual plugin _load method
         if self.plugin_version is not None:
             if self.plugin_version != self.lpdb.version:
                 warnings.warn(
-                    f'Loaded version of the plugin \'{self.plugin_name}\' ({self.plugin_version}) does not match the localpdb version ({self.lpdb.version}). Data may not be fully accurate.')
+                    f'Loaded version of the plugin \'{self.plugin_name}\' ({self.plugin_version}) does not match the localpdb version ({self.lpdb.version}). '
+                    f'Data may not be fully accurate.')
             self._load()
             self.lpdb._loaded_plugins.append(self.plugin_name) # Add to loaded plugins
         else:
@@ -43,7 +50,22 @@ class Plugin:
                     f'Plugin \'{self.plugin_name}\' is not set up for localpdb version \'{self.lpdb.version}\'!')
 
     def update(self):
-        self.lpdb.select_updates()
+        if self.plugin_config['requires_pdb'] or self.plugin_config['requires_cif']:
+            if self.plugin_config['requires_pdb']:
+                self.lpdb.entries = self.lpdb.entries[self.lpdb.entries['pdb_fn'].notnull()]
+                self.lpdb.entries = self.lpdb.entries[self.lpdb.entries['pdb_fn'] != 'not_compatible']
+            if self.plugin_config['requires_cif']:
+                self.lpdb.entries = self.lpdb.entries[self.lpdb.entries['mmCIF_fn'].notnull()]
+            try:
+                self.lpdb.select_updates(mode='am+')
+            except RuntimeError:
+                self.lpdb.select_updates(mode='am')
+            for id_, updated_id in self.map_dict.items():
+                org_fn = self.fn_schema.format(pdb_id=id_, plugin_dir=self.plugin_dir)
+                dest_fn = self.fn_schema.format(pdb_id=updated_id, plugin_dir=self.plugin_dir)
+                shutil.copy2(org_fn, dest_fn)
+                self.cp_files.append((org_fn, dest_fn))
+                logger.debug(f'Moved file\'{org_fn}\' to \'{dest_fn}\'.')
         return self.setup()
 
     def setup(self):
@@ -65,6 +87,7 @@ class Plugin:
                                    f' does not match localpdb (version \'{self.lpdb.version}\') however plugin permits it.' +
                                    ' This is typical for plugins handling the data that is not released in a weekly cycle.')
             except:
+                self._cleanup()
                 raise PluginInstallError()
         else:
             logger.warning(f'Installed plugin \'{self.plugin_name}\' version \'{self.plugin_version}\'' +
@@ -87,6 +110,16 @@ class Plugin:
 
     def _reset(self):
         self.load()
+
+    def _cleanup(self):
+        for org_fn, dest_fn in self.cp_files:
+            try:
+                print(org_fn, dest_fn)
+                shutil.copy2(dest_fn, org_fn)
+                logger.debug(f'Moved file\'{dest_fn}\' to \'{org_fn}\'.')
+                os.remove(dest_fn)
+            except FileNotFoundError:
+                pass
 
     @staticmethod
     def find_closest_historical_version(version, versions):
