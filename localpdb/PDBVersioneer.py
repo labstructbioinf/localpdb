@@ -6,7 +6,10 @@ import datetime
 import warnings
 from pathlib import Path
 from urllib.parse import urlparse
+from localpdb.utils.os import create_directory, custom_warning
 logger = logging.getLogger(__name__)
+
+warnings.showwarning = custom_warning
 
 
 class PDBVersioneer:

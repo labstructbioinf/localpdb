@@ -6,6 +6,7 @@ import contextlib
 import signal
 import shlex
 import subprocess
+import concurrent.futures
 from datetime import datetime
 from pathlib import Path
 
@@ -122,3 +123,46 @@ def os_cmd(cmd):
     """
     p = subprocess.run(shlex.split(cmd), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     return p.returncode, (p.stdout.decode('utf-8').split('\n'), p.stderr.decode('utf-8').split('\n'))
+
+
+def custom_warning(message, category, filename, lineno, file=None, line=None):
+    print(f'{filename}:{lineno} - {message}')
+
+
+def multiprocess(func, cmd_dict, np=None, return_type='', print_progress=True, ok_status=0, process_executor=False):
+    """
+    :param func: function to parallelize
+    :param cmd_dict: dictionary with job id's (keys) and 'func' inputs as values
+    :param np: number of processes
+    :param return_type: 'failed' to return only failed job ids (according to ok_status' or 'all' for all results
+    :param print_progress: print simple progress bar
+    :param ok_status: value returned by 'func' indicating everything went ok
+    :return: set of failed job ids or dict with ids and 'func' outputs
+    """
+    failed_jobs = set()
+    job_count = len(cmd_dict)
+    count = 0
+    results = {}
+    if process_executor:
+        executor_ = concurrent.futures.ProcessPoolExecutor(max_workers=np)
+    else:
+        executor_ = concurrent.futures.ThreadPoolExecutor(max_workers=np)
+    with executor_ as executor:
+        futures = {executor.submit(func, cmd): ident for ident, cmd in cmd_dict.items()}
+        for future in concurrent.futures.as_completed(futures):
+            ident = futures[future]
+            if return_type == 'failed':
+                if future.result()[0] != ok_status:
+                    failed_jobs.add(ident)
+            elif return_type == 'all':
+                results[ident] = future.result()
+            count += 1
+            if print_progress:
+                sys.stdout.write("\r%s/%s" % (count, job_count))
+                sys.stdout.flush()
+    if print_progress:
+        print("")
+    if return_type == 'failed':
+        return failed_jobs
+    elif return_type == 'all':
+        return results
