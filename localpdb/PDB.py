@@ -1,18 +1,21 @@
 import os
-import pandas as pd
+
 import numpy as np
+import pandas as pd
+
 from localpdb import PDBVersioneer
-from localpdb.utils.prot import parse_pdb_data, parse_cluster_data
 from localpdb.utils.config import Config
+from localpdb.utils.prot import parse_pdb_data
 from localpdb.utils.search_api.search import SearchMotifCommand, SequenceSimilarityCommand, StructureSimilarityCommand
+
 
 class PDB:
 
     def __init__(self, db_path='', version='latest', auto_filter=True):
 
-        self.db_path = os.path.realpath(db_path) # Absolute db path
-        self.auto_filter = auto_filter # Flag to set auto-filtering feature
-        self.__pdbv = PDBVersioneer(db_path=db_path) # Versioning system
+        self.db_path = os.path.realpath(db_path)  # Absolute db path
+        self.auto_filter = auto_filter  # Flag to set auto-filtering feature
+        self.__pdbv = PDBVersioneer(db_path=db_path)  # Versioning system
 
         # Check with PDBVersioneer whether any versions are installed in the db_path
         if len(self.__pdbv.local_pdb_versions) == 0 and self.__pdbv.current_local_version is None:
@@ -133,13 +136,33 @@ class PDB:
         self.__chains = pd.merge(self.chains, data, left_index=True, right_index=True, how='left')
 
     def search_seq_motif(self, query, type_='prosite'):
+        """
+        Get dataframe with pdb ids having sequence matching given sequence motif
+        :param query: (str) motif to find in pdb sequences, according to given type_ (i.e prosite)
+        :param type_: (str) name of type of query
+        :return: pd.DataFrame
+        """
         command = SearchMotifCommand(query, type_)
         return command.execute()
 
     def search_seq(self, sequence, evalue=1, identity=0.9):
+        """
+        Get dataframe with pdb ids have sequence similar to given sequence
+        :param sequence: (str) sequence used to fin similar ones
+        :param evalue: (float) minimum e value
+        :param identity: (float) minimum identity to input sequence
+        :return: pd.DataFrame
+        """
         command = SequenceSimilarityCommand(sequence, evalue, identity)
         return command.execute()
 
-    def search_struct(self, pdb_id, assembly_id=1, operator = 'strict_shape_match'):
+    def search_struct(self, pdb_id, assembly_id=1, operator='strict_shape_match'):
+        """
+        Get dataframe with pdb ids having structure similar to structure of given pdb_id
+        :param pdb_id: (str) pdb id (i.e 2mnr)
+        :param assembly_id: (int) assembly number
+        :param operator: (str) match mode type either relaxed_shape_match or strict_shape_match
+        :return: pd.DataFrame
+        """
         command = StructureSimilarityCommand(pdb_id, assembly_id, operator)
         return command.execute()

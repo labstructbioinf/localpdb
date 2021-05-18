@@ -3,8 +3,8 @@ import urllib
 from abc import abstractmethod
 
 import requests
-from queries import TerminalQuery
-from services import SeqmotifService, SequenceService, StructureService, StructMotifService
+from .queries import TerminalQuery
+from .services import SeqmotifService, SequenceService, StructureService, StructMotifService
 
 
 class SearchStrategy:
