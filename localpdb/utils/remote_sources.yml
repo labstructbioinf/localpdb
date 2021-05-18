@@ -31,3 +31,5 @@ ftp_locs:
 api:
   url: "https://search.rcsb.org/rcsbsearch"
   version: "v1"
+  query: "query?"
+  return_type: "entry"

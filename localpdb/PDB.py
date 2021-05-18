@@ -1,22 +1,24 @@
-import os
 import importlib
-import json
-import pandas as pd
-import numpy as np
+import os
 from pathlib import Path
+
+import numpy as np
+import pandas as pd
+
 from localpdb import PDBVersioneer
-from localpdb.utils.prot import parse_pdb_data
-from localpdb.utils.os import parse_simple
 from localpdb.utils.config import Config
-from localpdb.utils.search_api.search import SearchMotifCommand, SequenceSimilarityCommand, StructureSimilarityCommand
+from localpdb.utils.os import parse_simple
+from localpdb.utils.prot import parse_pdb_data
+from localpdb.utils.rest_api import CommandFactory
+
 
 class PDB:
 
     def __init__(self, db_path='', version='latest', auto_filter=True):
 
-        self.db_path = Path(os.path.realpath(db_path)) # Absolute db path
-        self.auto_filter = auto_filter # Flag to set auto-filtering feature
-        self._pdbv = PDBVersioneer(db_path=db_path) # Versioning system
+        self.db_path = Path(os.path.realpath(db_path))  # Absolute db path
+        self.auto_filter = auto_filter  # Flag to set auto-filtering feature
+        self._pdbv = PDBVersioneer(db_path=db_path)  # Versioning system
         self._loaded_plugins = []  # List of loaded plugins
         self._loaded_plugins_handles = []  # Handles to loaded plugins for reset function
         self.__registered_attrs = []  # Attributes handled by plugins
@@ -58,7 +60,7 @@ class PDB:
         self.__entries, self.__chains = parse_pdb_data(pdb_entries_fn, pdb_entries_type_fn, pdb_res_fn, pdb_seqres_fn)
 
         # Basic check for corrupt files
-        if self.__entries.shape[1] not in [3, 4]: # Backwards compatibility with ver 0.1
+        if self.__entries.shape[1] not in [3, 4]:  # Backwards compatibility with ver 0.1
             raise ValueError(
                 f'PDB raw files for version \'{self.version}\' are corrupt! Try rerunning setup or update scripts!')
 
@@ -76,6 +78,7 @@ class PDB:
         # Workaround to run setters only once
         self.chains = self.__chains
         self.entries == self.__entries
+        self.__rest_api_commands = CommandFactory()
 
     def __setattr__(self, item, value):
         """
@@ -83,7 +86,7 @@ class PDB:
         __registered_attrs list is changed it triggers the update on the registered DataFrames from other plugins and
         lpdb.structures and lpdb.chains. Lock mechanism (self.__lock flag) is implemented to avoid recursive updates.
         """
-        try: # This try is necessary because at init there are no set attributes
+        try:  # This try is necessary because at init there are no set attributes
             if self.auto_filter:
                 # Item must be in __registered_attrs and lpdb must have this attribute prior to auto-filtering
                 if item in self.__registered_attrs and hasattr(self, item):
@@ -112,15 +115,16 @@ class PDB:
                             except KeyError:
                                 pass  # No such column in df attribute - do nothing
                             try:
-                                self.__dict__[_attr] = self.__dict__[_attr][self.__dict__[_attr]['pdb'].isin(valid_pdb_ids)]
+                                self.__dict__[_attr] = self.__dict__[_attr][
+                                    self.__dict__[_attr]['pdb'].isin(valid_pdb_ids)]
                             except KeyError:
                                 pass  # No such column in df attribute - do nothing
-                    # If there's no lock update also lpdb.structures and lpdb.chains
+                        # If there's no lock update also lpdb.structures and lpdb.chains
                         self.__entries = self.__entries[self.__entries.index.isin(valid_pdb_ids)]
                         self.__chains = self.__chains[self.__chains.index.isin(valid_pdb_chain_ids)]
         except AttributeError:
             pass
-        super().__setattr__(item, value) # Now finally set the attribute
+        super().__setattr__(item, value)  # Now finally set the attribute
 
     def _register_attr(self, attr):
         """
@@ -141,7 +145,7 @@ class PDB:
         else:
             try:
                 Plugin = getattr(importlib.import_module('localpdb.plugins.{}'.format(plugin)), plugin)
-                pl = Plugin(self) #**plugin_kwargs
+                pl = Plugin(self)  # **plugin_kwargs
                 pl.load()
                 self._loaded_plugins_handles.append(pl)
             except ModuleNotFoundError:
@@ -151,7 +155,8 @@ class PDB:
         id_dict, a = self._pdbv.adjust_pdb_ids(id_dict, version=self.version)
         if format == 'pdb':
             fns = {pdb_id: f'{self.db_path}/mirror/pdb/{pdb_id[1:3]}/pdb{id_dict[pdb_id]}.ent.gz' if os.path.isfile(
-                f'{self.db_path}/mirror/pdb/{pdb_id[1:3]}/pdb{id_dict[pdb_id]}.ent.gz') else 'not_compatible' if pdb_id in self.bundles else np.nan
+                f'{self.db_path}/mirror/pdb/{pdb_id[1:3]}/pdb{id_dict[
+                    pdb_id]}.ent.gz') else 'not_compatible' if pdb_id in self.bundles else np.nan
                    for pdb_id in id_dict.keys()}
             self._add_col_structures(fns, ['pdb_fn'])
         if format == 'mmCIF':
@@ -178,7 +183,8 @@ class PDB:
                     if os.path.isfile(f'{self.db_path}/data/{self.version}/{map[m]}_merged.txt'):
                         fn = f'{self.db_path}/data/{self.version}/{map[m]}_merged.txt'
                     else:
-                        raise RuntimeError(f'\'+\' is not compatible with \'{map[m]}\' mode and localpdb version \'{self.version}\'')
+                        raise RuntimeError(
+                            f'\'+\' is not compatible with \'{map[m]}\' mode and localpdb version \'{self.version}\'')
                 with open(fn) as f:
                     tmp_ids = {line.rstrip() for line in f}
                     ids = ids | tmp_ids
@@ -248,8 +254,7 @@ class PDB:
         :param type_: (str) name of type of query
         :return: pd.DataFrame
         """
-        command = SearchMotifCommand(query, type_)
-        return command.execute()
+        return self.__rest_api_commands.get('seqmotif')(query, type_).execute()
 
     def search_seq(self, sequence, evalue=1, identity=0.9):
         """
@@ -259,8 +264,7 @@ class PDB:
         :param identity: (float) minimum identity to input sequence
         :return: pd.DataFrame
         """
-        command = SequenceSimilarityCommand(sequence, evalue, identity)
-        return command.execute()
+        return self.__rest_api_commands.get('sequence')(sequence, evalue, identity).execute()
 
     def search_struct(self, pdb_id, assembly_id=1, operator='strict_shape_match'):
         """
@@ -270,8 +274,7 @@ class PDB:
         :param operator: (str) match mode type either relaxed_shape_match or strict_shape_match
         :return: pd.DataFrame
         """
-        command = StructureSimilarityCommand(pdb_id, assembly_id, operator)
-        return command.execute()
+        return self.__rest_api_commands.get('structure')(pdb_id, assembly_id, operator).execute()
 
     def _get_current_indexes(self):
         """
@@ -281,4 +284,3 @@ class PDB:
         pdb_ids = set(self.__entries.index)
         pdb_chain_ids = set(self.__chains.index)
         return pdb_ids, pdb_chain_ids
-
