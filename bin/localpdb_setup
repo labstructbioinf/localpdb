@@ -7,12 +7,20 @@ import shutil
 import socket
 import yaml
 import ftplib
+import importlib
 from tqdm import tqdm
 from pathlib import Path
-from localpdb import PDBVersioneer, PDBDownloader
+from localpdb import PDB, PDBVersioneer, PDBDownloader
+from localpdb.plugins import PluginVersioneer
 from localpdb.utils.os import create_directory, setup_logging_handlers, clean_exit
 from localpdb.utils.config import load_remote_source, Config
+from localpdb.utils.errors import *
 
+def pr_header():
+    print('''
+┬  ┌─┐┌─┐┌─┐┬  ┌─┐┌┬┐┌┐ 
+│  │ ││  ├─┤│  ├─┘ ││├┴┐
+┴─┘└─┘└─┘┴ ┴┴─┘┴  ─┴┘└─┘''')
 
 def get_params():
     # Parse arguments
@@ -36,11 +44,27 @@ def get_params():
     parser.add_argument('-clust_url', help=argparse.SUPPRESS)
     args = parser.parse_args()
     args.db_path = Path(os.path.abspath(args.db_path))
-    if args.update and any([args.fetch_pdb, args.fetch_cif]):
-        print('\nOptions \'--update\' and any of the (\'--fetch_pdb\', \'--fetch_cif\') are mutually exclusive!\n')
+    if args.update and any([args.fetch_pdb, args.fetch_cif, len(args.plugins) > 0]):
+        print('\nOptions \'--update\' and any of the (\'--fetch_pdb\', \'--fetch_cif\', \'-plugins\') are mutually exclusive!\n')
         parser.print_help()
         sys.exit(1)
     return args
+
+def setup_versioneer(args):
+    try:
+        pdbv = PDBVersioneer(db_path=args.db_path, config=args.remote_source)
+        remote_ver = pdbv.current_remote_version
+        return pdbv, remote_ver
+    except (socket.timeout, ftplib.error_temp, socket.gaierror):
+        logger.error('Could not connect to the FTP server. Please check the URL details and connectivity:')
+        url = args.remote_source['url']
+        logger.error(f'ftp://{url}')
+        sys.exit(1)
+    except ValueError:
+        logger.error('No valid PDB data found in the remote source. Please check the URL details and connectivity:')
+        url = args.remote_source['url']
+        logger.error(f'ftp://{url}')
+        sys.exit(1)
 
 def download(args, mode='', clean=True):
     pdbd = PDBDownloader(db_path=args.db_path, version=args.current_remote_version, config=args.remote_source,
@@ -54,7 +78,6 @@ def download(args, mode='', clean=True):
                 if not result:
                     logger.error(f'Failed to download file_type: \"{file_type}\"')
                     sys.exit(1)
-            print()
     elif mode == 'rsync_pdb':
         with clean_exit(callback=pdbd.clean_unsuccessful):
             logger.info('Syncing protein structures in the \'pdb\' format...')
@@ -66,14 +89,96 @@ def download(args, mode='', clean=True):
         with clean_exit(callback=pdbd.clean_unsuccessful):
             logger.info('Syncing protein structures in the \'mmCIF\' format...')
             result = pdbd.rsync_pdb_mirror(format='mmCIF')
-            print()
             if result != 0:
                 logger.error('Failed to RSYNC with the PDB server')
                 sys.exit(1)
     pdbd.remove_lock()
 
 def install_plugins(args):
-    pass
+    pdbv, args.current_remote_version = setup_versioneer(args)
+    config = Config(args.db_path / 'config.yml')
+
+    if args.update: # In case of an update use a list of installed plugins from config
+        if len((config.data['plugins'])) > 0:
+            logger.info(f'Updating plugins...')
+            args.plugins = config.data['plugins']
+    else:
+        if args.plugins:
+            plugins = set(args.plugins) - set(config.data['plugins'])
+            installed_plugins = set(config.data['plugins']) & set(args.plugins)
+            if len(plugins) != len(args.plugins):
+                installed_plugins_str = ', '.join(list(installed_plugins))
+                logger.warning(f'Plugin(s): {installed_plugins_str} were already installed, use the \'--update\' option to sync them.')
+            args.plugins = plugins
+    for plugin in args.plugins:
+        print()
+        if args.update:
+            logger.info(f'Updating plugin: \'{plugin}\'...')
+        else:
+            logger.info(f'Setting up plugin: \'{plugin}\'...')
+
+        Plugin = getattr(importlib.import_module('localpdb.plugins.{}'.format(plugin)), plugin)
+        plugin_dir = args.db_path / Plugin.plugin_dir  # Absolute directory where plugins are stored
+        plv = PluginVersioneer(plugin_dir) # Plugin versioneer
+        lpdb_versions = set(pdbv.local_pdb_versions)
+
+        if not Plugin.plugin_config['available_historical_versions'] and len(
+                lpdb_versions - plv.installed_plugin_versions) > 1:
+            logger.warning(f'Plugin \'{plugin}\' does not support the history versioning. Only version corresponding to the current PDB release can be installed.')
+            lpdb_versions = lpdb_versions & {pdbv.current_remote_version}
+
+        # Handle plugins requiring PDB files copy
+        if Plugin.plugin_config['requires_pdb']:
+            if not config.data['struct_mirror']['pdb']:
+                logger.error(f'Plugin \'{plugin}\' requires a local copy of structure files in the PDB format. Run \'localpdb_setup --fetch_pdb\' first.')
+                lpdb_versions = set()
+            else:
+                if not config.data['struct_mirror']['pdb_init_ver'] == config.data['init_ver']:
+                    versions_wo_struct = {ver for ver in pdbv.local_pdb_versions if
+                                          ver < config.data['struct_mirror']['pdb_init_ver']}
+                    if len(versions_wo_struct) > 0:
+                        versions_wo_struct_str = ', '.join(sorted([str(ver) for ver in versions_wo_struct]))
+                        logger.warning(f'Plugin \'{plugin}\' cannot be installed for version(s): {versions_wo_struct_str}, because structures (PDB format) were synced in the version \'{pdbv.first_local_version}\'.')
+                        lpdb_versions = lpdb_versions - versions_wo_struct
+
+        # Handle plugins requiring mmCIF files copy
+        if Plugin.plugin_config['requires_cif']:
+            if not config.data['struct_mirror']['cif']:
+                logger.error(f'Plugin \'{plugin}\' requires a local copy of structure files in the mmCIF format. Run \'localpdb_setup --fetch_cif\' first.')
+                lpdb_versions = set()
+            else:
+                if not config.data['struct_mirror']['cif_init_ver'] == config.data['init_ver']:
+                    versions_wo_struct = {ver for ver in pdbv.local_pdb_versions if
+                                          ver < config.data['struct_mirror']['cif_init_ver']}
+                    if len(versions_wo_struct) > 0:
+                        versions_wo_struct_str = ', '.join(sorted([str(ver) for ver in versions_wo_struct]))
+                        logger.warning(f'Plugin \'{plugin}\' cannot be installed for version(s): {versions_wo_struct_str}, because structures (mmCIF format) were synced in the version \'{pdbv.first_local_version}\'.')
+                        lpdb_versions = lpdb_versions - versions_wo_struct
+
+        # Iterate only over the lpdb versions that the plugin wasn't already setup for.
+        lpdb_versions = lpdb_versions - plv.installed_plugin_versions
+
+        if len(lpdb_versions) == 0:
+            logger.info(f'Plugin \'{plugin}\' is set up for all currently possible localpdb versions.')
+        else:
+            lpdb_versions = sorted(list(lpdb_versions))  # Sort to go from oldest to newest
+            ver_string = ' '.join([str(ver) for ver in lpdb_versions])
+            logger.info(f'Attempting to install plugin \'{plugin}\' for localpdb version(s): {ver_string}')
+            for lpdb_version in lpdb_versions:
+                lpdb = PDB(args.db_path, version=lpdb_version)
+                pl = Plugin(lpdb)
+                try:
+                    pl.setup() if int(lpdb_version) == pdbv.first_local_version else pl.update()
+                    logger.info(f'Successfully installed plugin \'{plugin}\' for the localpdb version: {lpdb_version}')
+                    if not args.update:
+                        config.data['plugins'].append(plugin)
+                        config.commit()
+                except PluginAlreadyInstalledOutdated:
+                    logger.info(f'Plugin \'{plugin}\' is already installed for the localpdb version \'{lpdb_version}\' but the version is outdated.')
+                except PluginInstallError:
+                    logger.info(f'Could not set up plugin \'{plugin}\' for the localpdb version \'{lpdb_version}\'')
+        print()
+
 
 def main(args):
 
@@ -90,24 +195,12 @@ def main(args):
     if args.clust_url:
         args.remote_source['clust']['url'] = args.clust_url
 
-    try:
-        pdbv = PDBVersioneer(db_path=args.db_path, config=args.remote_source)
-        args.current_remote_version = pdbv.current_remote_version
-    except (socket.timeout, ftplib.error_temp):
-        logger.error('Could not connect to the FTP server. Please check the URL details:')
-        url = args.remote_source['ftp_url']
-        logger.error(f'ftp://{url}')
-        sys.exit(1)
-    except ValueError:
-        logger.error('No valid PDB data found in the remote source. Please check the URL details:')
-        url = args.remote_source['ftp_url']
-        logger.error(f'ftp://{url}')
-        sys.exit(1)
+    pdbv, args.current_remote_version = setup_versioneer(args)
 
     # Check if directory already exists - won't ask this question if run is restarted because of cancelling / failure
     if os.path.exists(args.db_path) and os.path.isdir(args.db_path) and not pdbv.check_init():
         if len(os.listdir(args.db_path)):
-            logger.warning(f'Specified directory \'{args.db_path}\'exists and is not empty!')
+            logger.warning(f'Specified directory \'{args.db_path}\' exists and is not empty!')
             print()
     else:
         create_directory(args.db_path)
@@ -151,16 +244,13 @@ def main(args):
         conf_dict = {'init_ver': args.current_remote_version, 'struct_mirror': {'pdb': args.fetch_pdb,
                                                                                 'pdb_init_ver': args.current_remote_version if args.fetch_pdb else None,
                                                                                 'cif': args.fetch_cif,
-                                                                                'cif_init_ver': args.current_remote_version if args.fetch_cif else None}}
+                                                                                'cif_init_ver': args.current_remote_version if args.fetch_cif else None},
+                     'plugins': []}
         config = Config(args.db_path / 'config.yml', init=True)
         config.data = conf_dict
         config.commit()
         print()
         logger.info(f'Successfully set up localpdb in \'{args.db_path}\'')
-        # Move log file to localpdb dir
-        logging.shutdown()
-        log_path = args.db_path / 'logs'
-        shutil.move(fn_log, log_path)
 
     # localpdb is set up and up to date
     elif args.current_remote_version == pdbv.current_local_version:
@@ -203,24 +293,25 @@ def main(args):
                 download(args, mode='rsync_pdb', clean=True)
             if config['struct_mirror']['cif']:
                 download(args, mode='rsync_cif', clean=True)
-
             pdbv.update_logs()
             logger.info(
                 f'Successfully updated localpdb in \'{args.db_path}\' to version \'{pdbv.current_remote_version}\'!')
-            # Move log file to localpdb dir
-            logging.shutdown()
-            log_path = args.db_path / 'logs'
-            shutil.move(fn_log, log_path)
         else:
             logger.info(
                 f'localpdb is set up in the directory \'{args.db_path}\' but is not up to date. Consider an update!')
             if any([args.fetch_pdb, args.fetch_cif]):
                 logger.warning('Structure files cannot be synced when local version is outdated. Update localpdb first.')
 
+    install_plugins(args)
+    # Move log file to localpdb dir
+    logging.shutdown()
+    log_path = args.db_path / 'logs'
+    shutil.move(fn_log, log_path)
+
 if __name__ == "__main__":
+    pr_header()
     # Get commandline arguments
     arg = get_params()
-
     # Setup logging
     fn_log, handlers = setup_logging_handlers(tmp_path=arg.tmp_path)
     logging.basicConfig(level=logging.DEBUG, handlers=handlers, datefmt='%Y-%m-%d %H:%M:%S')

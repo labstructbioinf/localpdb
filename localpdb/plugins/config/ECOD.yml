@@ -1,0 +1,7 @@
+path: 'ecod'
+allow_loading_outdated: True
+available_historical_versions: True
+requires_pdb: False
+requires_cif: False
+ecod_url: 'http://prodata.swmed.edu/ecod/complete/distribution'
+ecod_domain: 'http://prodata.swmed.edu'
