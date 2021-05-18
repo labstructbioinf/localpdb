@@ -11,19 +11,19 @@
         <meta name="author" content="Jan Ludwiczak">
       
       
-      <link rel="icon" href="img/favicon.ico">
+      <link rel="icon" href="../img/favicon.ico">
       <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.1.4">
     
     
       
-        <title>localpdb</title>
+        <title>Setup - localpdb</title>
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.bde7dde4.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.bde7dde4.min.css">
       
         
-        <link rel="stylesheet" href="assets/stylesheets/palette.ef6f36e2.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ef6f36e2.min.css">
         
           
           
@@ -42,7 +42,7 @@
     
     
     
-      <link rel="stylesheet" href="stylesheets/extra.css">
+      <link rel="stylesheet" href="../stylesheets/extra.css">
     
     
       
@@ -59,7 +59,7 @@
     <body dir="ltr" data-md-color-scheme="" data-md-color-primary="1c1e52" data-md-color-accent="">
   
     
-    <script>function __prefix(e){return new URL(".",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    <script>function __prefix(e){return new URL("..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
@@ -67,7 +67,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#localpdb" class="md-skip">
+        <a href="#installation" class="md-skip">
           Skip to content
         </a>
       
@@ -78,9 +78,9 @@
     
       <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="." title="localpdb" class="md-header__button md-logo" aria-label="localpdb" data-md-component="logo">
+    <a href=".." title="localpdb" class="md-header__button md-logo" aria-label="localpdb" data-md-component="logo">
       
-  <img src="img/logo.svg" alt="logo">
+  <img src="../img/logo.svg" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -96,7 +96,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Home
+              Setup
             
           </span>
         </div>
@@ -170,9 +170,9 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="." title="localpdb" class="md-nav__button md-logo" aria-label="localpdb" data-md-component="logo">
+    <a href=".." title="localpdb" class="md-nav__button md-logo" aria-label="localpdb" data-md-component="logo">
       
-  <img src="img/logo.svg" alt="logo">
+  <img src="../img/logo.svg" alt="logo">
 
     </a>
     localpdb
@@ -199,6 +199,21 @@
 
   
   
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
     
   
   
@@ -211,12 +226,12 @@
       
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
-          Home
+          Setup
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <a href="." class="md-nav__link md-nav__link--active">
-        Home
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Setup
       </a>
       
         
@@ -234,8 +249,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#quick-start" class="md-nav__link">
-    Quick start
+  <a href="#installing-localpdb" class="md-nav__link">
+    Installing localpdb
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setting-up-localpdb" class="md-nav__link">
+    Setting up localpdb
   </a>
   
 </li>
@@ -244,21 +266,6 @@
   
 </nav>
       
-    </li>
-  
-
-    
-      
-      
-      
-
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="setup/" class="md-nav__link">
-        Setup
-      </a>
     </li>
   
 
@@ -289,8 +296,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#quick-start" class="md-nav__link">
-    Quick start
+  <a href="#installing-localpdb" class="md-nav__link">
+    Installing localpdb
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setting-up-localpdb" class="md-nav__link">
+    Setting up localpdb
   </a>
   
 </li>
@@ -307,25 +321,68 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/labstructbioinf/localpdb/edit/master/docs/index.md" title="Edit this page" class="md-content__button md-icon">
+                  <a href="https://github.com/labstructbioinf/localpdb/edit/master/docs/setup.md" title="Edit this page" class="md-content__button md-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
                   </a>
                 
                 
-                <h1 id="localpdb"><strong><span style="font-family: 'Courier New';">localpdb</span></strong></h1>
-<p><img alt="python-ver" src="https://img.shields.io/badge/python-%3E=3.6-blue" />
-<a href="https://pypi.python.org/pypi/localpdb/"><img alt="PyPI version fury.io" src="https://badge.fury.io/py/localpdb.svg" /></a></p>
-<h3 id="quick-start">Quick start</h3>
-<ul>
-<li>Install <strong>localpdb</strong> with pip:
+                <h1 id="installation">Installation</h1>
+<h3 id="installing-localpdb">Installing localpdb</h3>
+<p>Setup of the <code>localpdb</code> is simple and straightforward.
+Recommended installation way is to use <code>pip</code>
+(this will also make the <code>localpdb_setup</code> script available in your <code>PATH</code>):
 <div class="highlight"><pre><span></span><code>pip install localpdb
-</code></pre></div></li>
-<li>Run setup script to download PDB data and protein structures in the 
-PDB format:
-<div class="highlight"><pre><span></span><code>localpdb_setup -db_path /path/to/your/localpdb --fetch_pdb
 </code></pre></div>
-More information on the <strong>localpdb</strong> setup options is available at the <a href="setup/">Setup</a> page.</li>
-</ul>
+To clone the newest version of <code>localpdb</code> you can instally directly from the repository:
+<div class="highlight"><pre><span></span><code>pip install git+https://github.com/labstructbioinf/localpdb.git
+</code></pre></div></p>
+<h3 id="setting-up-localpdb">Setting up localpdb</h3>
+<p>Once installed <code>localpdb</code> you need to setup the database in a suitable directory:
+<div class="highlight"><pre><span></span><code>localpdb_setup -db_path /path/to/localpdb
+</code></pre></div>
+Setup script provides additional options if you want to additionally keep the
+updatable archive of the raw protein structures in various formats or to select the desired PDB mirror:</p>
+<table>
+<thead>
+<tr>
+<th align="center">Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center"><strong><code>-db_path PATH</code></strong></td>
+<td>Path to store the <code>localpdb</code> database</td>
+</tr>
+<tr>
+<td align="center"><strong><code>-mirror MIRROR</code></strong></td>
+<td>PDB mirror used to download the raw files. Valid options are:<br/> - <code>rcsb</code> (RCSB PDB - US - <strong>default</strong>), <br /> - <code>pdbe</code> (PDBe - UK), <br /> - <code>pdbj</code> (PDBj - Japan)</td>
+</tr>
+<tr>
+<td align="center"><strong><code>-plugins PLUGINS</code></strong></td>
+<td>Install plugins fetching additional data. More on plugins.</td>
+</tr>
+<tr>
+<td align="center"><strong><code>--fetch_pdb</code></strong></td>
+<td>Download the protein structures in the <code>PDB</code> format</td>
+</tr>
+<tr>
+<td align="center"><strong><code>--fetch_cif</code></strong></td>
+<td>Download the protein structures in the <code>mmCIF</code> format</td>
+</tr>
+<tr>
+<td align="center"><strong><code>--update</code></strong></td>
+<td>Update  <code>localpdb</code> database instead of setting up. More on updates.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition example">
+<p class="admonition-title">Example</p>
+<p><strong>Setting up <code>localpdb</code> in directory <code>/ssd/db/localpdb</code>, syncing structures in <code>PDB</code> and <code>mmCIF</code> formats 
+and installing plugins <code>PDBClustering</code> and <code>ECOD</code>:</strong>
+<div class="highlight"><pre><span></span><code>localpdb_setup -db_path /ssd/db/localpdb --fetch_pdb --fetch_cif -plugins ECOD PDBClustering
+</code></pre></div></p>
+</div>
                 
               
               
@@ -344,20 +401,20 @@ More information on the <strong>localpdb</strong> setup options is available at 
   
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
-      
-        <a href="setup/" class="md-footer__link md-footer__link--next" rel="next">
+        <a href=".." class="md-footer__link md-footer__link--prev" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
-                Next
+                Previous
               </span>
-              Setup
+              Home
             </div>
           </div>
-          <div class="md-footer__button md-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
-          </div>
         </a>
+      
       
     </nav>
   
@@ -380,10 +437,10 @@ More information on the <strong>localpdb</strong> setup options is available at 
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": ".", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "assets/javascripts/workers/search.4fa0e4ee.min.js", "version": null}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../assets/javascripts/workers/search.4fa0e4ee.min.js", "version": null}</script>
     
     
-      <script src="assets/javascripts/bundle.1d3bfcf1.min.js"></script>
+      <script src="../assets/javascripts/bundle.1d3bfcf1.min.js"></script>
       
     
   </body>
