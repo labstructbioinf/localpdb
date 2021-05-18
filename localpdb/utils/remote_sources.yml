@@ -24,7 +24,9 @@ ftp_locs:
   bundles: "compatible/pdb_bundle/pdb_bundle_index.txt"
   resolution: "derived_data/index/resolu.idx"
   seqres: "derived_data/pdb_seqres.txt.gz"
-  updates: "data/status/"
+  added: "data/status/"
+  modified: "data/status/"
+  obsolete: "data/status"
 
 api:
   url: "https://search.rcsb.org/rcsbsearch"

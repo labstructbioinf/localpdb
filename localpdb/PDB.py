@@ -1,10 +1,12 @@
 import os
 import importlib
+import json
 import pandas as pd
 import numpy as np
 from pathlib import Path
 from localpdb import PDBVersioneer
 from localpdb.utils.prot import parse_pdb_data
+from localpdb.utils.os import parse_simple
 from localpdb.utils.config import Config
 from localpdb.utils.search_api.search import SearchMotifCommand, SequenceSimilarityCommand, StructureSimilarityCommand
 
@@ -14,24 +16,24 @@ class PDB:
 
         self.db_path = Path(os.path.realpath(db_path)) # Absolute db path
         self.auto_filter = auto_filter # Flag to set auto-filtering feature
-        self.__pdbv = PDBVersioneer(db_path=db_path) # Versioning system
+        self._pdbv = PDBVersioneer(db_path=db_path) # Versioning system
         self._loaded_plugins = []  # List of loaded plugins
         self._loaded_plugins_handles = []  # Handles to loaded plugins for reset function
         self.__registered_attrs = []  # Attributes handled by plugins
         self.__lock = False  # Lock flag used with auto-filtering to avoid recursive filtering
 
         # Check with PDBVersioneer whether any versions are installed in the db_path
-        if len(self.__pdbv.local_pdb_versions) == 0 and self.__pdbv.current_local_version is None:
+        if len(self._pdbv.local_pdb_versions) == 0 and self._pdbv.current_local_version is None:
             raise FileNotFoundError(f'localpdb is not setup in directory \'{self.db_path}\'!')
 
         if version == 'latest':
-            self.version = self.__pdbv.current_local_version
+            self.version = self._pdbv.current_local_version
         else:
             self.version = version
 
         if not isinstance(self.version, int):
             raise ValueError('localpdb version must be specified in numeric format!')
-        if int(self.version) not in self.__pdbv.local_pdb_versions:
+        if int(self.version) not in self._pdbv.local_pdb_versions:
             raise ValueError('Version \'{}\' is not available in the localpdb database!')
 
         try:
@@ -41,15 +43,16 @@ class PDB:
 
         # Check if files are stored in the proper dir (double check with PDBVersionner which does that during download)
         self.__working_path = f'{self.db_path}/data/{self.version}'  # Working path for the set version
-        pdb_bundles_fn = '{}/pdb_bundles.txt'.format(self.__working_path)
-        pdb_entries_type_fn = "{}/pdb_entries_type.txt".format(self.__working_path)
-        pdb_entries_fn = "{}/pdb_entries.txt".format(self.__working_path)
-        pdb_res_fn = "{}/pdb_resolution.txt".format(self.__working_path)
-        pdb_seqres_fn = "{}/pdb_seqres.txt.gz".format(self.__working_path)
+        pdb_bundles_fn = f'{self.__working_path}/pdb_bundles.txt'
+        pdb_entries_type_fn = f'{self.__working_path}/pdb_entries_type.txt'
+        pdb_entries_fn = f'{self.__working_path}/pdb_entries.txt'
+        pdb_res_fn = f'{self.__working_path}/pdb_resolution.txt'
+        pdb_seqres_fn = f'{self.__working_path}/pdb_seqres.txt.gz'
         if not all(os.path.isfile(fn) for fn in [pdb_bundles_fn, pdb_entries_fn, pdb_res_fn, pdb_seqres_fn]):
             raise ValueError(
                 'Not all PDB raw files for version \'{}\' exist! Try rerunning setup or update scripts!'.format(
                     self.version))
+        self.bundles = parse_simple(pdb_bundles_fn)
 
         # Create dataframes with per-structure and per-chain data
         self.__entries, self.__chains = parse_pdb_data(pdb_entries_fn, pdb_entries_type_fn, pdb_res_fn, pdb_seqres_fn)
@@ -60,14 +63,11 @@ class PDB:
                 f'PDB raw files for version \'{self.version}\' are corrupt! Try rerunning setup or update scripts!')
 
         # Set according filenames pointing to the structures
-        if self.__config['struct_mirror']['pdb'] and self.__config['struct_mirror']['pdb_init_ver'] <= version:
-            self.__entries['pdb_fn'] = self.__entries.index.map(
-                lambda x: f'{self.db_path}/mirror/pdb/{x[1:3]}/pdb{x}.ent.gz' if os.path.isfile(
-                    f'{self.db_path}/mirror/pdb/{x[1:3]}/pdb{x}.ent.gz') else np.nan)
-        if self.__config['struct_mirror']['cif'] and self.__config['struct_mirror']['cif_init_ver'] <= version:
-            self.__entries['mmcif_fn'] = self.__entries.index.map(
-                lambda x: f'{self.db_path}/mirror/mmCIF/{x[1:3]}/{x}.cif.gz' if os.path.isfile(
-                    f'{self.db_path}/mirror/mmCIF/{x[1:3]}/{x}.cif.gz') else np.nan)
+        id_dict = {id_: id_ for id_ in self.__entries.index.values}
+        if self.__config['struct_mirror']['pdb'] and self.__config['struct_mirror']['pdb_init_ver'] <= self.version:
+            self._set_filenames(id_dict, format='pdb')
+        if self.__config['struct_mirror']['cif'] and self.__config['struct_mirror']['cif_init_ver'] <= self.version:
+            self._set_filenames(id_dict, format='mmCIF')
 
         # Keep copy of dataframes to allow for reseting the selections
         self.__entries_copy = self.__entries.copy()
@@ -147,15 +147,43 @@ class PDB:
             except ModuleNotFoundError:
                 raise ValueError('Plugin \'{}\'is not installed!'.format(plugin))
 
-    def select_updates(self):
+    def _set_filenames(self, id_dict, format='pdb'):
+        id_dict, a = self._pdbv.adjust_pdb_ids(id_dict, version=self.version)
+        if format == 'pdb':
+            fns = {pdb_id: f'{self.db_path}/mirror/pdb/{pdb_id[1:3]}/pdb{id_dict[pdb_id]}.ent.gz' if os.path.isfile(
+                f'{self.db_path}/mirror/pdb/{pdb_id[1:3]}/pdb{id_dict[pdb_id]}.ent.gz') else 'not_compatible' if pdb_id in self.bundles else np.nan
+                   for pdb_id in id_dict.keys()}
+            self._add_col_structures(fns, ['pdb_fn'])
+        if format == 'mmCIF':
+            fns = {pdb_id: f'{self.db_path}/mirror/mmCIF/{pdb_id[1:3]}/{id_dict[pdb_id]}.cif.gz' if os.path.isfile(
+                f'{self.db_path}/mirror/mmCIF/{pdb_id[1:3]}/{id_dict[pdb_id]}.cif.gz') else np.nan
+                   for pdb_id in id_dict.keys()}
+            self._add_col_structures(fns, ['mmCIF_fn'])
+
+    def select_updates(self, mode='am+'):
         """
-        Selects only new entries that were added during the last PDB update
+        Selects entries that were added or modified when compare to previous PDB release.
+        @param mode: Select entries that were added ("a"), modified ("m"). "+" loads new entries compared to the
+        previous localpdb version (important when localpdb is not updated weekly). If "+" is missing only new entries
+        present in weekly PDB release will be selected.
         """
-        with open('{}/data/{}/added.txt'.format(self.db_path, self.version)) as f:
-            idents = [line.rstrip() for line in f.readlines()]
-        curr_idx = set(self.entries.index.values)
-        pdb_ids_clean = [ident for ident in idents if ident in curr_idx]
-        self.entries = self.entries.loc[pdb_ids_clean]
+        map = {'a': 'added', 'm': 'modified_major'}
+        ids = set()
+        if not ('a' in mode or 'm' in mode):
+            raise ValueError('Either \'a\' or \'m\' must be included in \'mode\'!')
+        for m in ['a', 'm']:
+            if m in mode:
+                fn = f'{self.db_path}/data/{self.version}/{map[m]}.txt'
+                if '+' in mode:
+                    if os.path.isfile(f'{self.db_path}/data/{self.version}/{map[m]}_merged.txt'):
+                        fn = f'{self.db_path}/data/{self.version}/{map[m]}_merged.txt'
+                    else:
+                        raise RuntimeError(f'\'+\' is not compatible with \'{map[m]}\' mode and localpdb version \'{self.version}\'')
+                with open(fn) as f:
+                    tmp_ids = {line.rstrip() for line in f}
+                    ids = ids | tmp_ids
+        curr_ids = set(self.entries.index.values)
+        self.entries = self.entries.loc[ids & curr_ids]
 
     def reset(self):
         """
@@ -184,6 +212,7 @@ class PDB:
             for ph in self._loaded_plugins_handles:
                 ph._filter_chains(new_pdb_chain_ids)
             self.__lock = False
+        self.__chains = chains
 
     @entries.setter
     def entries(self, entries):
