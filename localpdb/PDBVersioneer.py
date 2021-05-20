@@ -33,17 +33,6 @@ class PDBVersioneer:
             local_versions_json = []
         self.local_pdb_versions = sorted(local_versions_json)
 
-        # Raise warning if there is inconsistency between present directories and log
-        # This will happen if setup / update run will be terminated abruptly and cleaning method will not manage to
-        # delete the temporary files for the failed run.
-        if local_versions_dirs != local_versions_json and len(self.local_pdb_versions) > 0:
-            warn_str = f'Detected inconsistency between the localpdb versions according to the directory listings and the setup/update log file. ' \
-                       f'This can be a result of a failed setup / update run or using the localpdb during the setup or update. ' \
-                       f'If this warning persists inspect the directories in \'{self.db_path}/data\' ' \
-                       f'and \'{self.db_path}/data/status.log\' to find inconsistencies.'
-            warnings.warn(warn_str)
-            logger.debug(warn_str)
-
     def update_logs(self, first=False):
         logs_fn = f'{self.db_path}/data/status.log'
         status = ['OK', datetime.datetime.now().strftime("%Y-%m-%d %H:%M")]
