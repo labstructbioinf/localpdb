@@ -25,17 +25,18 @@ class Biounit(Plugin):
 
     def __init__(self, lpdb):
         super().__init__(lpdb)
+        self.fn_template = ["{{ plugin_dir }}/{{ pdb_id[1:3] }}/{{ pdb_id }}.pdb.gz"]
         self.script_loc = os.path.dirname(os.path.abspath(__file__)) + '/utils/MakeMultimer.py'
 
     def _load(self):
         # Point to calculated biounits for X-ray structures
-        data_dict = {pdb_id: f'{self.plugin_dir}/{pdb_id[1:3]}/{pdb_id}.pdb.gz' for pdb_id in self.lpdb.entries.index
-                     if os.path.isfile(f'{self.plugin_dir}/{pdb_id[1:3]}/{pdb_id}.pdb.gz')}
+        fn_dict = {key: f'{self.plugin_dir}/{pdb_id[1:3]}/{pdb_id}.pdb.gz' for key, pdb_id in self.id_dict.items() if
+                   os.path.isfile(f'{self.plugin_dir}/{pdb_id[1:3]}/{pdb_id}.pdb.gz')}
         # Point to the original filenames for NMR and EM structures
         nonstd_dict = {pdb_id: fn_struct for pdb_id, fn_struct in
                        self.lpdb.entries[self.lpdb.entries['method'].isin(['NMR', 'EM'])]['pdb_fn'].to_dict().items()}
-        data_dict.update(nonstd_dict)
-        self.lpdb._add_col_structures(data_dict, ['biounit'])
+        fn_dict.update(nonstd_dict)
+        self.lpdb._add_col_structures(fn_dict, ['biounit'])
 
     def _setup(self):
         self.lpdb.entries = self.lpdb.entries[self.lpdb.entries['pdb_fn'].notnull()]

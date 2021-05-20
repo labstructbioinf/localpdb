@@ -264,6 +264,7 @@ def main(args):
             config.data['struct_mirror']['cif'] = True
             config.data['struct_mirror']['cif_init_ver'] = args.remote_version
         else:
+            print()
             logger.info(f'localpdb is up to date and set up in the directory \'{args.db_path}\'.')
         config.commit()
 
