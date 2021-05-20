@@ -16,6 +16,11 @@ from localpdb.utils.os import create_directory, setup_logging_handlers, clean_ex
 from localpdb.utils.config import load_remote_source, Config
 from localpdb.utils.errors import *
 
+# Setup logging
+fn_log, handlers = setup_logging_handlers(tmp_path='/tmp/')
+logging.basicConfig(level=logging.DEBUG, handlers=handlers, datefmt='%Y-%m-%d %H:%M:%S')
+logger = logging.getLogger(__name__)
+
 
 def get_params():
     # Parse arguments
@@ -178,7 +183,11 @@ def install_plugins(args):
         print()
 
 
-def main(args):
+def main():
+
+    # Get commandline arguments
+    args = get_params()
+
 
     # Load config
     args.remote_source = load_remote_source(args.mirror)
@@ -310,12 +319,4 @@ def main(args):
     shutil.move(fn_log, log_path)
 
 if __name__ == "__main__":
-    # Get commandline arguments
-    arg = get_params()
-    # Setup logging
-    fn_log, handlers = setup_logging_handlers(tmp_path=arg.tmp_path)
-    logging.basicConfig(level=logging.DEBUG, handlers=handlers, datefmt='%Y-%m-%d %H:%M:%S')
-    logger = logging.getLogger(__name__)
-
-    # Run main
-    main(arg)
+    main()
