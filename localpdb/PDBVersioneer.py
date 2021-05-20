@@ -45,10 +45,11 @@ class PDBVersioneer:
         with open(logs_fn, 'w') as f:
             f.write(json.dumps(logs, indent=4))
 
-    def adjust_pdb_ids(self, id_dict, version):
+    def adjust_pdb_ids(self, id_dict, version, mode='load'):
         """
-        @param entries: Entries - dict {id: id} format
+        @param id_dict: Entries - dict {id: id} format
         @param version: localpdb version to check
+        @param mode: Either 'load' or 'setup'
         @returns Modified entries dict {id: adjusted_id)
         """
         curr_ids = set(id_dict.keys())
@@ -57,10 +58,17 @@ class PDBVersioneer:
         with open(log_fn) as f:
             history = json.loads(f.read())
         for key, h in history.items():
-            vers = [ver for ver in h if ver <= version]
+            if mode == 'setup':
+                vers = [ver for ver in h if ver <= version]
+            else:
+                vers = [ver for ver in h if ver > version]
             if len(vers) > 0 and key in curr_ids:
-                id_dict[key] = f'{key}_b{max(vers)}'
-                change_dict[key] = f'{key}_b{max(vers)}'
+                if mode == 'setup':
+                    id_dict[key] = f'{key}_b{max(vers)}'
+                    change_dict[key] = f'{key}_b{max(vers)}'
+                else:
+                    id_dict[key] = f'{key}_b{min(vers)}'
+                    change_dict[key] = f'{key}_b{min(vers)}'
         return id_dict, change_dict
 
     def init(self):
