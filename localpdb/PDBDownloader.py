@@ -214,7 +214,7 @@ class PDBDownloader:
         bundles = parse_simple(f'{self.db_path}/data/{self.version}/pdb_bundles.txt')
 
         ids = list(modified-bundles-obsolete) if format == 'pdb' else list(modified-obsolete)
-        _, map_dict = self.pdbv.adjust_pdb_ids({id_: id_ for id_ in ids}, self.version)
+        _, map_dict = self.pdbv.adjust_pdb_ids({id_: id_ for id_ in ids}, self.version, mode='setup')
         if len(map_dict) > 0:
             logger.info(f'INFO: {len(map_dict)} entries in the {format} format had major coordinate revision without PDB id changes. '
                         f'Accounting for this during the mirror update.')
