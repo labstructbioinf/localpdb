@@ -179,10 +179,11 @@ class PDBDownloader:
             f.write(json.dumps(ver_history, indent=4))
         return True
 
-    def rsync_pdb_mirror(self, format='pdb'):
+    def rsync_pdb_mirror(self, format='pdb', update=False):
         """
         Handles the RSYNC session with the PDB servers to download files in the selected format
         @param format: file format to download ('pdb' or 'mmCIF')
+        @param update: denotes whether rsync will be in the update mode
         @return: exit code from the RSYNC (0 if run completed without errors)
         """
 
@@ -196,9 +197,11 @@ class PDBDownloader:
 
         # First make rsync dry run (-n) to check number of structures to be synced.
         # This also checks connectivity with the selected mirror.
-        rsync_dry_cmd = f'rsync -nrlpt -v -z {add_opts} {url}/{format}/ {local_mirror}/'
+        rsync_dry_cmd = f'rsync -nrlpt -v {add_opts} {url}/{format}/ {local_mirror}/'
         result, (stdout, _) = os_cmd(rsync_dry_cmd)
         n_structs = len([line for line in stdout])
+        if update:
+            n_structs += 2
         if result != 0:
             return 1
 
@@ -211,9 +214,9 @@ class PDBDownloader:
         bundles = parse_simple(f'{self.db_path}/data/{self.version}/pdb_bundles.txt')
 
         ids = list(modified-bundles-obsolete) if format == 'pdb' else list(modified-obsolete)
-        _, map_dict = self.pdbv.adjust_pdb_ids({id_: id_ for id_ in ids}, self.version)
+        _, map_dict = self.pdbv.adjust_pdb_ids({id_: id_ for id_ in ids}, self.version, mode='setup')
         if len(map_dict) > 0:
-            logger.info(f'{len(map_dict)} entries had major coordinate revision without PDB id changes. '
+            logger.info(f'INFO: {len(map_dict)} entries in the {format} format had major coordinate revision without PDB id changes. '
                         f'Accounting for this during the mirror update.')
         for pdb_id in map_dict.keys():
             if format == 'pdb':

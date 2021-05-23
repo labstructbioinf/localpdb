@@ -16,6 +16,11 @@ from localpdb.utils.os import create_directory, setup_logging_handlers, clean_ex
 from localpdb.utils.config import load_remote_source, Config
 from localpdb.utils.errors import *
 
+# Setup logging
+fn_log, handlers = setup_logging_handlers(tmp_path='/tmp/')
+logging.basicConfig(level=logging.DEBUG, handlers=handlers, datefmt='%Y-%m-%d %H:%M:%S')
+logger = logging.getLogger(__name__)
+
 
 def get_params():
     # Parse arguments
@@ -63,40 +68,39 @@ def setup_versioneer(args):
         sys.exit(1)
 
 
-def download(args, mode='', clean=True):
-    pdbd = PDBDownloader(db_path=args.db_path, version=args.remote_version, config=args.remote_source,
-                         remove_unsuccessful=clean)
-    pdbd.set_lock()
+def download(args, mode='', clean=True, update=False):
+    args.pdbd.remove_unsuccessful = clean
+    args.pdbd.set_lock()
     if mode == 'files':
-        with clean_exit(callback=pdbd.clean_unsuccessful):
+        with clean_exit(callback=args.pdbd.clean_unsuccessful):
             file_types = ['entries', 'entries_type', 'bundles', 'resolution', 'seqres', 'added', 'modified', 'obsolete']
             for file_type in tqdm(file_types, unit='item'):
-                result = pdbd.download(file_type=file_type)
+                result = args.pdbd.download(file_type=file_type)
                 if not result:
                     logger.error(f'Failed to download file_type: \"{file_type}\"')
                     sys.exit(1)
     elif mode == 'rsync_pdb':
-        with clean_exit(callback=pdbd.clean_unsuccessful):
+        with clean_exit(callback=args.pdbd.clean_unsuccessful):
             print()
             logger.info('Syncing protein structures in the \'pdb\' format...')
-            result = pdbd.rsync_pdb_mirror(format='pdb')
+            result = args.pdbd.rsync_pdb_mirror(format='pdb', update=update)
             if result != 0:
                 logger.error('Failed to RSYNC with the PDB server')
                 sys.exit(1)
     elif mode == 'rsync_cif':
-        with clean_exit(callback=pdbd.clean_unsuccessful):
+        with clean_exit(callback=args.pdbd.clean_unsuccessful):
             print()
             logger.info('Syncing protein structures in the \'mmCIF\' format...')
-            result = pdbd.rsync_pdb_mirror(format='mmCIF')
+            result = args.pdbd.rsync_pdb_mirror(format='mmCIF', update=update)
             if result != 0:
                 logger.error('Failed to RSYNC with the PDB server')
                 sys.exit(1)
-    pdbd.remove_lock()
+    args.pdbd.remove_lock()
 
 def install_plugins(args):
     pdbv, args.remote_version = setup_versioneer(args)
     config = Config(args.db_path / 'config.yml')
-
+    print()
     if args.update: # In case of an update use a list of installed plugins from config
         if len((config.data['plugins'])) > 0:
             logger.info(f'Updating plugins...')
@@ -179,7 +183,11 @@ def install_plugins(args):
         print()
 
 
-def main(args):
+def main():
+
+    # Get commandline arguments
+    args = get_params()
+
 
     # Load config
     args.remote_source = load_remote_source(args.mirror)
@@ -195,6 +203,7 @@ def main(args):
         args.remote_source['clust']['url'] = args.clust_url
 
     pdbv, args.remote_version = setup_versioneer(args)
+    args.pdbd = PDBDownloader(db_path=args.db_path, version=args.remote_version, config=args.remote_source)
 
     # Check if directory already exists - won't ask this question if run is restarted because of cancelling / failure
     if os.path.exists(args.db_path) and os.path.isdir(args.db_path) and not pdbv.check_init():
@@ -264,12 +273,14 @@ def main(args):
             config.data['struct_mirror']['cif'] = True
             config.data['struct_mirror']['cif_init_ver'] = args.remote_version
         else:
+            print()
             logger.info(f'localpdb is up to date and set up in the directory \'{args.db_path}\'.')
         config.commit()
 
     # localpdb is set up but there's a newer remote version available
     elif args.remote_version > pdbv.current_local_version:
         if args.update:
+            print()
             logger.info(
                 'localpdb is {} update(s) behind with the remote source, updating to version {}...'.format(
                     len(pdbv.missing_remote_versions), pdbv.current_remote_version))
@@ -288,9 +299,9 @@ def main(args):
             if not any([config['struct_mirror']['pdb'], config['struct_mirror']['cif']]):
                 logger.debug('Skipping structure files syncing...')
             if config['struct_mirror']['pdb']:
-                download(args, mode='rsync_pdb', clean=True)
+                download(args, mode='rsync_pdb', clean=True, update=True)
             if config['struct_mirror']['cif']:
-                download(args, mode='rsync_cif', clean=True)
+                download(args, mode='rsync_cif', clean=True, update=True)
             pdbv.update_logs()
             print()
             logger.info(
@@ -308,12 +319,4 @@ def main(args):
     shutil.move(fn_log, log_path)
 
 if __name__ == "__main__":
-    # Get commandline arguments
-    arg = get_params()
-    # Setup logging
-    fn_log, handlers = setup_logging_handlers(tmp_path=arg.tmp_path)
-    logging.basicConfig(level=logging.DEBUG, handlers=handlers, datefmt='%Y-%m-%d %H:%M:%S')
-    logger = logging.getLogger(__name__)
-
-    # Run main
-    main(arg)
+    main()
