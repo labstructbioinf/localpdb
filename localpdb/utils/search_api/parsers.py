@@ -7,7 +7,7 @@ class ResponseParser:
 
     def parse(self, response):
         for id_ in response['result_set']:
-            id_['identifier'] = id_['identifier'].lower()
+            id_['identifier'] = id_['identifier'].lower().replace('.', '_')
         if self.raw:
             response = response['result_set']
             return pd.DataFrame(response)
