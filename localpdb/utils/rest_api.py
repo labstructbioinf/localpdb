@@ -1,8 +1,8 @@
-from config import load_remote_source
-from search_api.commands import StructureMotifCommand, SearchMotifCommand, SequenceSimilarityCommand, \
+from .config import load_remote_source
+from .search_api.commands import StructureMotifCommand, SearchMotifCommand, SequenceSimilarityCommand, \
     StructureSimilarityCommand, TextCommand
 
-from search_api.parsers import ResponseParser
+from .search_api.parsers import ResponseParser
 
 
 class CommandFactory:
