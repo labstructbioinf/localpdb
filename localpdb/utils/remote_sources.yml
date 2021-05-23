@@ -27,3 +27,9 @@ ftp_locs:
   added: "data/status/"
   modified: "data/status/"
   obsolete: "data/status"
+
+api:
+  url: "https://search.rcsb.org/rcsbsearch"
+  version: "v1"
+  query: "query?"
+  return_type: "entry"

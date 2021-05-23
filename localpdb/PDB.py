@@ -8,6 +8,7 @@ from localpdb import PDBVersioneer
 from localpdb.utils.prot import parse_pdb_data
 from localpdb.utils.os import parse_simple
 from localpdb.utils.config import Config
+from localpdb.utils.rest_api import CommandFactory
 
 
 class PDB:
@@ -76,6 +77,7 @@ class PDB:
         # Workaround to run setters only once
         self.chains = self.__chains
         self.entries == self.__entries
+        self.__rest_api_commands = CommandFactory()
 
     def __setattr__(self, item, value):
         """
@@ -240,6 +242,64 @@ class PDB:
             data = pd.DataFrame.from_dict({key: [value] for key, value in data.items()}, orient='index',
                                           columns=added_col_name)
         self.__chains = pd.merge(self.chains, data, left_index=True, right_index=True, how='left')
+
+    def search_seq_motif(self, query, type_='prosite', return_type="entry", no_hits=1000):
+        """
+        Get dataframe with pdb ids having sequence matching given sequence motif
+        :param query: (str) motif to find in pdb sequences, according to given type_ (i.e prosite)
+        :param type_: (str) name of type of query
+        :param return_type: (str) type of returned data
+        :param no_hits: (int) number of hits to fetch, -1 for all results
+        :return: pd.DataFrame
+        """
+        return self.__rest_api_commands.get('seqmotif')(query, type_,
+                                                        resp_type=return_type,
+                                                        rows=no_hits).execute()
+
+    def search_seq(self, sequence, evalue=1, identity=0.9, return_type="polymer_instance",
+                   no_hits=1000):
+        """
+        Get dataframe with pdb ids have sequence similar to given sequence
+        :param sequence: (str) sequence used to fin similar ones
+        :param evalue: (float) minimum e value
+        :param identity: (float) minimum identity to input sequence
+        :param return_type: (str) type of returned data
+        :param no_hits: (int) number of hits to fetch, -1 for all results
+        :return: pd.DataFrame
+        """
+        return self.__rest_api_commands.get('sequence')(sequence, evalue, identity,
+                                                        resp_type=return_type, rows=no_hits).execute()
+
+    def search_struct(self, pdb_id, assembly_id=1, operator='strict_shape_match',
+                      return_type="entry",  no_hits=1000):
+        """
+        Get dataframe with pdb ids having structure similar to structure of given pdb_id
+        :param pdb_id: (str) pdb id (i.e 2mnr)
+        :param assembly_id: (int) assembly number
+        :param operator: (str) match mode type either relaxed_shape_match or strict_shape_match
+        :param return_type: (str) type of returned data
+        :param no_hits: (int) number of hits to fetch, -1 for all results
+        :return: pd.DataFrame
+        """
+        return self.__rest_api_commands.get('structure')(pdb_id, assembly_id, operator,
+                                                         resp_type=return_type, rows=no_hits).execute()
+
+    def search(self, attribute, operator, value, return_type='entry', no_hits=1000, get_doc_only=False):
+        """
+        Get dataframe with results from search for value of given attribute
+        :param attribute: (str) attribute to search for
+        :param operator: (int) operator to filter attribute by value i.e greater, in etc
+        :param value: (str) value of given attribute
+        :param return_type: (str) type of returned data
+        :param no_hits: (int) number of hits to fetch, -1 for all results
+        :param get_doc_only: (bool) if True get datafarame with description of possible attributes and operators
+        :return: pd.DataFrame
+        """
+        command = self.__rest_api_commands.get('text')(attribute, operator, value,
+                                                         resp_type=return_type, rows=no_hits)
+        if get_doc_only:
+            return command.get_doc()
+        return command.execute()
 
     def _get_current_indexes(self):
         """

@@ -24,6 +24,7 @@ def load_remote_source(mirror=''):
     my_path = os.path.dirname(os.path.realpath(__file__))
     with open('{}/remote_sources.yml'.format(my_path)) as f:
         config = yaml.safe_load(f)
-    mirrors = config.pop('mirrors')
-    config.update(mirrors[mirror])
+    if mirror:
+        mirrors = config.pop('mirrors')
+        config.update(mirrors[mirror])
     return config
