@@ -7,6 +7,8 @@ from .PluginVersioneer import PluginVersioneer
 from localpdb.utils.os import create_directory, custom_warning
 from localpdb.utils.errors import *
 
+import traceback
+
 logger = logging.getLogger(__name__)
 warnings.showwarning = custom_warning
 
@@ -57,28 +59,7 @@ class Plugin:
                 self.lpdb.select_updates(mode='am+')
             except RuntimeError:
                 self.lpdb.select_updates(mode='am')
-
-            _, map_dict = self.lpdb._pdbv.adjust_pdb_ids({id_: id_ for id_ in self.lpdb.entries.index},
-                                                                self.lpdb.version, mode='setup')
-
-            for pdb_id, updated_id in map_dict.items():
-
-                param_dict = locals()
-                param_dict.update(self.__dict__)
-                org_fns = self._render_template(param_dict)
-
-                pdb_id = updated_id
-                param_dict = locals()
-                param_dict.update(self.__dict__)
-                dest_fns = self._render_template(param_dict)
-                for org_fn, dest_fn in zip(org_fns, dest_fns):
-                    try:
-                        shutil.copy2(org_fn, dest_fn)
-                        self.cp_files.append((org_fn, dest_fn))
-                        logger.debug(f'Moved file\'{org_fn}\' to \'{dest_fn}\'.')
-                    except:
-                        logger.debug(f'File \'{org_fn}\' that was supposed to be moved (versioning) does not exist.')
-
+            self._adjust_fns()
         return self.setup()
 
     def setup(self):
@@ -128,6 +109,30 @@ class Plugin:
             self.plugin_version = self.lpdb.version
         else:
             self.plugin_version = self.find_closest_historical_version(self.lpdb.version, versions)
+
+    def _adjust_fns(self):
+        _, map_dict = self.lpdb._pdbv.adjust_pdb_ids({id_: id_ for id_ in self.lpdb.entries.index},
+                                                     self.lpdb.version, mode='setup')
+
+        for pdb_id, updated_id in map_dict.items():
+
+            param_dict = locals()
+            param_dict.update(self.__dict__)
+            org_fns = self._render_template(param_dict)
+
+            pdb_id = updated_id
+            param_dict = locals()
+            param_dict.update(self.__dict__)
+
+            dest_fns = self._render_template(param_dict)
+
+            for org_fn, dest_fn in zip(org_fns, dest_fns):
+                try:
+                    shutil.copy2(org_fn, dest_fn)
+                    self.cp_files.append((org_fn, dest_fn))
+                    logger.debug(f'Moved file\'{org_fn}\' to \'{dest_fn}\'.')
+                except:
+                    logger.debug(f'File \'{org_fn}\' that was supposed to be moved (versioning) does not exist.')
 
     def _reset(self):
         self.load()

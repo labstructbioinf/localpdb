@@ -44,7 +44,7 @@ class Biounit(Plugin):
             pdb_id: f'python {self.script_loc} -w -c 1 -i {fn_struct} -in_gz -out_gz -out_prefix {pdb_id} -first -out_path {self.plugin_dir}/{pdb_id[1:3]}/'
             for pdb_id, fn_struct in
             self.lpdb.entries[self.lpdb.entries['method'] == 'diffraction']['pdb_fn'].to_dict().items()}
-        status = multiprocess(os_cmd, cmds, return_type='failed')
+        status = multiprocess(os_cmd, cmds, return_type='failed', process_executor=True)
         out_log = {'no_entries': len(cmds), 'no_failed_entries': len(status), 'failed_entries_ids': list(status)}
         return out_log
 
