@@ -2,6 +2,7 @@ import warnings
 import logging
 import shutil
 import os
+from jinja2 import Environment, BaseLoader
 from .PluginVersioneer import PluginVersioneer
 from localpdb.utils.os import create_directory, custom_warning
 from localpdb.utils.errors import *
@@ -27,12 +28,13 @@ class Plugin:
         self.set_version(self.plv.installed_plugin_versions)
         self.history = self._get_historical_versions()
         self.cp_files = []
-        if self.plugin_config['requires_pdb'] or self.plugin_config['requires_cif']:
+        if (self.plugin_config['requires_pdb'] or self.plugin_config['requires_cif']) and self.plugin_version is not None:
             self.id_dict, self.map_dict = self.lpdb._pdbv.adjust_pdb_ids({id_: id_ for id_ in self.lpdb.entries.index},
                                                                           self.plugin_version)
 
     def load(self):
         # Generic loader for plugins. Calls individual plugin _load method
+        self.plugin_version = self.plugin_version if self.plugin_version in self.plv.installed_plugin_versions else None
         if self.plugin_version is not None:
             if self.plugin_version != self.lpdb.version:
                 warnings.warn(
@@ -51,21 +53,32 @@ class Plugin:
 
     def update(self):
         if self.plugin_config['requires_pdb'] or self.plugin_config['requires_cif']:
-            if self.plugin_config['requires_pdb']:
-                self.lpdb.entries = self.lpdb.entries[self.lpdb.entries['pdb_fn'].notnull()]
-                self.lpdb.entries = self.lpdb.entries[self.lpdb.entries['pdb_fn'] != 'not_compatible']
-            if self.plugin_config['requires_cif']:
-                self.lpdb.entries = self.lpdb.entries[self.lpdb.entries['mmCIF_fn'].notnull()]
             try:
                 self.lpdb.select_updates(mode='am+')
             except RuntimeError:
                 self.lpdb.select_updates(mode='am')
-            for id_, updated_id in self.map_dict.items():
-                org_fn = self.fn_schema.format(pdb_id=id_, plugin_dir=self.plugin_dir)
-                dest_fn = self.fn_schema.format(pdb_id=updated_id, plugin_dir=self.plugin_dir)
-                shutil.copy2(org_fn, dest_fn)
-                self.cp_files.append((org_fn, dest_fn))
-                logger.debug(f'Moved file\'{org_fn}\' to \'{dest_fn}\'.')
+
+            _, map_dict = self.lpdb._pdbv.adjust_pdb_ids({id_: id_ for id_ in self.lpdb.entries.index},
+                                                                self.lpdb.version, mode='setup')
+
+            for pdb_id, updated_id in map_dict.items():
+
+                param_dict = locals()
+                param_dict.update(self.__dict__)
+                org_fns = self._render_template(param_dict)
+
+                pdb_id = updated_id
+                param_dict = locals()
+                param_dict.update(self.__dict__)
+                dest_fns = self._render_template(param_dict)
+                for org_fn, dest_fn in zip(org_fns, dest_fns):
+                    try:
+                        shutil.copy2(org_fn, dest_fn)
+                        self.cp_files.append((org_fn, dest_fn))
+                        logger.debug(f'Moved file\'{org_fn}\' to \'{dest_fn}\'.')
+                    except:
+                        logger.debug(f'File \'{org_fn}\' that was supposed to be moved (versioning) does not exist.')
+
         return self.setup()
 
     def setup(self):
@@ -77,6 +90,14 @@ class Plugin:
         # earlier versions if current one is not available
         if self.plugin_config['available_historical_versions'] and self.plugin_config['allow_loading_outdated']:
             self.set_version(list(self.history.keys()))
+
+        if self.plugin_config['requires_pdb'] or self.plugin_config['requires_cif']:
+            if self.plugin_config['requires_pdb']:
+                self.lpdb.entries = self.lpdb.entries[self.lpdb.entries['pdb_fn'].notnull()]
+                self.lpdb.entries = self.lpdb.entries[self.lpdb.entries['pdb_fn'] != 'not_compatible']
+            if self.plugin_config['requires_cif']:
+                self.lpdb.entries = self.lpdb.entries[self.lpdb.entries['mmCIF_fn'].notnull()]
+
         if self.plugin_version not in self.plv.installed_plugin_versions:
             try:
                 self._prep_paths()
@@ -114,7 +135,6 @@ class Plugin:
     def _cleanup(self):
         for org_fn, dest_fn in self.cp_files:
             try:
-                print(org_fn, dest_fn)
                 shutil.copy2(dest_fn, org_fn)
                 logger.debug(f'Moved file\'{dest_fn}\' to \'{org_fn}\'.')
                 os.remove(dest_fn)
@@ -144,3 +164,6 @@ class Plugin:
     def _prep_paths(self):
         create_directory(f'{self.plugin_dir}/')
         create_directory(f'{self.plugin_dir}/data')
+
+    def _render_template(self, param_dict={}):
+        return [Environment(loader=BaseLoader).from_string(template).render(param_dict) for template in self.fn_template]
