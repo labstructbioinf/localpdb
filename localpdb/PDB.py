@@ -286,13 +286,13 @@ class PDB:
 
     def search(self, attribute, operator, value, return_type='entry', no_hits=1000, get_doc_only=False):
         """
-        Get dataframe with pdb ids having structure similar to structure of given pdb_id
+        Get dataframe with results from search for value of given attribute
         :param attribute: (str) attribute to search for
         :param operator: (int) operator to filter attribute by value i.e greater, in etc
         :param value: (str) value of given attribute
         :param return_type: (str) type of returned data
         :param no_hits: (int) number of hits to fetch, -1 for all results
-        :param get_doc_only: (bool) if True get datafarame ith description of possible attributes and operators
+        :param get_doc_only: (bool) if True get datafarame with description of possible attributes and operators
         :return: pd.DataFrame
         """
         command = self.__rest_api_commands.get('text')(attribute, operator, value,
