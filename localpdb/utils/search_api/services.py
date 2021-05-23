@@ -1,3 +1,6 @@
+from .tools.text_api_input_fetcher import read_text_api_input
+
+
 class ServiceUtils:
     def __init__(self, search_attrs, service):
         self.search_attrs = search_attrs
@@ -45,3 +48,21 @@ class StructMotifService:
         self.name = 'strucmotif'
         self.search_attrs = ['value']
         self.service_util = ServiceUtils(self.search_attrs, self)
+
+
+class TextService:
+    input_params = None
+
+    def __init__(self, attribute, operator, value):
+        self.attribute = attribute
+        self.operator = operator
+        self.value = value
+        self.name = 'text'
+        self.search_attrs = ['attribute', 'operator', 'value']
+        self.service_util = ServiceUtils(self.search_attrs, self)
+        self.__input_params = None
+
+    @classmethod
+    def set_input_params(cls, source='https://search.rcsb.org/rcsbsearch/v1/metadata/schema'):
+        if cls.input_params is None:
+            cls.input_params = read_text_api_input(source,)
