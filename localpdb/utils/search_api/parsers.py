@@ -7,7 +7,11 @@ class ResponseParser:
 
     def parse(self, response):
         for id_ in response['result_set']:
-            id_['identifier'] = id_['identifier'].lower().replace('.', '_')
+            if '.' in id_['identifier']:
+                pdbid, chain = id_['identifier'].split('.')
+                id_['identifier'] = f'{pdbid.lower()}_{chain.upper()}'
+            else:
+                id_['identifier'] = id_['identifier'].lower()
         if self.raw:
             response = response['result_set']
             return pd.DataFrame(response)
