@@ -78,4 +78,5 @@ class ECOD(Plugin):
 
     def _reset(self):
         del self.lpdb.ecod
+        self.lpdb._remove_attr('ecod')
         self._load()

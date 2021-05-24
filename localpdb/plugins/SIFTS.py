@@ -95,7 +95,6 @@ class SIFTS(Plugin):
     def _setup(self):
 
         out_dir = f'{self.plugin_dir}/{self.plugin_version}/'
-        status = []
         for name, url in self.plugin_config['urls'].items():
             out_fn = '{}/{}'.format(out_dir, os.path.basename(urlparse(url).path))
             download_url(url, out_fn, ftp=True)
@@ -113,5 +112,12 @@ class SIFTS(Plugin):
         self.lpdb.scop = self.lpdb.scop[self.lpdb.cath['pdb'].isin(structures)]
 
     def _reset(self):
-        del self.lpdb.ecod
+        del self.lpdb.pfam
+        del self.lpdb.ec
+        del self.lpdb.cath
+        del self.lpdb.scop
+        self.lpdb._remove_attr('pfam')
+        self.lpdb._remove_attr('ec')
+        self.lpdb._remove_attr('cath')
+        self.lpdb._remove_attr('scop')
         self._load()

@@ -132,7 +132,17 @@ class PDB:
         if attr not in self.__registered_attrs:
             self.__registered_attrs.append(attr)
         else:
-            raise ValueError('Attribute \'{}\' was already registered by other plugin!'.format(attr))
+            raise ValueError(f'Attribute \'{attr}\' was already registered by other plugin!')
+
+    def _remove_attr(self, attr):
+        """
+        Removes the attribute donated by the Plugin to allow auto-filtering option
+        :param attr: attribute name to be reqistered
+        """
+        if attr in self.__registered_attrs:
+            self.__registered_attrs.remove(attr)
+        else:
+            raise ValueError(f'Attribute \'{attr}\' is not registered!')
 
     def __repr__(self):
         return f'localpdb database (v{self.version}) holding {len(self.entries)} entries ({len(self.chains)} chains)'
@@ -195,6 +205,8 @@ class PDB:
         del self.__chains
         self.__entries = self.__entries_copy.copy()
         self.__chains = self.__chains_copy.copy()
+        for ph in self._loaded_plugins_handles:
+            ph._reset()
 
     @property
     def chains(self):
