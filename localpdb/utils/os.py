@@ -7,6 +7,8 @@ import signal
 import shlex
 import subprocess
 import concurrent.futures
+import tempfile
+import gzip
 from datetime import datetime
 from pathlib import Path
 
@@ -176,3 +178,11 @@ def parse_simple(fn):
     with open(fn) as f:
         entries = {line.rstrip() for line in f}
     return entries
+
+
+def get_unzipped_tempfile(gz_fn):
+    f = tempfile.NamedTemporaryFile(dir='/tmp/', mode='wt')
+    fh = open(f.name, 'w')
+    fh.write(gzip.open(gz_fn, mode='rt').read())
+    fh.close()
+    return f
