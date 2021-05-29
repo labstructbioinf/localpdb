@@ -35,11 +35,11 @@ class Socket(Plugin):
 
     def _load(self):
         data_dict = {'socket_{}'.format(cutoff): {} for cutoff in self.socket_cutoffs}  # Data store for all cutoffs
-        for pdb_id in self.lpdb.entries.index:
+        for key, pdb_id in self.id_dict.items():
             for cutoff in self.socket_cutoffs:
                 fn_out = f'{self.plugin_dir}/{pdb_id[1:3]}/{pdb_id}_socket_{cutoff}'
                 if os.path.isfile(fn_out):
-                    data_dict['socket_{}'.format(cutoff)][pdb_id] = fn_out
+                    data_dict['socket_{}'.format(cutoff)][key] = fn_out
         self.lpdb._add_col_structures(pd.DataFrame.from_dict(data_dict))
         self.lpdb.get_socket_dict = self.get_socket_dict.__get__(self)
 

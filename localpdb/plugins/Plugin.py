@@ -7,8 +7,6 @@ from .PluginVersioneer import PluginVersioneer
 from localpdb.utils.os import create_directory, custom_warning
 from localpdb.utils.errors import *
 
-import traceback
-
 logger = logging.getLogger(__name__)
 warnings.showwarning = custom_warning
 
