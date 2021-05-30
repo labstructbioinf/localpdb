@@ -12,9 +12,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: [3.6, 3.7, 3.8]
-        poetry-version: [1.0, 1.1.6]
-        os: [ubuntu-18.04, macos-latest, windows-latest]
+        python-version: [3.6]
+        poetry-version: [1.1.6]
+        os: [ubuntu-18.04]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
@@ -31,6 +31,6 @@ jobs:
         run: poetry install
       - name: Build coverage file
         run: |
-            pytest --cache-clear --cov=localpdb localpdb/tests/ > pytest-coverage.txt
+            poetry run pytest --cache-clear --cov=localpdb localpdb/tests/ > pytest-coverage.txt
       - name: Comment coverage
         uses: coroo/pytest-coverage-commentator@v1.0.2
