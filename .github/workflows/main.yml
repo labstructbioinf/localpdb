@@ -1,5 +1,11 @@
-name: CI
-on: pull_request
+name: Run tests
+
+on:
+  push:
+  pull_request:
+    branches:
+      - master
+
 
 jobs:
   ci:
