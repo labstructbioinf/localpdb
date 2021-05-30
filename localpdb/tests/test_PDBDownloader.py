@@ -21,13 +21,3 @@ class TestPDBDownloader:
             PDBDownloader(tmp_dir, '20210521', remote_config)
         assert pytest_wrapped_e.type == SystemExit
         assert pytest_wrapped_e.value.code == 1
-
-    def test_download(self, tmp_dir, remote_config, mocker):
-        dowloader = self.get_downloader(tmp_dir, '20210521', remote_config)
-
-        mocker.patch(
-            # api_call is from slow.py but imported to main.py
-            'localpdb.PDBDownloader.download_url',
-            return_value=True
-        )
-        dowloader.download('entries')
