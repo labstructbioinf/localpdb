@@ -7,7 +7,7 @@ class ServiceUtils:
         self.service = service
 
     def to_dict(self):
-        return {"parameters": {attr: getattr(self.service, attr) for attr in self.search_attrs}}
+        return {"parameters": {attr: getattr(self.service, attr) for attr in self.search_attrs if getattr(self.service, attr)}}
 
 
 class SeqmotifService:
