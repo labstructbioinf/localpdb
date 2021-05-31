@@ -1,0 +1,7 @@
+path: 'socket'
+allow_loading_outdated: False
+available_historical_versions: True
+requires_pdb: True
+requires_cif: False
+socket_loc: "/opt/apps/socket/socket"
+dssp2_loc: "/opt/apps/dssp-2.3.0/mkdssp"

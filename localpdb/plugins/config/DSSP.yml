@@ -1,0 +1,6 @@
+path: 'dssp'
+allow_loading_outdated: False
+available_historical_versions: True
+requires_pdb: False
+requires_cif: True
+dssp_loc: "/opt/apps/dssp-3.1.4/mkdssp"
