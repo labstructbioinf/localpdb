@@ -5,9 +5,9 @@
 ![python-ver](https://img.shields.io/badge/python-%3E=3.6.1-blue)
 
 **localpdb** provides a simple framework to store the local mirror of the protein structures available in the [PDB](https://www.rcsb.org/) database and other related resources.
-The underlying data can be conveniently browsed and queried with the `pandas.DataFrame` structures. 
-The update mechanism allows to follow the weekly PDB releases while retaining the possiblity to access previous data versions.
 
+The underlying data can be conveniently browsed and queried with the `pandas.DataFrame` structures. 
+Update mechanism allows to follow the weekly PDB releases while retaining the possiblity to access previous data versions.
 
 **You may find `localpdb` particularly useful if you:**
 - already use Biopython `Bio.PDB.PDBList`, `prody.proteins.localpdb` modules or tools like 
@@ -35,12 +35,11 @@ sns.barplot(data=df, x='deposition_date', y='mmCIF_fn', hue='method')
 ![Example1](docs/img/example1.png?raw=true)
 
 ### Create a custom dataset of protein chains
-
-* Simple pipeline that selects for further analysis a representative set of protein structures:
-    * solved with X-ray crystallography,
-    * with resolution better than 2.5 angstroms, 
-    * deposited in 2010 or later, 
-    * with redundancy removed at the sequence level.
+Select **human SAM-dependent methyltransferases**, solved with **X-ray diffraction** with resolution below **2.5 Angstrom** and deposited **after 2010**. Remove the sequence **redundancy at 90%**.
+```sh
+# Install plugins providing additional data
+localpdb_setup -db_path /path/to/your/localpdb -plugins SIFTS ECOD PDBClustering
+```
 ```python
 from localpdb import PDB
 import gzip
@@ -51,7 +50,6 @@ lpdb.entries = lpdb.entries.query('resolution <= 2.5') # with resolution below 2
 lpdb.entries = lpdb.entries.query('deposition_date.dt.year >= 2010') # added after 2010
 lpdb.chains = lpdb.chains.query('ncbi_taxid == "9606"') # human proteins
 lpdb.ecod = lpdb.ecod.query('t_name == "S-adenosyl-L-methionine-dependent methyltransferases"') # SAM dependent methyltransferases
-
 
 # Remove redundancy (select only representative structure from each sequence cluster)
 lpdb.load_clustering_data(redundancy=90)
