@@ -49,11 +49,13 @@ class PDBSeqresMapper(Plugin):
     def _prep_paths(self):
         create_directory(f'{self.plugin_dir}/')
 
-    def get_pdbseqres_mapping(self, pdb_chain_id):
+    def get_pdbseqres_mapping(self, pdb_chain_id, reverse=False):
         """
         Retrieves the mapping between the residues in the PDB structure and the PDB SEQRES sequence
-        @param pdb_chain_id: pdb_chain identifier
-        @return: dict mapping the PDB structure residue identifiers (str) to PDB SEQRES sequences indexes (int)
+        @param pdb_chain_id (str): pdb_chain identifier
+        @param reverse (bool): reverse the order in returned dictionary.
+        @return: dict mapping the PDB structure residue identifiers (str) to PDB SEQRES sequences indexes (int) or reverse
+        dict if reverse is True
         """
         if pdb_chain_id not in self.lpdb._mapping_dict.keys():
             raise ValueError('Mapping for id \'{}\' is not available!'.format(pdb_chain_id))
@@ -68,6 +70,8 @@ class PDBSeqresMapper(Plugin):
                     mapping[str(key_)] = value_
             else:
                 mapping[str(pdb_res)] = seqres_res
+        if reverse:
+            return {value: key for key, value in mapping.items()}
         return mapping
 
     def map_pdb_feat_to_seqres(self, value_dict, pdb_chain_id, na_value=0, regions=False):
