@@ -19,7 +19,7 @@ Update mechanism allows to follow the weekly PDB releases while retaining the po
 - are a fan of pandas `DataFrames`.
 
 ## Overview
-![Overview](docs/img/overview.png?raw=true)
+![Overview](img/overview.png?raw=true)
 To find more about the package and its functionalities please follow the [docs](https://labstructbioinf.github.io/localpdb/overview).
 
 ## Installation
@@ -45,7 +45,7 @@ df = lpdb.entries.groupby(by=['method', lpdb.entries.deposition_date.dt.year])['
 
 sns.barplot(data=df, x='deposition_date', y='mmCIF_fn', hue='method')
 ```
-![Example1](docs/img/example1.png?raw=true)
+![Example1](img/example1.png?raw=true)
 
 ### Create a custom dataset of protein chains
 Select:
@@ -81,10 +81,11 @@ lpdb.chains.to_csv('dataset.csv') # Save dataset
 ```
 ### Advanced examples
 - Assessing conformational variability from the ensemble of structures of Sars-COV main protease.
-![Example1](docs/img/example3.png?raw=true)
+![Example1](img/example3.png?raw=true)
  
 - To be continued... 
 
 
 ## Acknowledgments
 This work was supported by the National Science Centre grant 2017/27/N/NZ1/00716
+

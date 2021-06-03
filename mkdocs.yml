@@ -1,0 +1,25 @@
+site_name: localpdb
+site_author: Jan Ludwiczak
+repo_url: https://github.com/labstructbioinf/localpdb
+docs_dir: docs
+theme:
+  name: material
+  logo: "img/logo.svg"
+  favicon: "img/favicon.ico"
+  palette:
+    primary: "1c1e52"
+markdown_extensions:
+  - admonition:
+  - pymdownx.inlinehilite:
+  - pymdownx.superfences:
+nav:
+    - Home: index.md
+    - Overview: overview.md
+    - Setup: setup.md
+    - API:
+        - localpdb.PDB: lpdb.md
+        - localpdb.PDB.entries: lpdb_entries.md
+        - localpdb.PDB.chains: lpdb_chains.md
+    - Plugins: plugins.md
+extra_css:
+  - stylesheets/extra.css
