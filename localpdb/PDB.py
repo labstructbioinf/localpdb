@@ -13,7 +13,7 @@ from localpdb.utils.rest_api import CommandFactory
 
 class PDB:
 
-    def __init__(self, db_path='', version='latest', plugins=None, auto_filter=True):
+    def __init__(self, db_path='', version='latest', plugins=[], auto_filter=True):
         """
         @param db_path (str): location of the localpdb database
         @param version (int) or 'latest': version of the localpdb database to load (default: version='latest')

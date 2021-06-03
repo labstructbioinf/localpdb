@@ -222,13 +222,15 @@ class PDBDownloader:
             if format == 'pdb':
                 org_fn = f'{self.db_path}/mirror/pdb/{pdb_id[1:3]}/pdb{pdb_id}.ent.gz'
                 dest_fn = f'{self.db_path}/mirror/pdb/{pdb_id[1:3]}/pdb{map_dict[pdb_id]}.ent.gz'
-                self.cp_files.append((org_fn, dest_fn))
             else:
                 org_fn = f'{self.db_path}/mirror/mmCIF/{pdb_id[1:3]}/{pdb_id}.cif.gz'
                 dest_fn = f'{self.db_path}/mirror/mmCIF/{pdb_id[1:3]}/{map_dict[pdb_id]}.cif.gz'
+            try:
+                shutil.copy2(org_fn, dest_fn)
                 self.cp_files.append((org_fn, dest_fn))
-            logger.debug(f'Moved file\'{org_fn}\' to \'{dest_fn}\'.')
-            shutil.copy2(org_fn, dest_fn)
+                logger.debug(f'Moved file\'{org_fn}\' to \'{dest_fn}\'.')
+            except:
+                logger.debug(f'File \'{org_fn}\' that was supposed to be moved (versioning) does not exist.')
 
         # Now run main rsync process with the tqdm progress bar
         tqdm_str = f'tqdm --unit_scale --unit=item --dynamic_ncols=True --total={n_structs} >> /dev/null '
