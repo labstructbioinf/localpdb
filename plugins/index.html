@@ -66,11 +66,6 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
-        
-        <a href="#plugins" class="md-skip">
-          Skip to content
-        </a>
-      
     </div>
     <div data-md-component="announce">
       
@@ -216,9 +211,113 @@
   
   
     <li class="md-nav__item">
+      <a href="../overview/" class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../setup/" class="md-nav__link">
         Setup
       </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      <label class="md-nav__link" for="__nav_4">
+        API
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="API" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          API
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lpdb/" class="md-nav__link">
+        localpdb.PDB
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lpdb_entries/" class="md-nav__link">
+        localpdb.PDB.entries
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lpdb_chains/" class="md-nav__link">
+        localpdb.PDB.chains
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Plugins
+      </a>
+      
     </li>
   
 
@@ -229,36 +328,6 @@
                 </div>
               </div>
             
-            
-              
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
-                <div class="md-sidebar__scrollwrap">
-                  <div class="md-sidebar__inner">
-                    
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#plugins" class="md-nav__link">
-    Plugins
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-                  </div>
-                </div>
-              </div>
             
           
           <div class="md-content" data-md-component="content">
@@ -272,45 +341,7 @@
                 
                   <h1>Plugins</h1>
                 
-                <table>
-<thead>
-<tr>
-<th align="center">Option</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td align="center"><strong><code>Taxonomy</code></strong></td>
-<td>NCBI taxonomy information</td>
-</tr>
-<tr>
-<td align="center"><strong><code>ECOD</code></strong></td>
-<td>ECOD (Evolutionary classification of protein domains) information</td>
-</tr>
-<tr>
-<td align="center"><strong><code>EC</code></strong></td>
-<td>EC (enzyme classification) identifiers</td>
-</tr>
-<tr>
-<td align="center"><strong><code>--fetch_cif</code></strong></td>
-<td>Download the protein structures in the <code>mmCIF</code> format</td>
-</tr>
-</tbody>
-</table>
-<h3 id="plugins">Plugins</h3>
-<p><div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">localpdb</span> <span class="kn">import</span> <span class="n">PDB</span>
-<span class="n">lpdb</span> <span class="o">=</span> <span class="n">PDB</span><span class="p">(</span><span class="n">db_path</span><span class="o">=</span><span class="s1">&#39;/path/to/localpdb&#39;</span><span class="p">)</span>
-<span class="n">lpdb</span><span class="o">.</span><span class="n">chains</span>
-</code></pre></div>
-|        |<strong>pdb</strong>|<strong>sequence</strong>             |<strong>deposition_date</strong>  |<strong>resolution</strong>|<strong>method</strong>   |
-|:------:|:-----:|:-----------------------:|:-------------------:|:------------:|:-----------:|
-| 2lje_A | 2lje  | GSSHHHHHHSSGLVPRGSHMK...| 2011-09-11 00:00:00 |       nan    | NMR         |
-| 5qc9_A | 5qc9  | ILPDSVDWREKGCVTEVKYQG...| 2017-08-04 00:00:00 |         2    | diffraction |
-| 1yxj_B | 1yxj  | MPCPQDWIWHGENCYLFSSGS...| 2005-02-22 00:00:00 |         1.78 | diffraction |
-| 4d6w_C | 4d6w  | YLSIAFPENTKLDWKPVTKNT...| 2014-11-18 00:00:00 |         3.6  | diffraction |
-| 5wln_K | 5wln  | ENSGGNAFVPAGNQQEAHWTI...| 2017-07-27 00:00:00 |         3.57 | EM          |
-| ... | ...  | ...| ... |         ... | ...          |</p>
+                
                 
               
               
@@ -326,6 +357,25 @@
       
         
 <footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        <a href="../lpdb_chains/" class="md-footer__link md-footer__link--prev" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              localpdb.PDB.chains
+            </div>
+          </div>
+        </a>
+      
+      
+    </nav>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">

@@ -234,8 +234,56 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#quick-start" class="md-nav__link">
-    Quick start
+  <a href="#overview" class="md-nav__link">
+    Overview
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    Installation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    Examples
+  </a>
+  
+    <nav class="md-nav" aria-label="Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#find-number-of-entries-added-to-the-pdb-every-year" class="md-nav__link">
+    Find number of entries added to the PDB every year
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-a-custom-dataset-of-protein-chains" class="md-nav__link">
+    Create a custom dataset of protein chains
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#advanced-examples" class="md-nav__link">
+    Advanced examples
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#acknowledgments" class="md-nav__link">
+    Acknowledgments
   </a>
   
 </li>
@@ -256,8 +304,104 @@
   
   
     <li class="md-nav__item">
+      <a href="overview/" class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
       <a href="setup/" class="md-nav__link">
         Setup
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      <label class="md-nav__link" for="__nav_4">
+        API
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="API" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          API
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="lpdb/" class="md-nav__link">
+        localpdb.PDB
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="lpdb_entries/" class="md-nav__link">
+        localpdb.PDB.entries
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="lpdb_chains/" class="md-nav__link">
+        localpdb.PDB.chains
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="plugins/" class="md-nav__link">
+        Plugins
       </a>
     </li>
   
@@ -289,8 +433,56 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#quick-start" class="md-nav__link">
-    Quick start
+  <a href="#overview" class="md-nav__link">
+    Overview
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    Installation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    Examples
+  </a>
+  
+    <nav class="md-nav" aria-label="Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#find-number-of-entries-added-to-the-pdb-every-year" class="md-nav__link">
+    Find number of entries added to the PDB every year
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-a-custom-dataset-of-protein-chains" class="md-nav__link">
+    Create a custom dataset of protein chains
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#advanced-examples" class="md-nav__link">
+    Advanced examples
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#acknowledgments" class="md-nav__link">
+    Acknowledgments
   </a>
   
 </li>
@@ -313,19 +505,86 @@
                 
                 
                 <h1 id="localpdb"><strong><span style="font-family: 'Courier New';">localpdb</span></strong></h1>
-<p><img alt="python-ver" src="https://img.shields.io/badge/python-%3E=3.6-blue" />
-<a href="https://pypi.python.org/pypi/localpdb/"><img alt="PyPI version fury.io" src="https://badge.fury.io/py/localpdb.svg" /></a></p>
-<h3 id="quick-start">Quick start</h3>
+<p><img alt="localpdb" src="https://github.com/labstructbioinf/localpdb/workflows/localpdb/badge.svg" /> 
+<img alt="localpdb" src="https://img.shields.io/pypi/v/localpdb" />
+<a href="https://codecov.io/gh/labstructbioinf/localpdb"><img alt="codecov" src="https://codecov.io/gh/labstructbioinf/localpdb/branch/master/graph/badge.svg" /></a> 
+<img alt="python-ver" src="https://img.shields.io/badge/python-%3E=3.6.1-blue" /></p>
+<p><strong>localpdb</strong> provides a simple framework to store the local mirror of the protein structures available in the <a href="https://www.rcsb.org/">PDB</a> database and other related resources.</p>
+<p>The underlying data can be conveniently browsed and queried with the <code>pandas.DataFrame</code> structures. 
+Update mechanism allows to follow the weekly PDB releases while retaining the possiblity to access previous data versions.</p>
+<p><strong>You may find <code>localpdb</code> particularly useful if you:</strong></p>
 <ul>
-<li>Install <strong>localpdb</strong> with pip:
-<div class="highlight"><pre><span></span><code>pip install localpdb
-</code></pre></div></li>
-<li>Run setup script to download PDB data and protein structures in the 
-PDB format:
-<div class="highlight"><pre><span></span><code>localpdb_setup -db_path /path/to/your/localpdb --fetch_pdb
-</code></pre></div>
-More information on the <strong>localpdb</strong> setup options is available at the <a href="setup/">Setup</a> page.</li>
+<li>already use Biopython <code>Bio.PDB.PDBList</code> or similar modules and tools like 
+  <a href="https://webs.iiitd.edu.in/raghava/ccpdb/">CCPDB</a>,</li>
+<li>build custom protein datasets based on multiple criteria, e.g. for machine learning purposes,</li>
+<li>create pipelines based on the multiple or all available protein structures,</li>
+<li>are a fan of pandas <code>DataFrames</code>.</li>
 </ul>
+<h2 id="overview">Overview</h2>
+<p><img alt="Overview" src="img/overview.png?raw=true" />
+To find more about the package and its functionalities please follow the <a href="https://labstructbioinf.github.io/localpdb/overview">docs</a>.</p>
+<h2 id="installation">Installation</h2>
+<p><div class="highlight"><pre><span></span><code>pip install localpdb
+</code></pre></div>
+Setup the database and sync protein structures in the mmCIF format:
+<div class="highlight"><pre><span></span><code>localpdb_setup -db_path /path/to/localpdb --fetch_cif
+</code></pre></div>
+More information on the setup options are available via <a href="https://labstructbioinf.github.io/localpdb/setup">docs</a>.</p>
+<h2 id="examples">Examples</h2>
+<h3 id="find-number-of-entries-added-to-the-pdb-every-year">Find number of entries added to the PDB every year</h3>
+<p><div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">localpdb</span> <span class="kn">import</span> <span class="n">PDB</span>
+
+<span class="n">lpdb</span> <span class="o">=</span> <span class="n">PDB</span><span class="p">(</span><span class="n">db_path</span><span class="o">=</span><span class="s1">&#39;/path/to/your/localpdb&#39;</span><span class="p">)</span>
+<span class="n">lpdb</span><span class="o">.</span><span class="n">entries</span> <span class="o">=</span> <span class="n">lpdb</span><span class="o">.</span><span class="n">entries</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s1">&#39;deposition_date.dt.year &gt;= 2015 &amp; deposition_date.dt.year &lt;= 2020&#39;</span><span class="p">)</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">lpdb</span><span class="o">.</span><span class="n">entries</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;method&#39;</span><span class="p">,</span> <span class="n">lpdb</span><span class="o">.</span><span class="n">entries</span><span class="o">.</span><span class="n">deposition_date</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span><span class="p">])[</span><span class="s1">&#39;mmCIF_fn&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">count</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;deposition_date&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;mmCIF_fn&#39;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s1">&#39;method&#39;</span><span class="p">)</span>
+</code></pre></div>
+<img alt="Example1" src="img/example1.png?raw=true" /></p>
+<h3 id="create-a-custom-dataset-of-protein-chains">Create a custom dataset of protein chains</h3>
+<p>Select:</p>
+<ul>
+<li><strong>human SAM-dependent methyltransferases</strong>, </li>
+<li>solved with <strong>X-ray diffraction</strong>, </li>
+<li>with resolution below <strong>2.5 Angstrom</strong></li>
+<li>deposited <strong>after 2010</strong>. </li>
+<li>remove the sequence <strong>redundancy at 90%</strong>,
+<div class="highlight"><pre><span></span><code><span class="c1"># Install plugins providing additional data</span>
+localpdb_setup -db_path /path/to/your/localpdb -plugins SIFTS ECOD PDBClustering
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">localpdb</span> <span class="kn">import</span> <span class="n">PDB</span>
+<span class="kn">import</span> <span class="nn">gzip</span>
+
+<span class="n">lpdb</span><span class="o">.</span><span class="n">entries</span> <span class="o">=</span> <span class="n">lpdb</span><span class="o">.</span><span class="n">entries</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s1">&#39;type == &quot;prot&quot;&#39;</span><span class="p">)</span> <span class="c1"># Protein structures</span>
+<span class="n">lpdb</span><span class="o">.</span><span class="n">entries</span> <span class="o">=</span> <span class="n">lpdb</span><span class="o">.</span><span class="n">entries</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s1">&#39;method == &quot;diffraction&quot;&#39;</span><span class="p">)</span> <span class="c1"># solved with X-ray diffraction</span>
+<span class="n">lpdb</span><span class="o">.</span><span class="n">entries</span> <span class="o">=</span> <span class="n">lpdb</span><span class="o">.</span><span class="n">entries</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s1">&#39;resolution &lt;= 2.5&#39;</span><span class="p">)</span> <span class="c1"># with resolution below 2.5A</span>
+<span class="n">lpdb</span><span class="o">.</span><span class="n">entries</span> <span class="o">=</span> <span class="n">lpdb</span><span class="o">.</span><span class="n">entries</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s1">&#39;deposition_date.dt.year &gt;= 2010&#39;</span><span class="p">)</span> <span class="c1"># added after 2010</span>
+<span class="n">lpdb</span><span class="o">.</span><span class="n">chains</span> <span class="o">=</span> <span class="n">lpdb</span><span class="o">.</span><span class="n">chains</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s1">&#39;ncbi_taxid == &quot;9606&quot;&#39;</span><span class="p">)</span> <span class="c1"># human proteins</span>
+<span class="n">lpdb</span><span class="o">.</span><span class="n">ecod</span> <span class="o">=</span> <span class="n">lpdb</span><span class="o">.</span><span class="n">ecod</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s1">&#39;t_name == &quot;S-adenosyl-L-methionine-dependent methyltransferases&quot;&#39;</span><span class="p">)</span> <span class="c1"># SAM dependent methyltransferases</span>
+
+<span class="c1"># Remove redundancy (select only representative structure from each sequence cluster)</span>
+<span class="n">lpdb</span><span class="o">.</span><span class="n">load_clustering_data</span><span class="p">(</span><span class="n">redundancy</span><span class="o">=</span><span class="mi">90</span><span class="p">)</span>
+<span class="n">lpdb</span><span class="o">.</span><span class="n">chains</span> <span class="o">=</span> <span class="n">lpdb</span><span class="o">.</span><span class="n">chains</span><span class="p">[</span><span class="n">lpdb</span><span class="o">.</span><span class="n">chains</span><span class="p">[</span><span class="s1">&#39;clust-90&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">notnull</span><span class="p">()]</span>
+
+<span class="n">representative</span> <span class="o">=</span> <span class="n">lpdb</span><span class="o">.</span><span class="n">chains</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;clust-90&#39;</span><span class="p">)[</span><span class="s1">&#39;resolution&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">idxmin</span><span class="p">()</span>
+<span class="n">lpdb</span><span class="o">.</span><span class="n">chains</span> <span class="o">=</span> <span class="n">lpdb</span><span class="o">.</span><span class="n">chains</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">representative</span><span class="p">]</span>
+
+<span class="n">lpdb</span><span class="o">.</span><span class="n">chains</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;dataset.csv&#39;</span><span class="p">)</span> <span class="c1"># Save dataset</span>
+</code></pre></div></li>
+</ul>
+<h3 id="advanced-examples">Advanced examples</h3>
+<ul>
+<li>
+<p>Assessing conformational variability from the ensemble of structures of Sars-COV main protease.
+<img alt="Example1" src="img/example3.png?raw=true" /></p>
+</li>
+<li>
+<p>To be continued... </p>
+</li>
+</ul>
+<h2 id="acknowledgments">Acknowledgments</h2>
+<p>This work was supported by the National Science Centre grant 2017/27/N/NZ1/00716</p>
                 
               
               
@@ -345,13 +604,13 @@ More information on the <strong>localpdb</strong> setup options is available at 
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
       
-        <a href="setup/" class="md-footer__link md-footer__link--next" rel="next">
+        <a href="overview/" class="md-footer__link md-footer__link--next" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              Setup
+              Overview
             </div>
           </div>
           <div class="md-footer__button md-icon">

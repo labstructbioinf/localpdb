@@ -16,7 +16,7 @@
     
     
       
-        <title>Setup - localpdb</title>
+        <title>localpdb.PDB - localpdb</title>
       
     
     
@@ -67,7 +67,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#installation" class="md-skip">
+        <a href="#arguments" class="md-skip">
           Skip to content
         </a>
       
@@ -96,7 +96,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Setup
+              localpdb.PDB
             
           </span>
         </div>
@@ -229,58 +229,11 @@
 
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          Setup
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../setup/" class="md-nav__link">
         Setup
       </a>
-      
-        
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#installing-localpdb" class="md-nav__link">
-    Installing localpdb
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#setting-up-localpdb" class="md-nav__link">
-    Setting up localpdb
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -291,12 +244,14 @@
 
   
   
+    
+  
   
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
       
       <label class="md-nav__link" for="__nav_4">
         API
@@ -312,11 +267,61 @@
             
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../lpdb/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          localpdb.PDB
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         localpdb.PDB
       </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#arguments" class="md-nav__link">
+    Arguments
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#attributes" class="md-nav__link">
+    Attributes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#methods" class="md-nav__link">
+    Methods
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -382,8 +387,6 @@
   
   
   
-    
-  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -392,15 +395,22 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#installing-localpdb" class="md-nav__link">
-    Installing localpdb
+  <a href="#arguments" class="md-nav__link">
+    Arguments
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#setting-up-localpdb" class="md-nav__link">
-    Setting up localpdb
+  <a href="#attributes" class="md-nav__link">
+    Attributes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#methods" class="md-nav__link">
+    Methods
   </a>
   
 </li>
@@ -417,68 +427,96 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/labstructbioinf/localpdb/edit/master/docs/setup.md" title="Edit this page" class="md-content__button md-icon">
+                  <a href="https://github.com/labstructbioinf/localpdb/edit/master/docs/lpdb.md" title="Edit this page" class="md-content__button md-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
                   </a>
                 
                 
-                <h1 id="installation">Installation</h1>
-<h3 id="installing-localpdb">Installing localpdb</h3>
-<p>Setup of the <code>localpdb</code> is simple and straightforward.
-Recommended installation way is to use <code>pip</code>
-(this will also make the <code>localpdb_setup</code> script available in your <code>PATH</code>):
-<div class="highlight"><pre><span></span><code>pip install localpdb
-</code></pre></div>
-To clone the newest version of <code>localpdb</code> you can instally directly from the repository:
-<div class="highlight"><pre><span></span><code>pip install git+https://github.com/labstructbioinf/localpdb.git
-</code></pre></div></p>
-<h3 id="setting-up-localpdb">Setting up localpdb</h3>
-<p>Once installed <code>localpdb</code> you need to setup the database in a suitable directory:
-<div class="highlight"><pre><span></span><code>localpdb_setup -db_path /path/to/localpdb
-</code></pre></div>
-Setup script provides additional options if you want to additionally keep the
-updatable archive of the raw protein structures in various formats or to select the desired PDB mirror:</p>
+                  <h1>localpdb.PDB</h1>
+                
+                <p><strong><code>localpdb.PDB()</code></strong></p>
+<h2 id="arguments">Arguments</h2>
 <table>
 <thead>
 <tr>
-<th align="center">Option</th>
-<th>Description</th>
+<th align="left">Argument &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+<th align="left">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="center"><strong><code>-db_path PATH</code></strong></td>
-<td>Path to store the <code>localpdb</code> database</td>
+<td align="left"><code>db_path</code></td>
+<td align="left">location of the <code>localpdb</code> database</td>
 </tr>
 <tr>
-<td align="center"><strong><code>-mirror MIRROR</code></strong></td>
-<td>PDB mirror used to download the raw files. Valid options are:<br/> - <code>rcsb</code> (RCSB PDB - US - <strong>default</strong>), <br /> - <code>pdbe</code> (PDBe - UK), <br /> - <code>pdbj</code> (PDBj - Japan)</td>
+<td align="left"><code>version</code></td>
+<td align="left">version of the <code>localpdb</code> database to load (default: <code>version='latest'</code>)</td>
 </tr>
 <tr>
-<td align="center"><strong><code>-plugins PLUGINS</code></strong></td>
-<td>Install plugins fetching additional data. More on plugins.</td>
+<td align="left"><code>auto_filter</code></td>
+<td align="left">automatically propagate selections performed on any of the DataFrames to other DataFrames (default: <code>auto_filter=True</code>). See example below for more information.</td>
 </tr>
 <tr>
-<td align="center"><strong><code>--fetch_pdb</code></strong></td>
-<td>Download the protein structures in the <code>PDB</code> format</td>
-</tr>
-<tr>
-<td align="center"><strong><code>--fetch_cif</code></strong></td>
-<td>Download the protein structures in the <code>mmCIF</code> format</td>
-</tr>
-<tr>
-<td align="center"><strong><code>--update</code></strong></td>
-<td>Update  <code>localpdb</code> database instead of setting up. More on updates.</td>
+<td align="left"><code>plugins</code></td>
+<td align="left">Names of the plugins to load</td>
 </tr>
 </tbody>
 </table>
 <div class="admonition example">
 <p class="admonition-title">Example</p>
-<p><strong>Setting up <code>localpdb</code> in directory <code>/ssd/db/localpdb</code>, syncing structures in <code>PDB</code> and <code>mmCIF</code> formats 
-and installing plugins <code>PDBClustering</code> and <code>ECOD</code>:</strong>
-<div class="highlight"><pre><span></span><code>localpdb_setup -db_path /ssd/db/localpdb --fetch_pdb --fetch_cif -plugins ECOD PDBClustering
-</code></pre></div></p>
+<p><div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">localpdb</span> <span class="kn">import</span> <span class="n">PDB</span>
+<span class="n">lpdb</span> <span class="o">=</span> <span class="n">PDB</span><span class="p">(</span><span class="n">db_path</span><span class="o">=</span><span class="s1">&#39;/ssd/db/localpdb&#39;</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="s1">&#39;latest&#39;</span><span class="p">,</span> <span class="n">auto_filter</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">lpdb</span><span class="o">.</span><span class="n">entries</span> <span class="o">=</span> <span class="n">lpdb</span><span class="o">.</span><span class="n">entries</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">lpdb</span><span class="o">.</span><span class="n">entries</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s1">&#39;method == &quot;diffraction&quot;&#39;</span><span class="p">))</span>
+</code></pre></div>
+<code>lpdb.entries</code> was updated and since <code>auto_filter=True</code> the selection will be also propagated to <code>lpdb.chains</code>.
+In other words <code>lpdb.chains</code> will contain only the chains corresponding to the entries present in <code>lpdb.entries</code>.</p>
 </div>
+<h2 id="attributes">Attributes</h2>
+<table>
+<thead>
+<tr>
+<th align="left">Attribute</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>entries</code></td>
+<td align="left"><code>pandas.DataFrame</code> containing all entries available in the loaded PDB release.</td>
+</tr>
+<tr>
+<td align="left"><code>chains</code></td>
+<td align="left"><code>pandas.DataFrame</code> containing all chains (polymer entity instances) in the loaded PDB release.</td>
+</tr>
+<tr>
+<td align="left"><code>version</code></td>
+<td align="left">timestamp of the loaded PDB data, in the format <code>YYYYMMDD</code> (e.g. <code>20210507</code>)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="methods">Methods</h2>
+<table>
+<thead>
+<tr>
+<th align="left">Method  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>reset()</code></td>
+<td align="left">Resets all selections performed on any of the DataFrames and restores the initial state of PDB object.</td>
+</tr>
+<tr>
+<td align="left"><code>load_plugin(plugin='Name')</code></td>
+<td align="left">Loads plugins and its data.</td>
+</tr>
+<tr>
+<td align="left"><code>select_updates(mode='am+')</code></td>
+<td align="left">Selects only the entries that were either added (<code>mode='a'</code>) or (<code>mode='m'</code>) or both (<code>mode='am'</code>) in the latest PDB weekly release. In <code>mode='am+'</code> updates with respect to the previous localpdb version will be loaded.</td>
+</tr>
+</tbody>
+</table>
                 
               
               
@@ -497,7 +535,7 @@ and installing plugins <code>PDBClustering</code> and <code>ECOD</code>:</strong
   
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
-        <a href="../overview/" class="md-footer__link md-footer__link--prev" rel="prev">
+        <a href="../setup/" class="md-footer__link md-footer__link--prev" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
           </div>
@@ -506,19 +544,19 @@ and installing plugins <code>PDBClustering</code> and <code>ECOD</code>:</strong
               <span class="md-footer__direction">
                 Previous
               </span>
-              Overview
+              Setup
             </div>
           </div>
         </a>
       
       
-        <a href="../lpdb/" class="md-footer__link md-footer__link--next" rel="next">
+        <a href="../lpdb_entries/" class="md-footer__link md-footer__link--next" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              localpdb.PDB
+              localpdb.PDB.entries
             </div>
           </div>
           <div class="md-footer__button md-icon">

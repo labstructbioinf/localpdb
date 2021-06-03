@@ -16,7 +16,7 @@
     
     
       
-        <title>Setup - localpdb</title>
+        <title>localpdb.PDB.entries - localpdb</title>
       
     
     
@@ -67,7 +67,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#installation" class="md-skip">
+        <a href="#description" class="md-skip">
           Skip to content
         </a>
       
@@ -96,7 +96,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Setup
+              localpdb.PDB.entries
             
           </span>
         </div>
@@ -229,58 +229,11 @@
 
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          Setup
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../setup/" class="md-nav__link">
         Setup
       </a>
-      
-        
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#installing-localpdb" class="md-nav__link">
-    Installing localpdb
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#setting-up-localpdb" class="md-nav__link">
-    Setting up localpdb
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -291,12 +244,14 @@
 
   
   
+    
+  
   
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
       
       <label class="md-nav__link" for="__nav_4">
         API
@@ -324,11 +279,47 @@
             
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../lpdb_entries/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          localpdb.PDB.entries
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         localpdb.PDB.entries
       </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#description" class="md-nav__link">
+    Description
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -382,8 +373,6 @@
   
   
   
-    
-  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -392,15 +381,8 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#installing-localpdb" class="md-nav__link">
-    Installing localpdb
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#setting-up-localpdb" class="md-nav__link">
-    Setting up localpdb
+  <a href="#description" class="md-nav__link">
+    Description
   </a>
   
 </li>
@@ -417,67 +399,133 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/labstructbioinf/localpdb/edit/master/docs/setup.md" title="Edit this page" class="md-content__button md-icon">
+                  <a href="https://github.com/labstructbioinf/localpdb/edit/master/docs/lpdb_entries.md" title="Edit this page" class="md-content__button md-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
                   </a>
                 
                 
-                <h1 id="installation">Installation</h1>
-<h3 id="installing-localpdb">Installing localpdb</h3>
-<p>Setup of the <code>localpdb</code> is simple and straightforward.
-Recommended installation way is to use <code>pip</code>
-(this will also make the <code>localpdb_setup</code> script available in your <code>PATH</code>):
-<div class="highlight"><pre><span></span><code>pip install localpdb
-</code></pre></div>
-To clone the newest version of <code>localpdb</code> you can instally directly from the repository:
-<div class="highlight"><pre><span></span><code>pip install git+https://github.com/labstructbioinf/localpdb.git
-</code></pre></div></p>
-<h3 id="setting-up-localpdb">Setting up localpdb</h3>
-<p>Once installed <code>localpdb</code> you need to setup the database in a suitable directory:
-<div class="highlight"><pre><span></span><code>localpdb_setup -db_path /path/to/localpdb
-</code></pre></div>
-Setup script provides additional options if you want to additionally keep the
-updatable archive of the raw protein structures in various formats or to select the desired PDB mirror:</p>
+                  <h1>localpdb.PDB.entries</h1>
+                
+                <p><strong><code>localpdb.PDB.entries</code></strong></p>
+<h2 id="description">Description</h2>
 <table>
 <thead>
 <tr>
-<th align="center">Option</th>
-<th>Description</th>
+<th align="center">Column &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+<th align="left">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="center"><strong><code>-db_path PATH</code></strong></td>
-<td>Path to store the <code>localpdb</code> database</td>
+<td align="center"><code>type</code></td>
+<td align="left">Type of entry (<code>prot</code>, <code>prot-nuc</code>)</td>
 </tr>
 <tr>
-<td align="center"><strong><code>-mirror MIRROR</code></strong></td>
-<td>PDB mirror used to download the raw files. Valid options are:<br/> - <code>rcsb</code> (RCSB PDB - US - <strong>default</strong>), <br /> - <code>pdbe</code> (PDBe - UK), <br /> - <code>pdbj</code> (PDBj - Japan)</td>
+<td align="center"><code>method</code></td>
+<td align="left">Method of structure determination (<code>diffraction</code>, <code>EM</code>, <code>NMR</code>)</td>
 </tr>
 <tr>
-<td align="center"><strong><code>-plugins PLUGINS</code></strong></td>
-<td>Install plugins fetching additional data. More on plugins.</td>
+<td align="center"><code>resolution</code></td>
+<td align="left">Resolution (available for methods: <code>diffraction</code>, <code>EM</code>)</td>
 </tr>
 <tr>
-<td align="center"><strong><code>--fetch_pdb</code></strong></td>
-<td>Download the protein structures in the <code>PDB</code> format</td>
+<td align="center"><code>deposition_date</code></td>
+<td align="left">Date of deposition to PDB</td>
 </tr>
 <tr>
-<td align="center"><strong><code>--fetch_cif</code></strong></td>
-<td>Download the protein structures in the <code>mmCIF</code> format</td>
+<td align="center"><code>pdb_fn</code></td>
+<td align="left">Filename of the structure in the PDB format (if structure mirror is available)</td>
 </tr>
 <tr>
-<td align="center"><strong><code>--update</code></strong></td>
-<td>Update  <code>localpdb</code> database instead of setting up. More on updates.</td>
+<td align="center"><code>mmCIF_fn</code></td>
+<td align="left">Filename of the structure in the mmCIF format (if structure mirror is available)</td>
+</tr>
+<tr>
+<td align="center"><code>biounit</code></td>
+<td align="left">Filename of the biological assembly generated with the <code>MakeMultimer.py</code> script (requires <code>Biounit</code> plugin)</td>
+</tr>
+<tr>
+<td align="center"><code>socket_7.*</code></td>
+<td align="left">Filename of the Socket (program detecting coiled-coil domains) output <code>Biounit</code> and <code>Socket</code> plugins)</td>
+</tr>
+<tr>
+<td align="center"><code>dssp</code></td>
+<td align="left">Filename of the DSSP file (requires <code>DSSP</code> plugin)</td>
 </tr>
 </tbody>
 </table>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<ul>
+<li>Some large protein structures will not be available in the PDB format - in such case there'll be a <code>np.nan</code> value in the <code>pdb_fn</code> column.</li>
+<li>Currently entries containing solely the nucleic acids are not shown in the <code>lpdb.entries</code></li>
+</ul>
+</div>
 <div class="admonition example">
 <p class="admonition-title">Example</p>
-<p><strong>Setting up <code>localpdb</code> in directory <code>/ssd/db/localpdb</code>, syncing structures in <code>PDB</code> and <code>mmCIF</code> formats 
-and installing plugins <code>PDBClustering</code> and <code>ECOD</code>:</strong>
-<div class="highlight"><pre><span></span><code>localpdb_setup -db_path /ssd/db/localpdb --fetch_pdb --fetch_cif -plugins ECOD PDBClustering
-</code></pre></div></p>
+<p><code>lpdb.entries</code></p>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">type</th>
+<th align="center">method</th>
+<th align="center">resolution</th>
+<th align="center">deposition_date</th>
+<th align="center">pdb_fn</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">4fd7</td>
+<td align="center">prot</td>
+<td align="center">diffraction</td>
+<td align="center">1.8</td>
+<td align="center">2012-05-26 00:00:00</td>
+<td align="center">/ssd/db/localpdb/mirror/pdb/fd/pdb4fd7.ent.gz</td>
+</tr>
+<tr>
+<td align="center">6gz5</td>
+<td align="center">prot-nuc</td>
+<td align="center">EM</td>
+<td align="center">3.5</td>
+<td align="center">2018-07-03 00:00:00</td>
+<td align="center">not_compatible</td>
+</tr>
+<tr>
+<td align="center">6efv</td>
+<td align="center">prot</td>
+<td align="center">diffraction</td>
+<td align="center">2.341</td>
+<td align="center">2018-08-17 00:00:00</td>
+<td align="center">/ssd/db/localpdb/mirror/pdb/ef/pdb6efv.ent.gz</td>
+</tr>
+<tr>
+<td align="center">3eqb</td>
+<td align="center">prot</td>
+<td align="center">diffraction</td>
+<td align="center">2.62</td>
+<td align="center">2008-09-30 00:00:00</td>
+<td align="center">/ssd/db/localpdb/mirror/pdb/eq/pdb3eqb.ent.gz</td>
+</tr>
+<tr>
+<td align="center">3lq4</td>
+<td align="center">prot</td>
+<td align="center">diffraction</td>
+<td align="center">1.98</td>
+<td align="center">2010-02-08 00:00:00</td>
+<td align="center">/ssd/db/localpdb/mirror/pdb/lq/pdb3lq4.ent.gz</td>
+</tr>
+<tr>
+<td align="center">...</td>
+<td align="center">...</td>
+<td align="center">...</td>
+<td align="center">...</td>
+<td align="center">...</td>
+<td align="center">...</td>
+</tr>
+</tbody>
+</table>
 </div>
                 
               
@@ -497,7 +545,7 @@ and installing plugins <code>PDBClustering</code> and <code>ECOD</code>:</strong
   
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
-        <a href="../overview/" class="md-footer__link md-footer__link--prev" rel="prev">
+        <a href="../lpdb/" class="md-footer__link md-footer__link--prev" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
           </div>
@@ -506,19 +554,19 @@ and installing plugins <code>PDBClustering</code> and <code>ECOD</code>:</strong
               <span class="md-footer__direction">
                 Previous
               </span>
-              Overview
+              localpdb.PDB
             </div>
           </div>
         </a>
       
       
-        <a href="../lpdb/" class="md-footer__link md-footer__link--next" rel="next">
+        <a href="../lpdb_chains/" class="md-footer__link md-footer__link--next" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              localpdb.PDB
+              localpdb.PDB.chains
             </div>
           </div>
           <div class="md-footer__button md-icon">
