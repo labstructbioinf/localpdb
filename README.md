@@ -4,20 +4,25 @@
 [![codecov](https://codecov.io/gh/labstructbioinf/localpdb/branch/master/graph/badge.svg)](https://codecov.io/gh/labstructbioinf/localpdb) 
 ![python-ver](https://img.shields.io/badge/python-%3E=3.6.1-blue)
 
+
+## Overview
 **localpdb** provides a simple framework to store the local mirror of the protein structures available in the [PDB](https://www.rcsb.org/) database and other related resources.
 
 The underlying data can be conveniently browsed and queried with the `pandas.DataFrame` structures. 
 Update mechanism allows to follow the weekly PDB releases while retaining the possiblity to access previous data versions.
 
 **You may find `localpdb` particularly useful if you:**
+
 - already use Biopython `Bio.PDB.PDBList`, `prody.proteins.localpdb` modules or tools like 
   [CCPDB](https://webs.iiitd.edu.in/raghava/ccpdb/),
 - build custom protein datasets based on multiple criteria, e.g. for machine learning purposes,
 - create pipelines based on the multiple or all available protein structures,
 - are a fan of pandas `DataFrames`.
 
+![Example1](docs/img/overview.png?raw=true)
+
 ## Examples
-### Find number of entries added to the PDB every year for each of the structure determination methods
+### Find number of entries added to the PDB every year
 ```sh
 pip install localpdb
 localpdb_setup -db_path /path/to/your/localpdb
@@ -60,3 +65,6 @@ lpdb.chains = lpdb.chains.loc[representative]
 
 lpdb.chains.to_csv('dataset.csv') # Save dataset
 ```
+## Advanced examples
+### Infer protein dynamics from the ensemble of structures available in PDB
+![Example3](docs/img/example3.png?raw=true)
