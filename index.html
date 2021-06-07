@@ -12,7 +12,7 @@
       
       
       <link rel="icon" href="img/favicon.ico">
-      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.1.6">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.1.4">
     
     
       
@@ -20,10 +20,10 @@
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.875de78c.min.css">
+      <link rel="stylesheet" href="assets/stylesheets/main.bde7dde4.min.css">
       
         
-        <link rel="stylesheet" href="assets/stylesheets/palette.f1a3b89f.min.css">
+        <link rel="stylesheet" href="assets/stylesheets/palette.ef6f36e2.min.css">
         
           
           
@@ -256,8 +256,8 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#find-number-of-entries-added-to-the-pdb-every-year" class="md-nav__link">
-    Find number of entries added to the PDB every year
+  <a href="#find-the-number-of-entries-added-to-the-pdb-every-year" class="md-nav__link">
+    Find the number of entries added to the PDB every year
   </a>
   
 </li>
@@ -560,8 +560,8 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#find-number-of-entries-added-to-the-pdb-every-year" class="md-nav__link">
-    Find number of entries added to the PDB every year
+  <a href="#find-the-number-of-entries-added-to-the-pdb-every-year" class="md-nav__link">
+    Find the number of entries added to the PDB every year
   </a>
   
 </li>
@@ -616,7 +616,7 @@
 <img alt="python-ver" src="https://img.shields.io/badge/python-%3E=3.6.1-blue" /></p>
 <p><strong>localpdb</strong> provides a simple framework to store the local mirror of the protein structures available in the <a href="https://www.rcsb.org/">PDB</a> database and other related resources.</p>
 <p>The underlying data can be conveniently browsed and queried with the <code>pandas.DataFrame</code> structures. 
-Update mechanism allows to follow the weekly PDB releases while retaining the possiblity to access previous data versions.</p>
+Update mechanism allows following the weekly PDB releases while retaining the possibility to access previous data versions.</p>
 <p><strong>You may find <code>localpdb</code> particularly useful if you:</strong></p>
 <ul>
 <li>already use Biopython <code>Bio.PDB.PDBList</code> or similar modules and tools like 
@@ -636,7 +636,7 @@ Setup the database and sync protein structures in the mmCIF format:
 </code></pre></div>
 More information on the setup options are available via <a href="https://labstructbioinf.github.io/localpdb/setup">docs</a>.</p>
 <h2 id="examples">Examples</h2>
-<h3 id="find-number-of-entries-added-to-the-pdb-every-year">Find number of entries added to the PDB every year</h3>
+<h3 id="find-the-number-of-entries-added-to-the-pdb-every-year">Find the number of entries added to the PDB every year</h3>
 <p><div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">localpdb</span> <span class="kn">import</span> <span class="n">PDB</span>
 
 <span class="n">lpdb</span> <span class="o">=</span> <span class="n">PDB</span><span class="p">(</span><span class="n">db_path</span><span class="o">=</span><span class="s1">&#39;/path/to/your/localpdb&#39;</span><span class="p">)</span>
@@ -654,7 +654,7 @@ More information on the setup options are available via <a href="https://labstru
 <li>solved with <strong>X-ray diffraction</strong>, </li>
 <li>with resolution below <strong>2.5 Angstrom</strong></li>
 <li>deposited <strong>after 2010</strong>. </li>
-<li>remove the sequence <strong>redundancy at 90%</strong>,
+<li>remove the redundancy at the <strong>90% sequence identity</strong>,
 <div class="highlight"><pre><span></span><code><span class="c1"># Install plugins providing additional data</span>
 localpdb_setup -db_path /path/to/your/localpdb -plugins SIFTS ECOD PDBClustering
 </code></pre></div>
@@ -745,10 +745,10 @@ localpdb_setup -db_path /path/to/your/localpdb -plugins SIFTS ECOD PDBClustering
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": ".", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "assets/javascripts/workers/search.d351de03.min.js", "version": null}</script>
+    <script id="__config" type="application/json">{"base": ".", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "assets/javascripts/workers/search.4fa0e4ee.min.js", "version": null}</script>
     
     
-      <script src="assets/javascripts/bundle.34eae1b6.min.js"></script>
+      <script src="assets/javascripts/bundle.1d3bfcf1.min.js"></script>
       
     
   </body>
