@@ -16,7 +16,7 @@
     
     
       
-        <title>Overview - localpdb</title>
+        <title>Example 2 - localpdb</title>
       
     
     
@@ -66,11 +66,6 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
-        
-        <a href="#overview" class="md-skip">
-          Skip to content
-        </a>
-      
     </div>
     <div data-md-component="announce">
       
@@ -96,7 +91,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Overview
+              Example 2
             
           </span>
         </div>
@@ -214,58 +209,11 @@
 
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          Overview
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../overview/" class="md-nav__link">
         Overview
       </a>
-      
-        
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#basic-setup-and-functionalities" class="md-nav__link">
-    Basic setup and functionalities
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#updates" class="md-nav__link">
-    Updates
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -423,12 +371,14 @@
 
   
   
+    
+  
   
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" checked>
       
       <label class="md-nav__link" for="__nav_6">
         Advanced examples
@@ -456,11 +406,19 @@
             
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../ex2/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         Example 2
       </a>
+      
     </li>
   
 
@@ -478,86 +436,57 @@
               </div>
             
             
-              
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
-                <div class="md-sidebar__scrollwrap">
-                  <div class="md-sidebar__inner">
-                    
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#basic-setup-and-functionalities" class="md-nav__link">
-    Basic setup and functionalities
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#updates" class="md-nav__link">
-    Updates
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-                  </div>
-                </div>
-              </div>
-            
           
           <div class="md-content" data-md-component="content">
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/labstructbioinf/localpdb/edit/master/docs/overview.md" title="Edit this page" class="md-content__button md-icon">
+                  <a href="https://github.com/labstructbioinf/localpdb/edit/master/docs/ex2.md" title="Edit this page" class="md-content__button md-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
                   </a>
                 
                 
-                <h1 id="overview">Overview</h1>
-<p><img alt="Overview" src="../img/overview.png?raw=true" /></p>
-<h2 id="basic-setup-and-functionalities">Basic setup and functionalities</h2>
-<p>The simplest <code>localpdb</code> setup mode can be obtained by running the following command. 
-This will give an access to the <code>lpdb.entries</code> and <code>lpdb.chains</code> dataframes.</p>
-<div class="admonition example">
-<p class="admonition-title">Example</p>
-<div class="highlight"><pre><span></span><code>localpdb_setup -db_path /path/to/localpdb
+                  <h1>Example 2</h1>
+                
+                <p><strong>Amino acid preferences among the viral coiled-coil domains</strong></p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="kn">from</span> <span class="nn">localpdb</span> <span class="kn">import</span> <span class="n">PDB</span>
+
+<span class="n">lpdb</span> <span class="o">=</span> <span class="n">PDB</span><span class="p">(</span><span class="s1">&#39;/ssd/db/localpdb_dev&#39;</span><span class="p">,</span> <span class="n">plugins</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Socket&#39;</span><span class="p">])</span>
+
+<span class="c1"># Select only viral proteins</span>
+<span class="n">lpdb</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">attribute</span><span class="o">=</span><span class="s1">&#39;struct_keywords.pdbx_keywords&#39;</span><span class="p">,</span> <span class="n">operator</span><span class="o">=</span><span class="s1">&#39;contains_phrase&#39;</span><span class="p">,</span> 
+            <span class="n">value</span><span class="o">=</span><span class="s1">&#39;VIRAL PROTEIN&#39;</span><span class="p">,</span> <span class="n">no_hits</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">select</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1"># Select only entries containing coiled-coil domain</span>
+<span class="n">lpdb</span><span class="o">.</span><span class="n">entries</span> <span class="o">=</span> <span class="n">lpdb</span><span class="o">.</span><span class="n">entries</span><span class="p">[</span><span class="n">lpdb</span><span class="o">.</span><span class="n">entries</span><span class="p">[</span><span class="s1">&#39;socket_7.0&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">notnull</span><span class="p">()]</span>
+
+<span class="c1"># Only X-ray entries with resolution higher than 2 A</span>
+<span class="n">lpdb</span><span class="o">.</span><span class="n">entries</span> <span class="o">=</span> <span class="n">lpdb</span><span class="o">.</span><span class="n">entries</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s1">&#39;method == &quot;diffraction&quot;&#39;</span><span class="p">)</span>
+<span class="n">lpdb</span><span class="o">.</span><span class="n">entries</span> <span class="o">=</span> <span class="n">lpdb</span><span class="o">.</span><span class="n">entries</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s1">&#39;resolution &lt;= 2.0&#39;</span><span class="p">)</span>
+
+<span class="c1"># Get socket data dictionary</span>
+<span class="n">socket</span> <span class="o">=</span> <span class="n">lpdb</span><span class="o">.</span><span class="n">get_socket_dict</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;heptads&#39;</span><span class="p">)</span>
+
+<span class="n">stats</span> <span class="o">=</span> <span class="p">{</span><span class="n">pos</span><span class="p">:</span> <span class="p">{</span><span class="n">aa</span><span class="p">:</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">aa</span> <span class="ow">in</span> <span class="s1">&#39;AILVCDEFGHKMNPQRSTWYX&#39;</span><span class="p">}</span> <span class="k">for</span> <span class="n">pos</span> <span class="ow">in</span> <span class="s1">&#39;abcdefg&#39;</span><span class="p">}</span>
+
+<span class="c1"># Iterate over all coiled-coil domains and compute stats</span>
+<span class="k">for</span> <span class="n">entry</span><span class="p">,</span> <span class="n">ccs</span> <span class="ow">in</span> <span class="n">socket</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">cc</span> <span class="ow">in</span> <span class="n">ccs</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">seq</span><span class="p">,</span> <span class="n">hept_register</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">cc</span><span class="p">[</span><span class="s1">&#39;sequences&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="n">cc</span><span class="p">[</span><span class="s1">&#39;heptads&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+            <span class="k">for</span> <span class="n">aa</span><span class="p">,</span> <span class="n">hept</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="n">hept_register</span><span class="p">):</span>
+                <span class="n">stats</span><span class="p">[</span><span class="n">hept</span><span class="p">][</span><span class="n">aa</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="c1"># Plot</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">stats</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">,</span> <span class="n">cbar</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">get_xmajorticklabels</span><span class="p">(),</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">18</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">get_ymajorticklabels</span><span class="p">(),</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span>
 </code></pre></div>
-</div>
-<p>In order to sync the protein structures (either in PDB or mmCIF formats), you can rerun <code>localpdb_setup</code> <strong>at any time</strong> with following parameters:</p>
-<div class="admonition example">
-<p class="admonition-title">Example</p>
-<div class="highlight"><pre><span></span><code>localpdb_setup -db_path /path/to/localpdb --fetch_pdb --fetch_cif
-</code></pre></div>
-</div>
-<p>You can also install plugins providing additional data with <code>localpdb_setup</code> (also at any time, not necessarily during the initial setup):</p>
-<div class="admonition example">
-<p class="admonition-title">Example</p>
-<div class="highlight"><pre><span></span><code>localpdb_setup -db_path /path/to/localpdb -plugins Plugin1 Plugin2
-</code></pre></div>
-</div>
-<p>The detailed information about the available plugins and their functionalities is available on a separate <a href="../plugins/">page</a>.</p>
-<h2 id="updates">Updates</h2>
-<p>Every week new entries are added to the PDB database, some are removed or modified. 
-To track these changes you can easily update your localpdb database (this'll also update any installed plugins):</p>
-<div class="admonition example">
-<p class="admonition-title">Example</p>
-<div class="highlight"><pre><span></span><code>localpdb_setup -db_path /path/to/localpdb --update
-</code></pre></div>
-</div>
+<p><img alt="Example2" src="../img/example2.png?raw=true" /></p>
                 
               
               
@@ -576,7 +505,7 @@ To track these changes you can easily update your localpdb database (this'll als
   
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
-        <a href=".." class="md-footer__link md-footer__link--prev" rel="prev">
+        <a href="../ex1/" class="md-footer__link md-footer__link--prev" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
           </div>
@@ -585,25 +514,11 @@ To track these changes you can easily update your localpdb database (this'll als
               <span class="md-footer__direction">
                 Previous
               </span>
-              Home
+              Example 1
             </div>
           </div>
         </a>
       
-      
-        <a href="../setup/" class="md-footer__link md-footer__link--next" rel="next">
-          <div class="md-footer__title">
-            <div class="md-ellipsis">
-              <span class="md-footer__direction">
-                Next
-              </span>
-              Setup
-            </div>
-          </div>
-          <div class="md-footer__button md-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
-          </div>
-        </a>
       
     </nav>
   
