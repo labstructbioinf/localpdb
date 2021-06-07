@@ -1,12 +1,12 @@
 # Installation
 ### Installing localpdb
-Setup of the `localpdb` is simple and straightforward.
+The setup of the `localpdb` is simple and straightforward.
 Recommended installation way is to use `pip`
 (this will also make the `localpdb_setup` script available in your `PATH`):
 ```sh
 pip install localpdb
 ```
-To clone the newest version of `localpdb` you can instally directly from the repository:
+The most recent version of `localpdb` can be installed directly from the repository:
 ```sh
 pip install git+https://github.com/labstructbioinf/localpdb.git
 ```

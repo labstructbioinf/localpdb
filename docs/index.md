@@ -8,7 +8,7 @@
 **localpdb** provides a simple framework to store the local mirror of the protein structures available in the [PDB](https://www.rcsb.org/) database and other related resources.
 
 The underlying data can be conveniently browsed and queried with the `pandas.DataFrame` structures. 
-Update mechanism allows to follow the weekly PDB releases while retaining the possiblity to access previous data versions.
+Update mechanism allows following the weekly PDB releases while retaining the possibility to access previous data versions.
 
 **You may find `localpdb` particularly useful if you:**
 
@@ -34,7 +34,7 @@ localpdb_setup -db_path /path/to/localpdb --fetch_cif
 More information on the setup options are available via [docs](https://labstructbioinf.github.io/localpdb/setup).
 
 ## Examples
-### Find number of entries added to the PDB every year
+### Find the number of entries added to the PDB every year
 ```python
 from localpdb import PDB
 
@@ -54,7 +54,7 @@ Select:
 - solved with **X-ray diffraction**, 
 - with resolution below **2.5 Angstrom**
 - deposited **after 2010**. 
-- remove the sequence **redundancy at 90%**,
+- remove the redundancy at the **90% sequence identity**,
 ```sh
 # Install plugins providing additional data
 localpdb_setup -db_path /path/to/your/localpdb -plugins SIFTS ECOD PDBClustering

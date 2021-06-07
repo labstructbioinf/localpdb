@@ -5,7 +5,7 @@
 |:-------------|:---------------------------|
 |`db_path`      | location of the `localpdb` database |
 |`version`      | version of the `localpdb` database to load (default: `version='latest'`) |
-| `auto_filter` | automatically propagate selections performed on any of the DataFrames to other DataFrames (default: `auto_filter=True`). See example below for more information. |
+| `auto_filter` | automatically propagates selections performed on any of the DataFrames to other DataFrames (default: `auto_filter=True`). See the example below for more information. |
 |`plugins`      | Names of the plugins to load |
 
 !!! Example

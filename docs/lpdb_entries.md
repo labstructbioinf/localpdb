@@ -14,8 +14,8 @@
 | `dssp`                | Filename of the DSSP file (requires `DSSP` plugin)   |
 
 !!! Warning
-    - Some large protein structures will not be available in the PDB format - in such case there'll be a `np.nan` value in the `pdb_fn` column.
-    - Currently entries containing solely the nucleic acids are not shown in the `lpdb.entries`
+    - Some large protein structures will not be available in the PDB format - in such case there'll be an `np.nan` value in the `pdb_fn` column.
+    - Currently, entries containing solely the nucleic acids are not shown in the `lpdb.entries`
 
 !!! Example
     `lpdb.entries`

@@ -6,13 +6,13 @@ Performs a basic search using the RCSB API. More information available at the RC
 
 Parameter &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | Description 
 :-------------: | ----------------------------------------------------------
-**`attribute`** | Attribute to perform search on - full list is available [here](https://search.rcsb.org/search-attributes.html).
+**`attribute`** | Attribute to perform a search on - the full list is available [here](https://search.rcsb.org/search-attributes.html).
 **`operator`** | Operator to use in the search - full list of operators available with corresponding attributes is available [here](https://search.rcsb.org/search-attributes.html).
 **`value`** | Value used in the search.
 **`return_type`** | Format of the returned entries that satisfy the query. Available options are `entry` (`PDBID`), `polymer_entity` (`PDBID_ENTITY`), `polymer_instance` (`PDBID_CHAIN`), 
 **`no_hits`** | Number of presented hits. Default: `no_hits=1000`, use `no_hits=-1` to get all hits.
 **`get_doc_only`** | Present only the dataframe with available attributes and operators.
-**`select`** | If True the results of the query will be used to perform selection on `lpdb.entries` (if `return_type=='entries'`) or `lpdb.chains` (if `return_type=='polymer_instance'`). Additionally if `lpdb` is instantiated with `auto_filter` mode, the selection will be propagated to other registered dataframes.
+**`select`** | If True the results of the query will be used to perform selection on `lpdb.entries` (if `return_type=='entries'`) or `lpdb.chains` (if `return_type=='polymer_instance'`). Moreover, if `lpdb` is instantiated with `auto_filter` mode, the selection will be propagated to other registered dataframes.
 
 
 ```python
@@ -28,7 +28,7 @@ Parameter &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs
 **`identity`** | Minimum identity to the query to include a sequence.
 **`return_type`** | Format of the returned entries that satisfy the query. Available options are `entry` (`PDBID`), `polymer_entity` (`PDBID_ENTITY`), `polymer_instance` (`PDBID_CHAIN`), 
 **`no_hits`** | Number of presented hits. Default: `no_hits=1000`, use `no_hits=-1` to get all hits.
-**`select`** | If True the results of the query will be used to perform selection on `lpdb.entries` (if `return_type=='entries'`) or `lpdb.chains` (if `return_type=='polymer_instance'`). Additionally if `lpdb` is instantiated with `auto_filter` mode, the selection will be propagated to other registered dataframes.
+**`select`** | If True the results of the query will be used to perform selection on `lpdb.entries` (if `return_type=='entries'`) or `lpdb.chains` (if `return_type=='polymer_instance'`). Moreover, if `lpdb` is instantiated with `auto_filter` mode, the selection will be propagated to other registered dataframes.
 
 
 ```python
@@ -44,7 +44,7 @@ Parameter &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs
 **`operator`** | Match mode type - either `relaxed_shape_match` or `strict_shape_match`.
 **`return_type`** | Format of the returned entries that satisfy the query. Available options are `entry` (`PDBID`), `polymer_entity` (`PDBID_ENTITY`), `polymer_instance` (`PDBID_CHAIN`), 
 **`no_hits`** | Number of presented hits. Default: `no_hits=1000`, use `no_hits=-1` to get all hits.
-**`select`** | If True the results of the query will be used to perform selection on `lpdb.entries` (if `return_type=='entries'`) or `lpdb.chains` (if `return_type=='polymer_instance'`). Additionally if `lpdb` is instantiated with `auto_filter` mode, the selection will be propagated to other registered dataframes.
+**`select`** | If True the results of the query will be used to perform selection on `lpdb.entries` (if `return_type=='entries'`) or `lpdb.chains` (if `return_type=='polymer_instance'`). Moreover, if `lpdb` is instantiated with `auto_filter` mode, the selection will be propagated to other registered dataframes.
 
 
 ```python
@@ -58,4 +58,4 @@ Parameter &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs
 **`type_`** | Type of the specified motif. Available: `simple` (e.g., `CXCXXL`), `prosite` (e.g., `C-X-C-X(2)-[LIVMYFWC]`), `regex` (e.g., `CXCX{2}[LIVMYFWC]`)
 **`return_type`** | Format of the returned entries that satisfy the query. Available options are `entry` (`PDBID`), `polymer_entity` (`PDBID_ENTITY`), `polymer_instance` (`PDBID_CHAIN`), 
 **`no_hits`** | Number of presented hits. Default: `no_hits=1000`, use `no_hits=-1` to get all hits.
-**`select`** | If True the results of the query will be used to perform selection on `lpdb.entries` (if `return_type=='entries'`) or `lpdb.chains` (if `return_type=='polymer_instance'`). Additionally if `lpdb` is instantiated with `auto_filter` mode, the selection will be propagated to other registered dataframes.
+**`select`** | If True the results of the query will be used to perform selection on `lpdb.entries` (if `return_type=='entries'`) or `lpdb.chains` (if `return_type=='polymer_instance'`). Moreover, if `lpdb` is instantiated with `auto_filter` mode, the selection will be propagated to other registered dataframes.

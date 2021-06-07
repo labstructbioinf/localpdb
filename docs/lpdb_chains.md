@@ -11,8 +11,8 @@
 | `ncbi_taxid`          | NCBI taxonomy identifier (requires `SIFTS` plugin)  |
 
 !!! Warning
-    - Sequence available in the `sequence` column does not necceserily match the sequence in the protein structure. The mapping between these can be obtained with the `PDBSeqresMapper` plugin.
-    - In case of multiple NCBI taxonomy identifiers are mapped to a protein chain, only the first one is presented.
+    - The sequence available in the `sequence` column does not necessarily match the sequence in the protein structure. The mapping between these can be obtained with the `PDBSeqresMapper` plugin.
+    - In the case of multiple NCBI taxonomy identifiers are mapped to a protein chain, only the first one is presented.
 
 
 !!! Example

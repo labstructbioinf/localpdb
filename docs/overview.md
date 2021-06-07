@@ -4,13 +4,13 @@
 
 ## Basic setup and functionalities
 The simplest `localpdb` setup mode can be obtained by running the following command. 
-This will give an access to the `lpdb.entries` and `lpdb.chains` dataframes.
+This will give access to the `lpdb.entries` and `lpdb.chains` dataframes.
 
 !!! Example
     ```sh
     localpdb_setup -db_path /path/to/localpdb
     ```
-In order to sync the protein structures (either in PDB or mmCIF formats), you can rerun `localpdb_setup` **at any time** with following parameters:
+In order to sync the protein structures (either in PDB or mmCIF formats), you can rerun `localpdb_setup` **at any time** with the following parameters:
 !!! Example
     ```sh
     localpdb_setup -db_path /path/to/localpdb --fetch_pdb --fetch_cif
