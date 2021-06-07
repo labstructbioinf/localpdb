@@ -20,7 +20,7 @@ Update mechanism allows to follow the weekly PDB releases while retaining the po
 
 ## Overview
 ![Overview](img/overview.png?raw=true)
-To find more about the package and its functionalities please follow the [docs](https://labstructbioinf.github.io/localpdb/overview).
+To find more about the package and its functionalities please follow the [docs](https://labstructbioinf.github.io/localpdb/overview). In case of any troubles free to [contact us](https://lbs.cent.uw.edu.pl) or open an issue.
 
 ## Installation
 
@@ -80,12 +80,12 @@ lpdb.chains = lpdb.chains.loc[representative]
 lpdb.chains.to_csv('dataset.csv') # Save dataset
 ```
 ### Advanced examples
-- Assessing conformational variability from the ensemble of structures of Sars-COV main protease.
+- [Assessing conformational variability from the ensemble of structures of Sars-COV main protease](ex1.md).
 ![Example1](img/example3.png?raw=true)
  
-- To be continued... 
+- [Amino acid preferences among the viral coiled-coil domains](ex2.md).
+![Example2](img/example2.png?raw=true)
 
 
 ## Acknowledgments
-This work was supported by the National Science Centre grant 2017/27/N/NZ1/00716
-
+This work was supported by the National Science Centre grant **2017/27/N/NZ1/00716**.

@@ -1,6 +1,5 @@
 **`localpdb.PDB.entries`**
 
-## Description
 
 | Column &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;            | Description                             |
 |:---------------------:|:----------------------------------------|

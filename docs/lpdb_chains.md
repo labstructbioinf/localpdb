@@ -1,7 +1,5 @@
 **`localpdb.PDB.chains`**
 
-## Description
-
 | Column &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;            | Description                             |
 |:---------------------:|:---------------------------------------:|
 | `pdb`                 | PDB identifier, corresponds with `lpdb.entries` DataFrame    |

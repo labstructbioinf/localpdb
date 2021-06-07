@@ -20,6 +20,12 @@ nav:
         - localpdb.PDB: lpdb.md
         - localpdb.PDB.entries: lpdb_entries.md
         - localpdb.PDB.chains: lpdb_chains.md
-    - Plugins: plugins.md
+        - localpdb.PDB.search*: lpdb_search.md
+    - Plugins:
+        - Overview: plugins.md
+        - Build a custom plugin: plugin_guide.md
+    - Advanced examples:
+        - Example 1: ex1.md
+        - Example 2: ex2.md
 extra_css:
   - stylesheets/extra.css

@@ -21,6 +21,7 @@ You can also install plugins providing additional data with `localpdb_setup` (al
     ```sh
     localpdb_setup -db_path /path/to/localpdb -plugins Plugin1 Plugin2
     ```
+The detailed information about the available plugins and their functionalities is available on a separate [page](plugins.md).
 
 ## Updates
 Every week new entries are added to the PDB database, some are removed or modified. 
