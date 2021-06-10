@@ -13,7 +13,15 @@ from localpdb.utils.rest_api import CommandFactory
 
 class PDB:
 
-    def __init__(self, db_path='', version='latest', auto_filter=True):
+    def __init__(self, db_path='', version='latest', plugins=[], auto_filter=True):
+        """
+        @param db_path (str): location of the localpdb database
+        @param version (int) or 'latest': version of the localpdb database to load (default: version='latest')
+        @param plugins (list): plugins to load (default=None)
+        @param auto_filter (bool): automatically propagate selections performed on any of the DataFrames
+        to other DataFrames
+        (default: auto_filter=True)
+        """
 
         self.db_path = Path(os.path.realpath(db_path)) # Absolute db path
         self.auto_filter = auto_filter # Flag to set auto-filtering feature
@@ -78,6 +86,10 @@ class PDB:
         self.chains = self.__chains
         self.entries == self.__entries
         self.__rest_api_commands = CommandFactory()
+
+        # Load plugins if any
+        for plugin in plugins:
+            self.load_plugin(plugin)
 
     def __setattr__(self, item, value):
         """
@@ -147,7 +159,7 @@ class PDB:
     def __repr__(self):
         return f'localpdb database (v{self.version}) holding {len(self.entries)} entries ({len(self.chains)} chains)'
 
-    def load_plugin(self, plugin, plugin_kwargs=dict()):
+    def load_plugin(self, plugin):
         if plugin in self._loaded_plugins:
             raise RuntimeError('Plugin \'{}\' was already loaded!'.format(plugin))
         else:

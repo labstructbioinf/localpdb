@@ -9,6 +9,7 @@ logger = logging.getLogger(__name__)
 
 # Plugin specific imports
 import gzip
+import shutil
 from localpdb.utils.os import multiprocess, os_cmd
 from Bio.PDB import Select
 from Bio.PDB.PDBParser import PDBParser
@@ -74,7 +75,6 @@ class PDBChain(Plugin):
                     logger.debug(f'Moved file\'{org_fn}\' to \'{dest_fn}\'.')
                 except:
                     logger.debug(f'File \'{org_fn}\' that was supposed to be moved (versioning) does not exist.')
-
     def _prep_paths(self):
         pdb_ids = set(pdb_id[1:3] for pdb_id in self.lpdb.entries.index)
         create_directory(self.plugin_dir)
@@ -105,5 +105,5 @@ def extract_chain(args):
         struct = parser.get_structure('A', f)
     writer.set_structure(struct)
     writer.save(out_fn, select=SelectChains(chain))
-    result = os.system(f'gzip {out_fn}')
+    result = os.system(f'gzip -f {out_fn}')
     return result, None
