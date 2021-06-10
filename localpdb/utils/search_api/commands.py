@@ -38,6 +38,10 @@ class Command:
     def _parse(cls, response):
         return cls.parser.parse(response)
 
+    @staticmethod
+    def _resp_on_none():
+        print(f"Could not find response. Please revise your query.")
+
 
 class SearchMotifCommand(Command):
     def __init__(self, query, type_='prosite', *args, **kwargs):
@@ -49,9 +53,11 @@ class SearchMotifCommand(Command):
     def execute(self):
         searcher = Searcher(self.url,
                             [TerminalQuery(
-                                SeqmotifService(self.query, self.type_, "pdb_protein_sequence"), self.resp_type)])
+                                SeqmotifService(self.query, self.type_, "pdb_protein_sequence"), self.resp_type,
+                                start=self.start, rows=self.rows)])
         resp = searcher.perform_search()
         if resp[0] is None:
+            self._resp_on_none()
             return None
         return self._parse(resp[0])
 
@@ -71,6 +77,7 @@ class SequenceSimilarityCommand(Command):
                                 self.resp_type, start=self.start, rows=self.rows)])
         resp = searcher.perform_search()
         if resp[0] is None:
+            self._resp_on_none()
             return None
         return self._parse(resp[0])
 
@@ -90,6 +97,7 @@ class StructureSimilarityCommand(Command):
                                 start=self.start, rows=self.rows)])
         resp = searcher.perform_search()
         if resp[0] is None:
+            self._resp_on_none()
             return None
         return self._parse(resp[0])
 
@@ -110,6 +118,7 @@ class StructureMotifCommand(Command):
                                 self.resp_type, start=self.start, rows=self.rows)])
         resp = searcher.perform_search()
         if resp[0] is None:
+            self._resp_on_none()
             return None
         return self._parse(resp[0])
 
@@ -128,6 +137,7 @@ class TextCommand(Command):
                                 self.resp_type, start=self.start, rows=self.rows)])
         resp = searcher.perform_search()
         if resp[0] is None:
+            self._resp_on_none()
             return None
         return self._parse(resp[0])
 
