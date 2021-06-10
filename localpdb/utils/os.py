@@ -39,10 +39,6 @@ def create_directory(path):
     """
     path = Path(path)
     if path.is_dir():
-        if len(os.listdir(path)):
-            logger.debug(f'Directory \'{path}\' already exists and is not empty.')
-        else:
-            logger.debug(f'Directory \'{path}\' already exists and is empty.')
         return True
     else:
         try:
@@ -115,6 +111,7 @@ def clean_exit(callback=None, append=False):
         if callback is not None and killed:
             logger.error('Script abruptly terminated! Cleaning temporary files...')
             callback()
+            sys.exit(1)
 
 
 def os_cmd(cmd):
