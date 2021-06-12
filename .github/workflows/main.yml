@@ -31,6 +31,6 @@ jobs:
         run: poetry install
       - name: Build coverage file
         run: |
-            poetry run pytest --cache-clear --cov=localpdb localpdb/tests/ > pytest-coverage.txt
+            poetry run pytest --cache-clear --cov=localpdb tests/ > pytest-coverage.txt
       - name: Comment coverage
         uses: coroo/pytest-coverage-commentator@v1.0.2
