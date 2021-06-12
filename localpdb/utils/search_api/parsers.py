@@ -6,6 +6,7 @@ class ResponseParser:
         self.raw = raw
 
     def parse(self, response):
+        response = response.json()
         for id_ in response['result_set']:
             if '.' in id_['identifier']:
                 pdbid, chain = id_['identifier'].split('.')
@@ -30,3 +31,9 @@ class ResponseParser:
             resp_dict = pd.DataFrame(resp_dict)
             resp_dict.set_index(['identifier'], inplace=True)
             return resp_dict
+
+    def parse_wrong(self, response):
+        try:
+            return pd.DataFrame(response.json())
+        except Exception:
+            return "Could not find response. Please revise your query."

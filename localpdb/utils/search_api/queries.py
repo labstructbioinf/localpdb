@@ -30,8 +30,8 @@ class TerminalQuery:
     def parse_response(self, response):
         self.response_status = response.status_code
         if response.status_code != 200:
-            return None
-        return response.json() if not self.response_parser else self.response_parser.parse()
+            return None if not self.response_parser else self.response_parser.parse_wrong(response)
+        return response.json() if not self.response_parser else self.response_parser.parse(response)
 
 
 class RequestOption:

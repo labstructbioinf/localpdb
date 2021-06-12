@@ -5,10 +5,9 @@ from .services import SeqmotifService, SequenceService, StructureService, Struct
 
 class Command:
     def __init__(self, url="https://search.rcsb.org/rcsbsearch/v1/query?", resp_type="entry",
-                 start=0, rows=100, parser=None):
+                 start=0, rows=100):
         self._set_source(url, resp_type)
         self._set_resp_limits(start, rows)
-        self.parser = parser
 
     def _set_source(self, url, resp_type):
         self.url = url
@@ -34,10 +33,6 @@ class Command:
     def execute(self):
         pass
 
-    @classmethod
-    def _parse(cls, response):
-        return cls.parser.parse(response)
-
 
 class SearchMotifCommand(Command):
     def __init__(self, query, type_='prosite', *args, **kwargs):
@@ -49,11 +44,10 @@ class SearchMotifCommand(Command):
     def execute(self):
         searcher = Searcher(self.url,
                             [TerminalQuery(
-                                SeqmotifService(self.query, self.type_, "pdb_protein_sequence"), self.resp_type)])
+                                SeqmotifService(self.query, self.type_, "pdb_protein_sequence"), self.resp_type,
+                                start=self.start, rows=self.rows, response_parser=self.parser)])
         resp = searcher.perform_search()
-        if resp[0] is None:
-            return None
-        return self._parse(resp[0])
+        return resp[0]
 
 
 class SequenceSimilarityCommand(Command):
@@ -68,11 +62,9 @@ class SequenceSimilarityCommand(Command):
         searcher = Searcher(self.url,
                             [TerminalQuery(
                                 SequenceService(self.sequence, self.evalue, self.identity, "pdb_protein_sequence"),
-                                self.resp_type, start=self.start, rows=self.rows)])
+                                self.resp_type, start=self.start, rows=self.rows, response_parser=self.parser)])
         resp = searcher.perform_search()
-        if resp[0] is None:
-            return None
-        return self._parse(resp[0])
+        return resp[0]
 
 
 class StructureSimilarityCommand(Command):
@@ -87,11 +79,9 @@ class StructureSimilarityCommand(Command):
         searcher = Searcher(self.url,
                             [TerminalQuery(
                                 StructureService(self.entry_id, self.assembly_id, self.operator), self.resp_type,
-                                start=self.start, rows=self.rows)])
+                                start=self.start, rows=self.rows, response_parser=self.parser)])
         resp = searcher.perform_search()
-        if resp[0] is None:
-            return None
-        return self._parse(resp[0])
+        return resp[0]
 
 
 class StructureMotifCommand(Command):
@@ -107,11 +97,9 @@ class StructureMotifCommand(Command):
         searcher = Searcher(self.url,
                             [TerminalQuery(
                                 StructMotifService(self.entry_id, self.residue_ids, self.score_cutoff, self.exchanges),
-                                self.resp_type, start=self.start, rows=self.rows)])
+                                self.resp_type, start=self.start, rows=self.rows, response_parser=self.parser)])
         resp = searcher.perform_search()
-        if resp[0] is None:
-            return None
-        return self._parse(resp[0])
+        return resp[0]
 
 
 class TextCommand(Command):
@@ -125,11 +113,9 @@ class TextCommand(Command):
         searcher = Searcher(self.url,
                             [TerminalQuery(
                                 TextService(self.attribute, self.operator, self.value),
-                                self.resp_type, start=self.start, rows=self.rows)])
+                                self.resp_type, start=self.start, rows=self.rows, response_parser=self.parser)])
         resp = searcher.perform_search()
-        if resp[0] is None:
-            return None
-        return self._parse(resp[0])
+        return resp[0]
 
     @staticmethod
     def get_doc():
