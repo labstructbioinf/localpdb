@@ -92,9 +92,6 @@ category = "dev"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, <4"
 
-[package.dependencies]
-toml = {version = "*", optional = true, markers = "extra == \"toml\""}
-
 [package.extras]
 toml = ["toml"]
 
@@ -271,18 +268,30 @@ testing = ["argcomplete", "hypothesis (>=3.56)", "mock", "nose", "requests", "xm
 
 [[package]]
 name = "pytest-cov"
-version = "2.12.0"
+version = "2.12.1"
 description = "Pytest plugin for measuring coverage."
 category = "dev"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
 [package.dependencies]
-coverage = {version = ">=5.2.1", extras = ["toml"]}
+coverage = ">=5.2.1"
 pytest = ">=4.6"
+toml = "*"
 
 [package.extras]
-testing = ["fields", "hunter", "process-tests (==2.0.2)", "six", "pytest-xdist", "virtualenv"]
+testing = ["fields", "hunter", "process-tests", "six", "pytest-xdist", "virtualenv"]
+
+[[package]]
+name = "pytest-dependency"
+version = "0.5.1"
+description = "Manage dependencies of tests"
+category = "dev"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+pytest = ">=3.6.0"
 
 [[package]]
 name = "python-dateutil"
@@ -410,7 +419,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=1.2.3)", "pytest-flake8", "pyt
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.1"
-content-hash = "eee5f3dc8ec3f2939a9f15033feb3727bb52ab692a30d0e18304cb8ef36a27c2"
+content-hash = "87b0b40a984d7934ccb4bcd3328ccc6c97924a6e68b59da1c5ca3cf972f628c6"
 
 [metadata.files]
 atomicwrites = [
@@ -430,27 +439,18 @@ biopython = [
     {file = "biopython-1.78-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:0b9fbb0d3022dc22716da108b8a81b80d952cd97ac1f106de491dce850f92f62"},
     {file = "biopython-1.78-cp36-cp36m-manylinux1_i686.whl", hash = "sha256:f5021a398c898b9cf6815cc5171c146a601b935b55364c53e6516a2545ab740c"},
     {file = "biopython-1.78-cp36-cp36m-manylinux1_x86_64.whl", hash = "sha256:195f099c2c0c39518b6df921ab2b3cc43a601896018fc61909ac8385d5878866"},
-    {file = "biopython-1.78-cp36-cp36m-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:cfb93842501ebc0e0ef6520daddcbeeefc9b61736972580917dafd5c8a5a8041"},
     {file = "biopython-1.78-cp36-cp36m-win32.whl", hash = "sha256:75b55000793f6b76334b8e80dc7e6d8cd2b019af917aa431cea6646e8e696c7f"},
     {file = "biopython-1.78-cp36-cp36m-win_amd64.whl", hash = "sha256:f1076653937947773768455556b1d24acad9575759e9089082f32636b09add54"},
     {file = "biopython-1.78-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:e0af107cc62a905d13d35dd7b38f335a37752ede45e4617139e84409a6a88dc4"},
     {file = "biopython-1.78-cp37-cp37m-manylinux1_i686.whl", hash = "sha256:4565c97fab16c5697d067b821b6a1da0ec3ef36a9c96cf103ac7b4a94eb9f9ba"},
     {file = "biopython-1.78-cp37-cp37m-manylinux1_x86_64.whl", hash = "sha256:0df5cddef2819c975e6508adf5d85aa046e449df5420d02b04871c7836b41273"},
-    {file = "biopython-1.78-cp37-cp37m-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:1df0bce7fd5e2414d6e18c9229fa0056914d2b9041531c71cac48f38a622142d"},
     {file = "biopython-1.78-cp37-cp37m-win32.whl", hash = "sha256:5c0b369f91a76b8e5e36624d075585c3f0f088ea4a6e3d015c48f08e48ce0114"},
     {file = "biopython-1.78-cp37-cp37m-win_amd64.whl", hash = "sha256:cc3b0b78022d14f11d508038a288a189d03c97c476d6636c7b6f98bd8bc8462b"},
     {file = "biopython-1.78-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:010142a8ec2549ff0649edd497658964ef1a18eefdb9fd942ec1e81b292ce2d9"},
     {file = "biopython-1.78-cp38-cp38-manylinux1_i686.whl", hash = "sha256:194528eda6856a4c68f840ca0bcc9b544a5edee3548b97521084e7ac38c833ca"},
     {file = "biopython-1.78-cp38-cp38-manylinux1_x86_64.whl", hash = "sha256:ada611f12ee3b0bef7308ef41ee7b94898613b369ab44e0268d74bd1d6a06920"},
-    {file = "biopython-1.78-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:d15d09bfe0d3a8a416a596a3909d9718c811df852d969592b4fa9e0da9cf7375"},
     {file = "biopython-1.78-cp38-cp38-win32.whl", hash = "sha256:48d424453a5512a1d1d41a4acabdfe5291da1f491a2d3606f2b0e4fbd63aeda6"},
     {file = "biopython-1.78-cp38-cp38-win_amd64.whl", hash = "sha256:2bd5a630be2a8e593094f7b1717fc962eda8931b68542b97fbf9bd8e2ac1e08d"},
-    {file = "biopython-1.78-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:b470c44d7a04e40a0cfc65853b1a5a6bf506a130c334cf4cffa05df07dbda366"},
-    {file = "biopython-1.78-cp39-cp39-manylinux1_i686.whl", hash = "sha256:c130c8e64ae2e4c7c73f0c24974ac8a832190cc3cf3c3c7b4aaffc974effc993"},
-    {file = "biopython-1.78-cp39-cp39-manylinux1_x86_64.whl", hash = "sha256:9b4374a47d924d4d4ffe2fea010ce75427bbfd92e45d50d5b1213a478baf680f"},
-    {file = "biopython-1.78-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:639461a1ac5765406ec8ab8ed619845351f2ff22fed734d86e09e4a7b7719a08"},
-    {file = "biopython-1.78-cp39-cp39-win32.whl", hash = "sha256:fe2bcf85d0f5f1888ed7d86c139e9d4e7d54e036c8ac54e929663d63548046a1"},
-    {file = "biopython-1.78-cp39-cp39-win_amd64.whl", hash = "sha256:6ed345b1ef100d58d8376e31c280b13fc87bb8f73ccc447f8140344991b61459"},
     {file = "biopython-1.78.tar.gz", hash = "sha256:1ee0a0b6c2376680fea6642d5080baa419fd73df104a62d58a8baf7a8bbe4564"},
 ]
 certifi = [
@@ -671,8 +671,11 @@ pytest = [
     {file = "pytest-6.2.4.tar.gz", hash = "sha256:50bcad0a0b9c5a72c8e4e7c9855a3ad496ca6a881a3641b4260605450772c54b"},
 ]
 pytest-cov = [
-    {file = "pytest-cov-2.12.0.tar.gz", hash = "sha256:8535764137fecce504a49c2b742288e3d34bc09eed298ad65963616cc98fd45e"},
-    {file = "pytest_cov-2.12.0-py2.py3-none-any.whl", hash = "sha256:95d4933dcbbacfa377bb60b29801daa30d90c33981ab2a79e9ab4452c165066e"},
+    {file = "pytest-cov-2.12.1.tar.gz", hash = "sha256:261ceeb8c227b726249b376b8526b600f38667ee314f910353fa318caa01f4d7"},
+    {file = "pytest_cov-2.12.1-py2.py3-none-any.whl", hash = "sha256:261bb9e47e65bd099c89c3edf92972865210c36813f80ede5277dceb77a4a62a"},
+]
+pytest-dependency = [
+    {file = "pytest-dependency-0.5.1.tar.gz", hash = "sha256:c2a892906192663f85030a6ab91304e508e546cddfe557d692d61ec57a1d946b"},
 ]
 python-dateutil = [
     {file = "python-dateutil-2.8.1.tar.gz", hash = "sha256:73ebfe9dbf22e832286dafa60473e4cd239f8592f699aa5adaf10050e6e1823c"},
