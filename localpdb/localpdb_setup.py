@@ -41,7 +41,7 @@ def get_params():
     parser.add_argument('-ftp_url', help=argparse.SUPPRESS)
     parser.add_argument('-rsync_url', help=argparse.SUPPRESS)
     parser.add_argument('-rsync_opts', help=argparse.SUPPRESS)
-    parser.add_argument('-clust_url', help=argparse.SUPPRESS)
+    parser.add_argument('-download_proto', help=argparse.SUPPRESS)
     args = parser.parse_args()
     args.db_path = Path(os.path.abspath(args.db_path))
     if args.update and any([args.fetch_pdb, args.fetch_cif, len(args.plugins) > 0]):
@@ -199,8 +199,8 @@ def main():
         args.remote_source['rsync_url'] = args.rsync_url
     if args.rsync_opts:
         args.remote_source['rsync_opts'] = args.rsync_opts
-    if args.clust_url:
-        args.remote_source['clust']['url'] = args.clust_url
+    if args.download_proto:
+        args.remote_source['download_proto'] = args.download_proto
 
     pdbv, args.remote_version = setup_versioneer(args)
     args.pdbd = PDBDownloader(db_path=args.db_path, version=args.remote_version, config=args.remote_source)
@@ -231,7 +231,18 @@ def main():
         logger.debug(f'Using \'{args.mirror}\' mirror for downloads.')
         logger.debug(f'Current remote PDB version is \'{args.remote_version}\'')
         logger.info(f'Downloading release data for the PDB version: \'{args.remote_version}\'...')
+
         download(args, mode='files')
+
+        config = Config(args.db_path / 'config.yml', init=True)
+        conf_dict = {'init_ver': args.remote_version, 'struct_mirror': {'pdb': False, 'pdb_init_ver': None,
+                                                                        'cif': False, 'cif_init_ver': None},
+                     'plugins': []}
+        config.data = conf_dict
+        config.commit()
+        pdbv.update_logs(first=True)
+        print()
+        logger.info(f'Successfully set up localpdb in \'{args.db_path}\'')
 
         # RSYNC PDB structures
         if any((args.fetch_pdb, args.fetch_cif)):
@@ -239,23 +250,18 @@ def main():
             logger.info(f'Downloading protein structures...')
             logger.info('This can take around 1 hour depending on your internet connection.'
                         ' If the run will be stopped it can be restarted later.')
-        if args.fetch_pdb:
-            download(args, mode='rsync_pdb', clean=False)
-        if args.fetch_cif:
-            download(args, mode='rsync_cif', clean=False)
-
-        # Finally - setup config, log and report success
-        pdbv.update_logs(first=True)
-        conf_dict = {'init_ver': args.remote_version, 'struct_mirror': {'pdb': args.fetch_pdb,
-                                                                                'pdb_init_ver': args.remote_version if args.fetch_pdb else None,
-                                                                                'cif': args.fetch_cif,
-                                                                                'cif_init_ver': args.remote_version if args.fetch_cif else None},
-                     'plugins': []}
-        config = Config(args.db_path / 'config.yml', init=True)
-        config.data = conf_dict
-        config.commit()
-        print()
-        logger.info(f'Successfully set up localpdb in \'{args.db_path}\'')
+            if args.fetch_pdb:
+                download(args, mode='rsync_pdb', clean=False)
+                conf_dict['struct_mirror'].update(
+                    {'pdb': args.fetch_pdb, 'pdb_init_ver': args.remote_version if args.fetch_pdb else None})
+                config.commit()
+                logger.info(f'Successfully synced protein structures in the \'pdb\' format!')
+            if args.fetch_cif:
+                download(args, mode='rsync_cif', clean=False)
+                conf_dict['struct_mirror'].update(
+                    {'cif': args.fetch_cif, 'cif_init_ver': args.remote_version if args.fetch_cif else None})
+                config.commit()
+                logger.info(f'Successfully synced protein structures in the \'mmCIF\' format!')
 
     # localpdb is set up and up to date
     elif args.remote_version == pdbv.current_local_version:
@@ -264,14 +270,17 @@ def main():
 
         if not config.data['struct_mirror']['pdb'] and args.fetch_pdb and not args.update:
             download(args, mode='rsync_pdb', clean=False)
+            logger.info(f'Successfully synced protein structures in the \'pdb\' format!')
             print()
             config.data['struct_mirror']['pdb'] = True
             config.data['struct_mirror']['pdb_init_ver'] = args.remote_version
         if not config.data['struct_mirror']['cif'] and args.fetch_cif and not args.update:
             download(args, mode='rsync_cif', clean=False)
+            logger.info(f'Successfully synced protein structures in the \'mmCIF\' format!')
             print()
             config.data['struct_mirror']['cif'] = True
             config.data['struct_mirror']['cif_init_ver'] = args.remote_version
+
         else:
             print()
             logger.info(f'localpdb is up to date and set up in the directory \'{args.db_path}\'.')
@@ -295,6 +304,7 @@ def main():
             logger.debug(f'Using \'{args.mirror}\' mirror for downloads.')
             if len(pdbv.missing_remote_versions) > 1:
                 args.remote_version = pdbv.missing_remote_versions
+                args.pdbd = PDBDownloader(db_path=args.db_path, version=args.remote_version, config=args.remote_source)
             download(args, mode='files')
             if not any([config['struct_mirror']['pdb'], config['struct_mirror']['cif']]):
                 logger.debug('Skipping structure files syncing...')

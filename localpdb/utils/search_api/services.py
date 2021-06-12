@@ -7,7 +7,9 @@ class ServiceUtils:
         self.service = service
 
     def to_dict(self):
-        return {"parameters": {attr: getattr(self.service, attr) for attr in self.search_attrs if getattr(self.service, attr)}}
+        empty_allowed = self.service.empty_allowed if  hasattr(self.service, 'empty_allowed') else {}
+        return {"parameters": {attr: getattr(self.service, attr) for attr in self.search_attrs
+                               if getattr(self.service, attr) or attr in empty_allowed}}
 
 
 class SeqmotifService:
@@ -43,10 +45,12 @@ class StructureService:
 
 class StructMotifService:
     def __init__(self, entry_id, residue_ids, score_cutoff=0, exchanges=None):
-        self.value = {'data': entry_id, 'residue_ids': residue_ids, 'score_cutoff': str(score_cutoff),
-                      'exchanges': exchanges or {}}
+        self.value = {'data': entry_id, 'residue_ids': residue_ids}
+        self.exchanges = exchanges or []
+        self.score_cutoff = score_cutoff
         self.name = 'strucmotif'
-        self.search_attrs = ['value']
+        self.search_attrs = ['value', 'exchanges', 'score_cutoff']
+        self.empty_allowed = ['exchanges']
         self.service_util = ServiceUtils(self.search_attrs, self)
 
 

@@ -1,0 +1,20 @@
+---
+pdb_20210514:
+  url: "34.70.122.121/pub/pdb_20210514"
+  rsync_url: "34.70.122.121::pub/pdb_20210514/mirror/"
+  rsync_opts: " "
+  download_proto: "http"
+
+pdb_20210521:
+  url: "34.70.122.121/pub/pdb_20210521"
+  rsync_url: "34.70.122.121::pub/pdb_20210521/mirror/"
+  rsync_opts: " "
+  download_proto: "http"
+
+pdb_20210528:
+  url: "34.70.122.121/pub/pdb_20210528"
+  rsync_url: "34.70.122.121::pub/pdb_20210528/mirror/"
+  rsync_opts: " "
+  download_proto: "http"
+
+tmp_path: "/tmp"

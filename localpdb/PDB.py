@@ -1,3 +1,4 @@
+import importlib
 import os
 import importlib
 import json
@@ -302,8 +303,8 @@ class PDB:
         (depending on the return_type parameter)
         :return: pd.DataFrame
         """
-        results =  self.__rest_api_commands.get('sequence')(sequence, evalue, identity,
-                                                            resp_type=return_type, rows=no_hits).execute()
+        results = self.__rest_api_commands.get('sequence')(sequence, evalue, identity,
+                                                           resp_type=return_type, rows=no_hits).execute()
         if select:
             if return_type == 'entry':
                 self.entries = self.entries[self.entries.index.isin(results.index)]
@@ -313,7 +314,7 @@ class PDB:
             return results
 
     def search_struct(self, pdb_id, assembly_id=1, operator='strict_shape_match',
-                      return_type="entry",  no_hits=1000, select=False):
+                      return_type="entry", no_hits=1000, select=False):
         """
         Get dataframe with pdb ids having structure similar to structure of given pdb_id
         :param pdb_id: (str) pdb id (i.e 2mnr)
@@ -327,6 +328,30 @@ class PDB:
         """
         results = self.__rest_api_commands.get('structure')(pdb_id, assembly_id, operator,
                                                             resp_type=return_type, rows=no_hits).execute()
+        if select:
+            if return_type == 'entry':
+                self.entries = self.entries[self.entries.index.isin(results.index)]
+            elif return_type == 'polymer_instance':
+                self.chains = self.chains[self.chains.index.isin(results.index)]
+        else:
+            return results
+
+    def search_struct_motif(self, pdb_id, residue_ids, score_cutoff=0, exchanges=None,
+                            return_type="entry", no_hits=1000, select=False):
+        """
+        Get dataframe with pdb ids having structure motif similar to one defined for pdb_id
+        :param pdb_id: (str) pdb id (i.e 2mnr)
+        :param residue_ids: (list(dict,)) definition of motif
+        :param score_cutoff: (int) return matches having scores greater than this value
+        :param exchanges: (list(dict,)) definition of allowed amino acids for given residue_ids
+        :param return_type: (str) type of returned data
+        :param no_hits: (int) number of hits to fetch, -1 for all results
+        :param select: (bool) if True results of the query will be propagated to either lpdb.entries or lpdb.chains
+        (depending on the return_type parameter)
+        :return: pd.DataFrame
+        """
+        results = self.__rest_api_commands.get('strucmotif')(pdb_id, residue_ids, score_cutoff, exchanges,
+                                                             resp_type=return_type, rows=no_hits).execute()
         if select:
             if return_type == 'entry':
                 self.entries = self.entries[self.entries.index.isin(results.index)]
@@ -349,10 +374,10 @@ class PDB:
         :return: pd.DataFrame
         """
         command = self.__rest_api_commands.get('text')(attribute, operator, value,
-                                                         resp_type=return_type, rows=no_hits)
+                                                       resp_type=return_type, rows=no_hits)
         if get_doc_only:
             return command.get_doc()
-        results =  command.execute()
+        results = command.execute()
         if select:
             if return_type == 'entry':
                 self.entries = self.entries[self.entries.index.isin(results.index)]
