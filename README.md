@@ -1,6 +1,6 @@
 # **<span style="font-family: 'Courier New';">localpdb</span>**
 
-![localpdb](https://github.com/labstructbioinf/localpdb/workflows/localpdb/badge.svg) 
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/labstructbioinf/localpdb-mybinder/binder?filepath=readme_example.ipynb)
 ![localpdb](https://img.shields.io/pypi/v/localpdb)
 [![codecov](https://codecov.io/gh/labstructbioinf/localpdb/branch/master/graph/badge.svg)](https://codecov.io/gh/labstructbioinf/localpdb) 
 ![python-ver](https://img.shields.io/badge/python-%3E=3.6.1-blue)
