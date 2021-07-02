@@ -43,7 +43,7 @@ class PDB:
         if not isinstance(self.version, int):
             raise ValueError('localpdb version must be specified in numeric format!')
         if int(self.version) not in self._pdbv.local_pdb_versions:
-            raise ValueError('Version \'{}\' is not available in the localpdb database!')
+            raise ValueError(f'Version \'{int(self.version)}\' is not available in the localpdb database!')
 
         try:
             self.__config = Config(self.db_path / 'config.yml').data
