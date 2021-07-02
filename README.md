@@ -68,6 +68,7 @@ lpdb.entries = lpdb.entries.query('method == "diffraction"') # solved with X-ray
 lpdb.entries = lpdb.entries.query('resolution <= 2.5') # with resolution below 2.5A
 lpdb.entries = lpdb.entries.query('deposition_date.dt.year >= 2010') # added after 2010
 lpdb.chains = lpdb.chains.query('ncbi_taxid == "9606"') # human proteins
+lpdb.chains = lpdb.chains.query('50 < sequence.str.len() < 1000') # with defined length range
 lpdb.ecod = lpdb.ecod.query('t_name == "S-adenosyl-L-methionine-dependent methyltransferases"') # SAM dependent methyltransferases
 
 # Remove redundancy (select only representative structure from each sequence cluster)
