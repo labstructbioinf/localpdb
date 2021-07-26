@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "localpdb"
-version = "0.2.1"
+version = "0.2.2"
 description = ""
 authors = ["Jan Ludwiczak <j.ludwiczak@cent.uw.edu.pl>"]
 license = "MIT"
