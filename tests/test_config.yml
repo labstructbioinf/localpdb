@@ -1,19 +1,19 @@
 ---
 pdb_20210514:
-  url: "34.70.122.121/pub/pdb_20210514"
-  rsync_url: "34.70.122.121::pub/pdb_20210514/mirror/"
+  url: "35.188.69.40/pub/pdb_20210514"
+  rsync_url: "35.188.69.40::pub/pdb_20210514/mirror/"
   rsync_opts: " "
   download_proto: "http"
 
 pdb_20210521:
-  url: "34.70.122.121/pub/pdb_20210521"
-  rsync_url: "34.70.122.121::pub/pdb_20210521/mirror/"
+  url: "35.188.69.40/pub/pdb_20210521"
+  rsync_url: "35.188.69.40::pub/pdb_20210521/mirror/"
   rsync_opts: " "
   download_proto: "http"
 
 pdb_20210528:
-  url: "34.70.122.121/pub/pdb_20210528"
-  rsync_url: "34.70.122.121::pub/pdb_20210528/mirror/"
+  url: "35.188.69.40/pub/pdb_20210528"
+  rsync_url: "35.188.69.40::pub/pdb_20210528/mirror/"
   rsync_opts: " "
   download_proto: "http"
 
