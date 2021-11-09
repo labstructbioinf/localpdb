@@ -80,10 +80,10 @@ lpdb.chains = lpdb.chains.loc[representative]
 lpdb.chains.to_csv('dataset.csv') # Save dataset
 ```
 ### Advanced examples
-- [Assessing conformational variability from the ensemble of structures of Sars-COV main protease](ex1.md).
+- [Dynamics of the HIV protease inferred from the PDB structures](hiv_protease.ipynb).
 ![Example1](img/example3.png?raw=true)
  
-- [Amino acid preferences among the viral coiled-coil domains](ex2.md).
+- [Amino acid preferences among the viral coiled-coil domains](viral_ccs.ipynb).
 ![Example2](img/example2.png?raw=true)
 
 
