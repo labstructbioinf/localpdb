@@ -6,7 +6,7 @@ authors = ["Jan Ludwiczak <j.ludwiczak@cent.uw.edu.pl>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
-python = "^3.6.1"
+python = "^3.7.1"
 pandas = "^1"
 pyaml = "^20.4.0"
 tqdm = "^4"
@@ -24,6 +24,9 @@ localpdb_setup = 'localpdb.localpdb_setup:main'
 pytest = "^6.2.4"
 pytest-dependency = "^0.5.1"
 pytest-cov = "^2.12.1"
+mkdocs = "^1.2.3"
+mkdocs-material = "^7.3.6"
+mkdocs-jupyter = "^0.18.2"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
