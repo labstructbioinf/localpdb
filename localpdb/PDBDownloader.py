@@ -5,11 +5,12 @@ import sys
 import shutil
 import json
 import requests
+import numpy as np
 from pathlib import Path
+from tqdm import tqdm
 from .PDBVersioneer import PDBVersioneer
 from localpdb.utils.os import set_last_modified, os_cmd, parse_simple
 from localpdb.utils.network import get_last_modified, download_url
-from localpdb.utils.config import Config
 
 logger = logging.getLogger(__name__)
 
@@ -238,6 +239,17 @@ class PDBDownloader:
         result = os.system(rsync_cmd)
         return result
 
+    def fetch_version_info(self):
+        entries_fn = f'{self.db_path}/data/{self.version}/pdb_entries_type.txt'
+        out_fn = f'{self.db_path}/data/{self.version}/pdb_version_info.json'
+        with open(entries_fn) as f:
+            entries = [line.split('\t')[0] for line in f.readlines()]
+        version_info = {}
+        for batch in tqdm(np.array_split(entries, 200)):
+            version_info.update(query_versions(batch))
+        with open(out_fn, 'w') as f:
+            f.write(json.dumps(version_info, indent=4))
+
     def set_lock(self):
         """
         Sets the lock (empty filename) to prevent multiple download sessions in one localpdb db path.
@@ -284,10 +296,22 @@ class PDBDownloader:
 
         self.remove_lock()
 
+
 def convert_iso_date(date):
     d = datetime.datetime.strptime(date,"%Y-%m-%dT%H:%M:%SZ")
     timestamp = d - datetime.timedelta(days=5)
     return int(f'{timestamp.year}{str(timestamp.month).zfill(2)}{str(timestamp.day).zfill(2)}')
+
+
+def query_versions(entries):
+    query = """{entries(entry_ids: %s){rcsb_id, pdbx_audit_revision_history {major_revision, minor_revision}}}""" % json.dumps(
+        list(entries))
+    r = requests.post("https://data.rcsb.org/graphql", json={"query": query}).json()
+    data = {entry['rcsb_id'].lower(): '{}.{}'.format(entry['pdbx_audit_revision_history'][-1]['major_revision'],
+                                                     entry['pdbx_audit_revision_history'][-1]['minor_revision'])
+            for entry in r['data']['entries']}
+    return data
+
 
 def query_major_revisions(entries, min_version=None, max_version=None):
     query = """{entries(entry_ids: %s){rcsb_id, pdbx_audit_revision_history {major_revision, minor_revision, revision_date}}}""" % json.dumps(

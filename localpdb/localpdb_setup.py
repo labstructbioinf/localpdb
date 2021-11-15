@@ -79,6 +79,9 @@ def download(args, mode='', clean=True, update=False):
                 if not result:
                     logger.error(f'Failed to download file_type: \"{file_type}\"')
                     sys.exit(1)
+            print()
+            logger.info('Syncing versioning information...')
+            args.pdbd.fetch_version_info()
     elif mode == 'rsync_pdb':
         with clean_exit(callback=args.pdbd.clean_unsuccessful):
             print()
@@ -96,6 +99,7 @@ def download(args, mode='', clean=True, update=False):
                 logger.error('Failed to RSYNC with the PDB server')
                 sys.exit(1)
     args.pdbd.remove_lock()
+
 
 def install_plugins(args):
     pdbv, args.remote_version = setup_versioneer(args)
