@@ -23,6 +23,13 @@ You can also install plugins providing additional data with `localpdb_setup` (al
     ```
 The detailed information about the available plugins and their functionalities is available on a separate [page](plugins.md).
 
+Finally, you can restore historical `localpdb` version from the config file as follows:
+
+!!! Example
+    ```sh
+    localpdb_setup -db_path /path/to/localpdb --from_config=backup.tar.gz
+    ```
+
 ## Updates
 Every week new entries are added to the PDB database, some are removed or modified. 
 To track these changes you can easily update your localpdb database (this'll also update any installed plugins):

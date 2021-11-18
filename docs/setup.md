@@ -27,6 +27,7 @@ Option | Description
 **`--fetch_pdb`** | Download the protein structures in the `PDB` format
 **`--fetch_cif`** | Download the protein structures in the `mmCIF` format
 **`--update`** | Update  `localpdb` database instead of setting up. More on updates.
+**`--from_config FILE`** | Setup  `localpdb` from config file. This enables recreation of the historical PDB versions.
 
 !!! Example
     **Setting up `localpdb` in directory `/ssd/db/localpdb`, syncing structures in `PDB` and `mmCIF` formats 

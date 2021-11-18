@@ -31,7 +31,8 @@
 |:-------------|:----------------------------|
 | `reset()`    | Resets all selections performed on any of the DataFrames and restores the initial state of PDB object.
 | `load_plugin(plugin='Name')` | Loads plugins and its data.
-| `select_updates(mode='am+')` | Selects only the entries that were either added (`mode='a'`) or (`mode='m'`) or both (`mode='am'`) in the latest PDB weekly release. In `mode='am+'` updates with respect to the previous localpdb version will be loaded. 
+| `select_updates(mode='am+')` | Selects only the entries that were either added (`mode='a'`) or (`mode='m'`) or both (`mode='am'`) in the latest PDB weekly release. In `mode='am+'` updates with respect to the previous localpdb version will be loaded.
+| `extract(out_fn='backup.gz')` | Extracts the `localpdb` config (for the currently loaded `version`). This enables recreation of the underlying data on other machines.
 | `search()` | [Info available on separate page](lpdb_search.md)
 | `search_seq()` | [Info available on separate page](lpdb_search.md)
 | `search_seq_motif()` | [Info available on separate page](lpdb_search.md)
