@@ -1,15 +1,17 @@
 import os
 import importlib
-import json
+import tarfile
+import warnings
 import pandas as pd
 import numpy as np
 from pathlib import Path
 from localpdb import PDBVersioneer
 from localpdb.utils.prot import parse_pdb_data
-from localpdb.utils.os import parse_simple
+from localpdb.utils.os import parse_simple, custom_warning
 from localpdb.utils.config import Config
 from localpdb.utils.rest_api import CommandFactory
 
+warnings.showwarning = custom_warning
 
 class PDB:
 
@@ -51,20 +53,22 @@ class PDB:
             raise FileNotFoundError(f'localpdb config file is available in directory \'{self.db_path}\'!')
 
         # Check if files are stored in the proper dir (double check with PDBVersionner which does that during download)
-        self.__working_path = f'{self.db_path}/data/{self.version}'  # Working path for the set version
-        pdb_bundles_fn = f'{self.__working_path}/pdb_bundles.txt'
-        pdb_entries_type_fn = f'{self.__working_path}/pdb_entries_type.txt'
-        pdb_entries_fn = f'{self.__working_path}/pdb_entries.txt'
-        pdb_res_fn = f'{self.__working_path}/pdb_resolution.txt'
-        pdb_seqres_fn = f'{self.__working_path}/pdb_seqres.txt.gz'
-        if not all(os.path.isfile(fn) for fn in [pdb_bundles_fn, pdb_entries_fn, pdb_res_fn, pdb_seqres_fn]):
+        self._working_path = f'{self.db_path}/data/{self.version}'  # Working path for the set version
+        self._pdb_bundles_fn = f'{self._working_path}/pdb_bundles.txt'
+        self._pdb_entries_type_fn = f'{self._working_path}/pdb_entries_type.txt'
+        self._pdb_entries_fn = f'{self._working_path}/pdb_entries.txt'
+        self._pdb_res_fn = f'{self._working_path}/pdb_resolution.txt'
+        self._pdb_seqres_fn = f'{self._working_path}/pdb_seqres.txt.gz'
+        if not all(os.path.isfile(fn) for fn in [self._pdb_bundles_fn, self._pdb_entries_fn, self._pdb_res_fn,
+                                                 self._pdb_seqres_fn]):
             raise ValueError(
                 'Not all PDB raw files for version \'{}\' exist! Try rerunning setup or update scripts!'.format(
                     self.version))
-        self.bundles = parse_simple(pdb_bundles_fn)
+        self.bundles = parse_simple(self._pdb_bundles_fn)
 
         # Create dataframes with per-structure and per-chain data
-        self.__entries, self.__chains = parse_pdb_data(pdb_entries_fn, pdb_entries_type_fn, pdb_res_fn, pdb_seqres_fn)
+        self.__entries, self.__chains = parse_pdb_data(self._pdb_entries_fn, self._pdb_entries_type_fn,
+                                                       self._pdb_res_fn, self._pdb_seqres_fn)
 
         # Basic check for corrupt files
         if self.__entries.shape[1] not in [3, 4]: # Backwards compatibility with ver 0.1
@@ -384,6 +388,12 @@ class PDB:
                 self.chains = self.chains[self.chains.index.isin(results.index)]
         else:
             return results
+
+    def extract(self, out_fn):
+        if self.__config['struct_mirror']['pdb']:
+            warnings.warn('Extracting localpdb data is not compatible with the structure files mirror in PDB format!')
+        with tarfile.open(out_fn, mode='w:gz') as arch:
+            arch.add(self._working_path, arcname='/'.join(self._working_path.split('/')[-2:]))
 
     def _get_current_indexes(self):
         """

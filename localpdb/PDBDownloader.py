@@ -14,6 +14,7 @@ from localpdb.utils.network import get_last_modified, download_url
 
 logger = logging.getLogger(__name__)
 
+
 class PDBDownloader:
     """
     Class for handling downloads from the PDB servers.
@@ -67,6 +68,17 @@ class PDBDownloader:
             url = f'{proto}://{root}/{ext}/{version}/{file_type}.pdb'
         else:
             raise ValueError('Unknown file type, cannot generate download url!')
+        return url
+
+    def __gen_url_versioned_pdb(self, pdb_id, version, obsolete=False):
+        major, minor = version.split('.')
+        root = self.config['versioned_url']
+        proto = self.config['download_proto']
+        if obsolete:
+            minor = str(int(minor)+1)
+            url = f'{proto}://{root}/data/removed/{pdb_id[1:3]}/pdb_0000{pdb_id}/pdb_0000{pdb_id}_xyz_v{major}-{minor}.cif.gz'
+        else:
+            url = f'{proto}://{root}/views/all/coordinates/mmcif/{pdb_id[1:3]}/pdb_0000{pdb_id}/pdb_0000{pdb_id}_xyz_v{major}.cif.gz'
         return url
 
     def __verify_timestamp(self, fn, version=None):
@@ -135,6 +147,18 @@ class PDBDownloader:
             if all(results) and file_type == 'modified':
                 results.append(self.update_versioning_log(modified_dict))
             return all(results)
+
+    def download_pdb_versioned(self, entries):
+        """
+        @param entries: Dictionary with pdb_id and version id as keys and values.
+        """
+        results = []
+        for pdb_id, (version, obsolete) in tqdm(entries.items()):
+            url = self.__gen_url_versioned_pdb(pdb_id, version, obsolete=obsolete)
+            dest = f'{self.db_path}/mirror/mmCIF//{pdb_id[1:3]}/{pdb_id}.cif.gz'
+            result = download_url(url, dest)
+            results.append(result)
+        return all(results)
 
     def fetch_major_revisions(self, merged=False):
         """
@@ -239,13 +263,15 @@ class PDBDownloader:
         result = os.system(rsync_cmd)
         return result
 
-    def fetch_version_info(self):
-        entries_fn = f'{self.db_path}/data/{self.version}/pdb_entries_type.txt'
-        out_fn = f'{self.db_path}/data/{self.version}/pdb_version_info.json'
+    def fetch_version_info(self, out_fn=None, entries_fn=None):
+        if entries_fn is None:
+            entries_fn = f'{self.db_path}/data/{self.version}/pdb_entries_type.txt'
+        if out_fn is None:
+            out_fn = f'{self.db_path}/data/{self.version}/pdb_version_info.json'
         with open(entries_fn) as f:
             entries = [line.split('\t')[0] for line in f.readlines()]
         version_info = {}
-        for batch in tqdm(np.array_split(entries, 200)):
+        for batch in tqdm(np.array_split(entries, 100)):
             version_info.update(query_versions(batch))
         with open(out_fn, 'w') as f:
             f.write(json.dumps(version_info, indent=4))

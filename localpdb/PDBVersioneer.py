@@ -17,31 +17,29 @@ class PDBVersioneer:
     def __init__(self, db_path, config=None):
         self.config = config
         self.db_path = Path(db_path)
-        # Check local versions (list directories)
-        try:
-            local_versions_dirs = sorted(
-                int(ver) for ver in os.listdir('{}/data/'.format(self.db_path)) if ver.isalnum() and len(ver) == 8)
-        except FileNotFoundError:
-            local_versions_dirs = []
-
         # Check local versions (read log)
         try:
             with open('{}/data/status.log'.format(self.db_path)) as f: #TODO
                 data = json.loads(f.read())
-                local_versions_json = [int(key) for key, value in data.items() if value[0] == 'OK']
+                local_versions = [int(key) for key, value in data.items() if value[0] == 'OK']
         except FileNotFoundError:
-            local_versions_json = []
-        self.local_pdb_versions = sorted(local_versions_json)
+            # Check local versions (list directories)
+            try:
+                local_versions = sorted([int(ver) for ver in os.listdir(f'{self.db_path}/data/') if ver.isalnum() and len(ver) == 8])
+            except FileNotFoundError:
+                local_versions = []
+        self.local_pdb_versions = sorted(local_versions)
 
-    def update_logs(self, first=False):
+    def update_logs(self, first=False, version=None):
+        ver = self.current_remote_version if version is None else version
         logs_fn = f'{self.db_path}/data/status.log'
         status = ['OK', datetime.datetime.now().strftime("%Y-%m-%d %H:%M")]
         if first:
-            logs = {self.current_remote_version: status}
+            logs = {ver: status}
         else:
             with open(logs_fn) as f:
                 logs = json.loads(f.read())
-            logs[self.current_remote_version] = status
+            logs[ver] = status
         with open(logs_fn, 'w') as f:
             f.write(json.dumps(logs, indent=4))
 
@@ -55,8 +53,11 @@ class PDBVersioneer:
         curr_ids = set(id_dict.keys())
         log_fn = f'{self.db_path}/data/versioning.log'
         change_dict = {}
-        with open(log_fn) as f:
-            history = json.loads(f.read())
+        try:
+            with open(log_fn) as f:
+                history = json.loads(f.read())
+        except FileNotFoundError:
+            history = {}
         for key, h in history.items():
             if mode == 'setup':
                 vers = [ver for ver in h if ver <= version]
