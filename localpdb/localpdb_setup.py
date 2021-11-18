@@ -307,8 +307,9 @@ def main():
         if any((args.fetch_pdb, args.fetch_cif)):
             print()
             logger.info(f'Downloading protein structures...')
-            logger.info('This can take around 1 hour depending on your internet connection.'
-                        ' If the run will be stopped it can be restarted later.')
+            logger.warning('This can take around 1 to 3 hours depending on your internet connection and requires around ' \
+                           '50 GB of disk space for each format file that will be synced.')
+            logger.warning('If the run will be stopped it can be restarted later.')
             #TODO Download size warning
             if args.fetch_pdb:
                 download(args, mode='rsync_pdb', clean=False)
