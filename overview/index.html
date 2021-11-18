@@ -559,6 +559,12 @@ This will give access to the <code>lpdb.entries</code> and <code>lpdb.chains</co
 </code></pre></div>
 </div>
 <p>The detailed information about the available plugins and their functionalities is available on a separate <a href="../plugins/">page</a>.</p>
+<p>Finally, you can restore historical <code>localpdb</code> version from the config file as follows:</p>
+<div class="admonition example">
+<p class="admonition-title">Example</p>
+<div class="highlight"><pre><span></span><code>localpdb_setup -db_path /path/to/localpdb --from_config<span class="o">=</span>backup.tar.gz
+</code></pre></div>
+</div>
 <h2 id="updates">Updates</h2>
 <p>Every week new entries are added to the PDB database, some are removed or modified. 
 To track these changes you can easily update your localpdb database (this'll also update any installed plugins):</p>

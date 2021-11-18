@@ -630,6 +630,10 @@ In other words <code>lpdb.chains</code> will contain only the chains correspondi
 <td align="left">Selects only the entries that were either added (<code>mode='a'</code>) or (<code>mode='m'</code>) or both (<code>mode='am'</code>) in the latest PDB weekly release. In <code>mode='am+'</code> updates with respect to the previous localpdb version will be loaded.</td>
 </tr>
 <tr>
+<td align="left"><code>extract(out_fn='backup.gz')</code></td>
+<td align="left">Extracts the <code>localpdb</code> config (for the currently loaded <code>version</code>). This enables recreation of the underlying data on other machines.</td>
+</tr>
+<tr>
 <td align="left"><code>search()</code></td>
 <td align="left"><a href="../lpdb_search/">Info available on separate page</a></td>
 </tr>
