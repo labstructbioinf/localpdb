@@ -20,7 +20,7 @@ Update mechanism allows to follow the weekly PDB releases while retaining the po
 
 ## Overview
 ![Overview](docs/img/overview.png?raw=true)
-To find more about the package and its functionalities please follow the [docs](https://labstructbioinf.github.io/localpdb/overview). In case of any troubles free to [contact us](https://lbs.cent.uw.edu.pl) or open an issue.
+To find more about the package and its functionalities please follow the [docs](https://labstructbioinf.github.io/localpdb/overview).
 
 ## Installation
 
@@ -87,6 +87,9 @@ lpdb.chains.to_csv('dataset.csv') # Save dataset
 - [Amino acid preferences among the viral coiled-coil domains](https://labstructbioinf.github.io/localpdb/viral_ccs/).
 ![Example2](docs/img/example2.png?raw=true)
 
+
+## Troubleshooting
+In case of any troubles free to [contact us](https://lbs.cent.uw.edu.pl) or [open an issue](https://github.com/labstructbioinf/localpdb/issues).
 
 ## Acknowledgments
 This work was supported by the National Science Centre grant **2017/27/N/NZ1/00716**.
