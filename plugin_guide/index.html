@@ -68,6 +68,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#overview" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -357,9 +362,87 @@
       
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Build a custom plugin
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         Build a custom plugin
       </a>
+      
+        
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    Overview
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#definition-of-the-plugin" class="md-nav__link">
+    Definition of the plugin
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#header-of-the-plugin-file" class="md-nav__link">
+    Header of the plugin file
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#main-contents-of-the-plugin-file" class="md-nav__link">
+    Main contents of the plugin file
+  </a>
+  
+    <nav class="md-nav" aria-label="Main contents of the plugin file">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-_setup-method" class="md-nav__link">
+    The _setup() method
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-_load-method" class="md-nav__link">
+    The _load() method
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other-methods" class="md-nav__link">
+    Other methods
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -428,6 +511,20 @@
 
             
           
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../deepcoil_dataset/" class="md-nav__link">
+        Building a dataset for machine learning
+      </a>
+    </li>
+  
+
+            
+          
         </ul>
       </nav>
     </li>
@@ -441,6 +538,86 @@
               </div>
             
             
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    Overview
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#definition-of-the-plugin" class="md-nav__link">
+    Definition of the plugin
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#header-of-the-plugin-file" class="md-nav__link">
+    Header of the plugin file
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#main-contents-of-the-plugin-file" class="md-nav__link">
+    Main contents of the plugin file
+  </a>
+  
+    <nav class="md-nav" aria-label="Main contents of the plugin file">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-_setup-method" class="md-nav__link">
+    The _setup() method
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-_load-method" class="md-nav__link">
+    The _load() method
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#other-methods" class="md-nav__link">
+    Other methods
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
           
           <div class="md-content" data-md-component="content">
             <article class="md-content__inner md-typeset">
@@ -453,7 +630,106 @@
                 
                   <h1>Build a custom plugin</h1>
                 
-                <p><strong><em> In construction.... </em></strong></p>
+                <h2 id="overview">Overview</h2>
+<p>Here we'll demonstrate how to create a custom plugin that allows to add to <code>localpdb</code> an additional data source.
+As an example we'll use the already available plugin integrating results of the clustering of PDB sequences made available by RCSB
+(<a href="https://www.rcsb.org/docs/programmatic-access/file-download-services#sequence-clusters-data">Link</a>).</p>
+<p>This overview captures only the main aspects. If you run into any troubles while implementing a plugin for a specific data
+source feel free to open up an <a href="https://github.com/labstructbioinf/localpdb/issue">issue</a> or get in touch with developers.</p>
+<h2 id="definition-of-the-plugin">Definition of the plugin</h2>
+<p>Plugins should be located in the directory <code>localpdb/plugins/</code>. Additional config of the plugin should be stored in the
+<code>localpdb/plugins/config</code> directory. Name of the plugin python file and config YAML file must match.</p>
+<h2 id="header-of-the-plugin-file">Header of the plugin file</h2>
+<p>Following the above instruction we create two files - <code>localpdb/plugins/PDBClustering.py</code> and <code>localpdb/plugins/config/PDBClustering.yml</code>.</p>
+<p>Header of the <code>PDBClustering.py</code> specifies necessary imports and those specific to the plugin:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">.Plugin</span> <span class="kn">import</span> <span class="n">Plugin</span>
+<span class="kn">from</span> <span class="nn">localpdb.utils.config</span> <span class="kn">import</span> <span class="n">Config</span>
+<span class="kn">from</span> <span class="nn">localpdb.utils.os</span> <span class="kn">import</span> <span class="n">create_directory</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="c1"># Plugin specific imports</span>
+<span class="kn">from</span> <span class="nn">localpdb.utils.network</span> <span class="kn">import</span> <span class="n">download_url</span>
+</code></pre></div>
+<h2 id="main-contents-of-the-plugin-file">Main contents of the plugin file</h2>
+<p>Subsequently, we define a plugin class that we'll discuss in detail below.
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">PDBClustering</span><span class="p">(</span><span class="n">Plugin</span><span class="p">):</span>
+
+    <span class="c1">### Beginning of the part required for proper plugin handling ###</span>
+    <span class="c1">#################################################################</span>
+    <span class="n">plugin_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># Name of the plugin based on the filename</span>
+    <span class="n">plugin_config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span><span class="si">}</span><span class="s1">/config/</span><span class="si">{</span><span class="n">plugin_name</span><span class="si">}</span><span class="s1">.yml&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">data</span>  <span class="c1"># Plugin config (dict)</span>
+    <span class="n">plugin_dir</span> <span class="o">=</span> <span class="n">plugin_config</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">]</span>
+    <span class="c1">###########################################################</span>
+    <span class="c1">### End of the part required for proper plugin handling ###</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lpdb</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">lpdb</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_load</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lpdb</span><span class="o">.</span><span class="n">load_clustering_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_clustering_data</span><span class="o">.</span><span class="fm">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_prep_paths</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">create_directory</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">plugin_dir</span><span class="si">}</span><span class="s1">/&#39;</span><span class="p">)</span>
+        <span class="n">create_directory</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">plugin_dir</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">plugin_version</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">clust_redundancy</span> <span class="o">=</span> <span class="p">[</span><span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">95</span><span class="p">,</span> <span class="mi">100</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">redundancy</span> <span class="ow">in</span> <span class="n">clust_redundancy</span><span class="p">:</span>
+            <span class="n">local_fn</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">plugin_dir</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">plugin_version</span><span class="si">}</span><span class="s1">/bc-</span><span class="si">{</span><span class="n">redundancy</span><span class="si">}</span><span class="s1">.out&#39;</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plugin_config</span><span class="p">[</span><span class="s1">&#39;clust_url&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="sa">f</span><span class="s1">&#39;bc-</span><span class="si">{</span><span class="n">redundancy</span><span class="si">}</span><span class="s1">.out&#39;</span>
+            <span class="n">download_url</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">local_fn</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_load</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">load_clustering_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">redundancy</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
+        <span class="n">valid_cutoffs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;30&#39;</span><span class="p">,</span> <span class="s1">&#39;40&#39;</span><span class="p">,</span> <span class="s1">&#39;50&#39;</span><span class="p">,</span> <span class="s1">&#39;70&#39;</span><span class="p">,</span> <span class="s1">&#39;90&#39;</span><span class="p">,</span> <span class="s1">&#39;95&#39;</span><span class="p">,</span> <span class="s1">&#39;100&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">str</span><span class="p">(</span><span class="n">redundancy</span><span class="p">)</span> <span class="ow">in</span> <span class="n">valid_cutoffs</span><span class="p">:</span>
+            <span class="n">cutoffs</span> <span class="o">=</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">valid_cutoffs</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Cutoff </span><span class="se">\&#39;</span><span class="si">{</span><span class="n">redundancy</span><span class="si">}</span><span class="se">\&#39;</span><span class="s1"> is not a valid PDB clustering cutoff! Use any of the following: </span><span class="si">{</span><span class="n">cutoffs</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">fn</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">plugin_dir</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">plugin_version</span><span class="si">}</span><span class="s1">/bc-</span><span class="si">{</span><span class="n">redundancy</span><span class="si">}</span><span class="s1">.out&#39;</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">pdb_idxs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lpdb</span><span class="o">.</span><span class="n">_get_current_indexes</span><span class="p">()</span>
+        <span class="n">cluster_data_filt</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">value</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">parse_cluster_data</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">pdb_idxs</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lpdb</span><span class="o">.</span><span class="n">_add_col_chains</span><span class="p">(</span><span class="n">cluster_data_filt</span><span class="p">,</span> <span class="p">[</span><span class="sa">f</span><span class="s1">&#39;clust-</span><span class="si">{</span><span class="n">redundancy</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">])</span>
+</code></pre></div>
+Each plugin must at least implement <code>_setup()</code> and <code>_load()</code> methods.</p>
+<h3 id="the-_setup-method">The <code>_setup()</code> method</h3>
+<p>Setup function handles download / processing of the data related to plugin. Directory storing the plugin related files is defined in the 
+<code>path</code> key of the config file (available via the <code>plugin_dir</code> attribute). Importantly, it is up to the user to
+account for the proper versioning. Withing the <code>Plugin</code> class there's an attribute <code>plugin_version</code> specifying for which 
+<code>localpdb</code> version the plugin is currently set up (or loaded). Any exceptions raised during the setup will be caught by the installer and, in case the run fails,
+the setup will not finish.</p>
+<p>In the config file one can specify two important boolean keys - <code>available_historical_versions</code> and <code>allow_loading_outdated</code>.</p>
+<p>In many cases, the plugin data is available only for the current PDB version (i.e. it is not possible download this data retrospectively).
+Specifying this flag as <code>available_historical_versions</code> as <code>False</code> will force the plugin installer to try to download the data
+only for the current PDB version and skip the rest (if available). </p>
+<p>On the other hand, <code>allow_loading_outdated</code> specifies whether it is
+allowed to load the older plugin data when exact version is not available (e.g. to load <code>PDBClustering</code> data from <code>20210730</code> release to
+<code>localpdb</code> version <code>20210814</code>). Since the clustering data is sensitive to even small changes it is disabled in this case, however it may be
+reasonable to enable it for plugins that are released not in a weekly cycle (e.g. <code>ECOD</code>).</p>
+<h3 id="the-_load-method">The <code>_load()</code> method</h3>
+<p>The <code>_load()</code> method is responsible for correct plugin loading to <code>localpdb.PDB</code> instance. </p>
+<p>In case of the <code>PDBClustering</code> the plugin donates a new method - <code>load_clustering_data()</code> (implemented within the plugin) 
+that allows to load correct version of the data on demand within the <code>localpdb.PDB</code> object. In turn, the <code>load_clustering_data()</code>
+method utilizes the <code>localpdb.PDB._add_col_chains</code> method to create a new column within the <code>localpdb.PDB.chains</code> DataFrame. </p>
+<p>This mechanism allows to load the data on demand, specifying the necessary parameters (in this case the clustering similarity threshold). In other
+cases it may be more reasonable to load the data as additional DataFrame and registering a devoted attribute (e.g. <code>localpdb.PDB.ecod</code>.
+Again <code>localpdb</code> leaves a lot of space here, depending on the actual use case and nature of the data.</p>
+<h3 id="other-methods">Other methods</h3>
+<p>Any plugin can implement a <code>_prep_paths()</code> method that is responsible for creating a directory tree related to the plugin data. 
+This method is called during each plugin setup / update and may be particularly useful if data consists of multiple files or
+splitting between different directories is needed.</p>
+<p>A <code>_reset()</code> method is responsible for the plugin behavior during the <code>localpdb.PDB.reset()</code> call. By default a whole plugin
+is reloaded in such cases, however it may be more reasonable (in case of e.g. large data files and long load times) to cache
+some of the data to persist through the reset without reloading.</p>
+<p>Finally, there are <code>_filter_chains()</code> and <code>_filter_entries()</code> methods. In case when plugin registers a certain attribute
+(e.g. ECOD plugin) there's an option that allows to propagate selections done on main DataFrames (<code>localpdb.PDB.entries</code> and
+<code>localpdb.PDB.chains</code>) to any registered attribute. The aforementioned methods allow to implement logic that allows to keep
+plugin data and current state of the <code>localpdb.PDB</code> object uniform.</p>
                 
               
               
