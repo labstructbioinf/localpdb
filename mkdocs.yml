@@ -29,5 +29,6 @@ nav:
     - Advanced examples:
         - Amino acid preferences in viral coiled-coil domains: viral_ccs.ipynb
         - HIV Protease dynamics inferred from PDB structures: hiv_protease.ipynb
+        - Building a dataset for machine learning: deepcoil_dataset.ipynb
 extra_css:
   - stylesheets/extra.css

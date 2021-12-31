@@ -39,7 +39,6 @@ class PDBClustering(Plugin):
             download_url(url, local_fn)
 
     def _reset(self):
-        del self.lpdb.ecod
         self._load()
 
     def load_clustering_data(self, redundancy=50):

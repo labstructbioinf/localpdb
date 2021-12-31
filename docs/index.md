@@ -3,7 +3,7 @@
 ![localpdb](https://github.com/labstructbioinf/localpdb/workflows/localpdb/badge.svg) 
 ![localpdb](https://img.shields.io/pypi/v/localpdb)
 [![codecov](https://codecov.io/gh/labstructbioinf/localpdb/branch/master/graph/badge.svg)](https://codecov.io/gh/labstructbioinf/localpdb) 
-![python-ver](https://img.shields.io/badge/python-%3E=3.6.1-blue)
+![python-ver](https://img.shields.io/badge/python-%3E=3.7.1-blue)
 
 **localpdb** provides a simple framework to store the local mirror of the protein structures available in the [PDB](https://www.rcsb.org/) database and other related resources.
 
@@ -86,6 +86,7 @@ lpdb.chains.to_csv('dataset.csv') # Save dataset
 - [Amino acid preferences among the viral coiled-coil domains](viral_ccs.ipynb).
 ![Example2](img/example2.png?raw=true)
 
+- [Creating a dataset for machine learning - example of building DeepCoil training and test sets](deepcoil_dataset.ipynb).
 
 ## Acknowledgments
 This work was supported by the National Science Centre grant **2017/27/N/NZ1/00716**.
