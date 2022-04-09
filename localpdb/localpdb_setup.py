@@ -37,10 +37,10 @@ def get_params():
     parser.add_argument('--update', help='Update existing localpdb database', action='store_true')
     parser.add_argument('--fetch_pdb', help='Download the protein structures in the PDB format', action='store_true')
     parser.add_argument('--fetch_cif', help='Download the protein structures in the mmCIF format', action='store_true')
+    parser.add_argument('-tmp_path', help='Path to store the temporary installation files', default='/tmp/', metavar='TMP_PATH')
 
     # Add optional arguments to manually define PDB mirror (these options override the mirror definition from -mirror)
     # Used mostly for testing purposes.
-    parser.add_argument('-tmp_path', help=argparse.SUPPRESS, default='/tmp/')
     parser.add_argument('-ftp_url', help=argparse.SUPPRESS)
     parser.add_argument('-rsync_url', help=argparse.SUPPRESS)
     parser.add_argument('-rsync_opts', help=argparse.SUPPRESS)

@@ -21,11 +21,12 @@ updatable archive of the raw protein structures in various formats or to select 
 
 Option | Description 
 :-------------: | ----------------------------------------------------------
-**`-db_path PATH`** | Path to store the `localpdb` database
-**`-mirror MIRROR`** | PDB mirror used to download the raw files. Valid options are:<br/> - `rcsb` (RCSB PDB - US - **default**), <br /> - `pdbe` (PDBe - UK), <br /> - `pdbj` (PDBj - Japan)
+**`-db_path PATH`** | Path to store the `localpdb` database.
+**`-mirror MIRROR`** | PDB mirror used to download the raw files. Valid options are:<br/> - `rcsb` (RCSB PDB - US - **default**), <br /> - `pdbe` (PDBe - UK), <br /> - `pdbj` (PDBj - Japan).
 **`-plugins PLUGINS`** | Install plugins fetching additional data. More on plugins.
-**`--fetch_pdb`** | Download the protein structures in the `PDB` format
-**`--fetch_cif`** | Download the protein structures in the `mmCIF` format
+**`-tmp_path TMP_PATH`** | Path to store the temporary installation files. Default: `/tmp/`
+**`--fetch_pdb`** | Download the protein structures in the `PDB` format.
+**`--fetch_cif`** | Download the protein structures in the `mmCIF` format.
 **`--update`** | Update  `localpdb` database instead of setting up. More on updates.
 **`--from_config FILE`** | Setup  `localpdb` from config file. This enables recreation of the historical PDB versions.
 
