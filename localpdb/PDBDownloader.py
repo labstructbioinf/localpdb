@@ -115,14 +115,20 @@ class PDBDownloader:
                 dest = '{}.gz'.format(dest)
             url = self.__gen__url(file_type=file_type)
             if download_url(url, dest):
-                return self.__verify_timestamp(dest)
+                if file_type == 'bundles':
+                    return True
+                else:
+                    return self.__verify_timestamp(dest)
             else:
                 return False
 
         elif file_type in ['added', 'modified', 'obsolete']:
             url = self.__gen__url(file_type=file_type, version=self.version)
             dest = f'{self.db_path}/data/{self.version}/{file_type}.txt'
-            results = [self.__verify_timestamp(dest) if download_url(url, dest) else False]
+
+            results = []
+            if file_type != 'obsolete':
+                results = [self.__verify_timestamp(dest) if download_url(url, dest) else False]
             if file_type == 'modified':
                 modified_dict, status = self.fetch_major_revisions()
                 results.append(status)
@@ -133,7 +139,10 @@ class PDBDownloader:
                         tmp_dest = f'{self.db_path}/data/{self.version}/tmp_{version}_{file_type}.txt'
                         url = self.__gen__url(file_type=file_type, version=version)
                         if download_url(url, tmp_dest):
-                            results.append(self.__verify_timestamp(tmp_dest, version=version))
+                            if file_type != 'obsolete':
+                                results.append(self.__verify_timestamp(tmp_dest, version=version))
+                            else:
+                                results.append(True)
                             with open(tmp_dest) as f_tmp:
                                 f.write(f_tmp.read())
                             os.remove(tmp_dest)
