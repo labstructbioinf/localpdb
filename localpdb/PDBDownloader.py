@@ -81,13 +81,15 @@ class PDBDownloader:
             url = f'{proto}://{root}/views/all/coordinates/mmcif/{pdb_id[1:3]}/pdb_0000{pdb_id}/pdb_0000{pdb_id}_xyz_v{major}.cif.gz'
         return url
 
-    def __verify_timestamp(self, fn, version=None):
+    def __verify_timestamp(self, fn, version=None, lazy=False):
         """
         Verifies the timestamp of the downloaded file against the PDB version.
         @param fn: filename of the file
         @param version: PDB version
         @return: True if timestamp matches the version, else False
         """
+        if lazy:
+            return True
         if version is None:
             version = self.version
         timestamp = datetime.datetime.fromtimestamp((os.path.getmtime(fn)))
@@ -125,10 +127,8 @@ class PDBDownloader:
         elif file_type in ['added', 'modified', 'obsolete']:
             url = self.__gen__url(file_type=file_type, version=self.version)
             dest = f'{self.db_path}/data/{self.version}/{file_type}.txt'
+            results = [self.__verify_timestamp(dest, lazy = True if file_type=='obsolete' else False) if download_url(url, dest) else False]
 
-            results = []
-            if file_type != 'obsolete':
-                results = [self.__verify_timestamp(dest) if download_url(url, dest) else False]
             if file_type == 'modified':
                 modified_dict, status = self.fetch_major_revisions()
                 results.append(status)
