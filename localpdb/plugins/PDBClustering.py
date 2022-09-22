@@ -93,6 +93,7 @@ def parse_cluster_data(fn):
     cluster_data = {}
     for c in range(1, len(data)+1):
         for entry in data[c-1].split(' '):
-            pdb, chain = entry.split('_')
-            cluster_data['{}_{}'.format(pdb.lower(), chain)] = str(c)
+            if len(entry.split('_')) == 2:
+                pdb, chain = entry.split('_')
+                cluster_data['{}_{}'.format(pdb.lower(), chain)] = str(c)
     return cluster_data
