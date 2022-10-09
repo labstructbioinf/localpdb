@@ -73,11 +73,12 @@ class PDBClustering(Plugin):
 
 
 def fetch_entity_instance_mapping(entries):
-    query = """{entries(entry_ids: %s) {polymer_entities {rcsb_id, polymer_entity_instances {rcsb_id}}}}""" % json.dumps(
+    query = """{entries(entry_ids: %s) {polymer_entities {rcsb_id, rcsb_polymer_entity_container_identifiers {auth_asym_ids}}}}""" % json.dumps(
         list(entries))
     res = requests.post("https://data.rcsb.org/graphql", json={"query": query}).json()['data']['entries']
-    data = {'{}_{}'.format(chain['rcsb_id'].split('.')[0].lower(), chain['rcsb_id'].split('.')[1]): ent['rcsb_id']
-            for r in res for ent in r['polymer_entities'] for chain in ent['polymer_entity_instances']}
+    data = {'{}_{}'.format(ent['rcsb_id'].split('_')[0].lower(), chain): ent['rcsb_id'] 
+        for r in res for ent in r['polymer_entities'] 
+        for chain in ent['rcsb_polymer_entity_container_identifiers']['auth_asym_ids']}
     return data
 
 
