@@ -57,7 +57,7 @@ def parse_pdb_data(entries_fn, entries_type_fn, res_fn, seqres_fn):
     # Filter chains with nucleic acids or containing only non-standard residues
     df_chain = df_chain[~df_chain['sequence'].map(lambda x: is_nucl_seq(x))]
     df_chain = df_chain[~df_chain['sequence'].map(lambda x: is_nonstd_seq(x))]
-    df_struct = df_struct.loc[set(df_chain['pdb'].values.tolist())]
+    df_struct = df_struct.loc[list(set(df_chain['pdb'].values.tolist()))]
 
     # Return results
     return df_struct, df_chain
