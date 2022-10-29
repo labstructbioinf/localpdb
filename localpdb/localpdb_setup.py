@@ -265,7 +265,26 @@ def main():
             print(f'This script will setup the localpdb database in the directory:\n{args.db_path}. '\
                   f'\n\nRestoring from the config specified in:\n{args.from_config}')
             with tarfile.open(args.from_config) as arch:
-                arch.extractall(args.db_path)
+                def is_within_directory(directory, target):
+                    
+                    abs_directory = os.path.abspath(directory)
+                    abs_target = os.path.abspath(target)
+                
+                    prefix = os.path.commonprefix([abs_directory, abs_target])
+                    
+                    return prefix == abs_directory
+                
+                def safe_extract(tar, path=".", members=None, *, numeric_owner=False):
+                
+                    for member in tar.getmembers():
+                        member_path = os.path.join(path, member.name)
+                        if not is_within_directory(path, member_path):
+                            raise Exception("Attempted Path Traversal in Tar File")
+                
+                    tar.extractall(path, members, numeric_owner=numeric_owner) 
+                    
+                
+                safe_extract(arch, args.db_path)
             # Create directories
             dirs = ['mirror', 'mirror/pdb', 'mirror/mmCIF', 'logs']
             for _dir in dirs:
