@@ -21,7 +21,8 @@ def parse_pdb_data(entries_fn, entries_type_fn, res_fn, seqres_fn):
     if not switch:
         entries_type_fn = entries_fn
     with open(entries_type_fn) as f:
-        entries_type = {key: (type_, method) for (key, type_, method) in list(map(str.split, f.readlines()))}
+        lines = [line.split() for line in f.readlines() if len(line.split()) == 3]
+    entries_type = {key: (type_, method) for (key, type_, method) in lines}
     entries_type = pd.DataFrame.from_dict(entries_type, orient='index', columns=['type', 'method'])
 
     with open(res_fn) as f:
