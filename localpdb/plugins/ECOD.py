@@ -64,7 +64,7 @@ class ECOD(Plugin):
         soup = BeautifulSoup(ecod_content, "html.parser")
         ecod_history = {}
         for ultag in soup.find('div', class_='history').find_all('ul'):
-            for litag in ultag.find_all('li')[:-1]:
+            for litag in ultag.find_all('li')[:-2]:
                 ver_url = self.plugin_config['ecod_domain'] + litag.find('a')['href']
                 version = int(str(litag.text).split(' ')[0])
                 ecod_history[version] = ver_url # ECOD history dict
