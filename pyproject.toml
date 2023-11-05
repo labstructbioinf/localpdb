@@ -16,6 +16,7 @@ beautifulsoup4 = "^4.9.3"
 biopython = "=1.78"
 requests = "^2.25.1"
 Jinja2 = "^3.0.1"
+ipython_genutils = "0.2.0"
 
 [tool.poetry.scripts]
 localpdb_setup = 'localpdb.localpdb_setup:main'

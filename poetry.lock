@@ -233,6 +233,14 @@ optional = false
 python-versions = ">=3.7"
 
 [[package]]
+name = "ipython-genutils"
+version = "0.2.0"
+description = "Vestigial utilities from IPython"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "jinja2"
 version = "3.1.2"
 description = "A very fast and expressive template engine."
@@ -1026,7 +1034,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-ena
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<4.0.0"
-content-hash = "c8123ed2c62e1c3de961d6c364981819bcaddf4a687535f2807e53e8cd4ee30f"
+content-hash = "15d35bfacf0457e7e5ea6535e143625a5222680baf43db96e460e7cf4f88e43b"
 
 [metadata.files]
 atomicwrites = []
@@ -1076,6 +1084,10 @@ idna = []
 importlib-metadata = []
 importlib-resources = []
 iniconfig = []
+ipython-genutils = [
+    {file = "ipython_genutils-0.2.0-py2.py3-none-any.whl", hash = "sha256:72dd37233799e619666c9f639a9da83c34013a73e8bbc79a7a6348d93c61fab8"},
+    {file = "ipython_genutils-0.2.0.tar.gz", hash = "sha256:eb2e116e75ecef9d4d228fdc66af54269afa26ab4463042e33785b887c628ba8"},
+]
 jinja2 = []
 jsonschema = []
 jsonschema-specifications = []
