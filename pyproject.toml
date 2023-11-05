@@ -19,6 +19,7 @@ Jinja2 = "^3.0.1"
 
 [tool.poetry.scripts]
 localpdb_setup = 'localpdb.localpdb_setup:main'
+localpdb_pdbseqresmapper = 'localpdb.plugins.PrepPDBSeqresMapper:main'
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.4"
