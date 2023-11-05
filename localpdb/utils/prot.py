@@ -36,7 +36,7 @@ def parse_pdb_data(entries_fn, entries_type_fn, res_fn, seqres_fn):
         with open(entries_fn) as f:
             entries_data = {entry[0].lower(): entry[2] for entry in [line.split('\t') for line in f.readlines()[3:]]}
         entries_data = pd.DataFrame.from_dict(entries_data, orient='index', columns=['deposition_date'])
-        entries_data['deposition_date'] = pd.to_datetime(entries_data['deposition_date'])
+        entries_data['deposition_date'] = pd.to_datetime(entries_data['deposition_date'], format="%m/%d/%y")
         df_struct = pd.merge(df_struct, entries_data, left_index=True, right_index=True)
 
     df_struct = df_struct[df_struct['type'].isin(['prot', 'prot-nuc'])]

@@ -1,4 +1,5 @@
 import logging
+import warnings
 import os
 from .Plugin import Plugin
 from localpdb.utils.config import Config
@@ -38,11 +39,8 @@ class PDBSeqresMapper(Plugin):
 
     def _setup(self):
         try:
-            remote_fn = f'{self.url}/{self.plugin_version}.json.gz'
-            local_fn = f'{self.plugin_dir}/{self.plugin_version}.json.gz'
-            if not download_url(remote_fn, local_fn):
-                logger.error(f'Plugin data is not currently available for localpdb version {self.plugin_version}. Try again later.')
-                raise
+            warnings.warn("This plugin is no longer supported in traditional installation. Please use the localpdb_pdbseqresmapper script instead to install locally.")
+            warnings.warn("More info: https://labstructbioinf.github.io/localpdb/plugins/")
         except:
             raise PluginInstallError()
 
