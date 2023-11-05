@@ -6,7 +6,7 @@ authors = ["Jan Ludwiczak <j.ludwiczak@cent.uw.edu.pl>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
-python = "^3.7.1"
+python = ">=3.8,<4.0.0"
 pandas = "^2"
 pyaml = "^20.4.0"
 tqdm = "^4"
