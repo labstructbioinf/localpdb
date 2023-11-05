@@ -7,13 +7,13 @@ license = "MIT"
 
 [tool.poetry.dependencies]
 python = "^3.7.1"
-pandas = "^1"
+pandas = "^2"
 pyaml = "^20.4.0"
 tqdm = "^4"
 termcolor = "^1.1.0"
 coloredlogs = "^15.0"
 beautifulsoup4 = "^4.9.3"
-biopython = "^1"
+biopython = "=1.78"
 requests = "^2.25.1"
 Jinja2 = "^3.0.1"
 
