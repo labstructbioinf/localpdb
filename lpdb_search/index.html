@@ -12,7 +12,7 @@
       
       
       <link rel="icon" href="../img/favicon.ico">
-      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-7.3.6">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-7.3.6">
     
     
       
@@ -107,7 +107,7 @@
     
       <div class="md-header__source">
         
-<a href="https://github.com/labstructbioinf/localpdb/" title="Go to repository" class="md-source" data-md-component="source">
+<a href="https://github.com/labstructbioinf/localpdb" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
@@ -152,7 +152,7 @@
   
     <div class="md-nav__source">
       
-<a href="https://github.com/labstructbioinf/localpdb/" title="Go to repository" class="md-source" data-md-component="source">
+<a href="https://github.com/labstructbioinf/localpdb" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
@@ -474,37 +474,37 @@ Performs a basic search using the RCSB API. More information available at the RC
 <table>
 <thead>
 <tr>
-<th align="center">Parameter &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+<th style="text-align: center;">Parameter &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
 <th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="center"><strong><code>attribute</code></strong></td>
+<td style="text-align: center;"><strong><code>attribute</code></strong></td>
 <td>Attribute to perform a search on - the full list is available <a href="https://search.rcsb.org/search-attributes.html">here</a>.</td>
 </tr>
 <tr>
-<td align="center"><strong><code>operator</code></strong></td>
+<td style="text-align: center;"><strong><code>operator</code></strong></td>
 <td>Operator to use in the search - full list of operators available with corresponding attributes is available <a href="https://search.rcsb.org/search-attributes.html">here</a>.</td>
 </tr>
 <tr>
-<td align="center"><strong><code>value</code></strong></td>
+<td style="text-align: center;"><strong><code>value</code></strong></td>
 <td>Value used in the search.</td>
 </tr>
 <tr>
-<td align="center"><strong><code>return_type</code></strong></td>
+<td style="text-align: center;"><strong><code>return_type</code></strong></td>
 <td>Format of the returned entries that satisfy the query. Available options are <code>entry</code> (<code>PDBID</code>), <code>polymer_entity</code> (<code>PDBID_ENTITY</code>), <code>polymer_instance</code> (<code>PDBID_CHAIN</code>),</td>
 </tr>
 <tr>
-<td align="center"><strong><code>no_hits</code></strong></td>
+<td style="text-align: center;"><strong><code>no_hits</code></strong></td>
 <td>Number of presented hits. Default: <code>no_hits=1000</code>, use <code>no_hits=-1</code> to get all hits.</td>
 </tr>
 <tr>
-<td align="center"><strong><code>get_doc_only</code></strong></td>
+<td style="text-align: center;"><strong><code>get_doc_only</code></strong></td>
 <td>Present only the dataframe with available attributes and operators.</td>
 </tr>
 <tr>
-<td align="center"><strong><code>select</code></strong></td>
+<td style="text-align: center;"><strong><code>select</code></strong></td>
 <td>If True the results of the query will be used to perform selection on <code>lpdb.entries</code> (if <code>return_type=='entries'</code>) or <code>lpdb.chains</code> (if <code>return_type=='polymer_instance'</code>). Moreover, if <code>lpdb</code> is instantiated with <code>auto_filter</code> mode, the selection will be propagated to other registered dataframes.</td>
 </tr>
 </tbody>
@@ -516,33 +516,33 @@ Search for similar sequences to the input sequence among the entries available i
 <table>
 <thead>
 <tr>
-<th align="center">Parameter &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+<th style="text-align: center;">Parameter &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
 <th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="center"><strong><code>sequence</code></strong></td>
+<td style="text-align: center;"><strong><code>sequence</code></strong></td>
 <td>Input sequence.</td>
 </tr>
 <tr>
-<td align="center"><strong><code>evalue</code></strong></td>
+<td style="text-align: center;"><strong><code>evalue</code></strong></td>
 <td>Minimum e-value to include a sequence.</td>
 </tr>
 <tr>
-<td align="center"><strong><code>identity</code></strong></td>
+<td style="text-align: center;"><strong><code>identity</code></strong></td>
 <td>Minimum identity to the query to include a sequence.</td>
 </tr>
 <tr>
-<td align="center"><strong><code>return_type</code></strong></td>
+<td style="text-align: center;"><strong><code>return_type</code></strong></td>
 <td>Format of the returned entries that satisfy the query. Available options are <code>entry</code> (<code>PDBID</code>), <code>polymer_entity</code> (<code>PDBID_ENTITY</code>), <code>polymer_instance</code> (<code>PDBID_CHAIN</code>),</td>
 </tr>
 <tr>
-<td align="center"><strong><code>no_hits</code></strong></td>
+<td style="text-align: center;"><strong><code>no_hits</code></strong></td>
 <td>Number of presented hits. Default: <code>no_hits=1000</code>, use <code>no_hits=-1</code> to get all hits.</td>
 </tr>
 <tr>
-<td align="center"><strong><code>select</code></strong></td>
+<td style="text-align: center;"><strong><code>select</code></strong></td>
 <td>If True the results of the query will be used to perform selection on <code>lpdb.entries</code> (if <code>return_type=='entries'</code>) or <code>lpdb.chains</code> (if <code>return_type=='polymer_instance'</code>). Moreover, if <code>lpdb</code> is instantiated with <code>auto_filter</code> mode, the selection will be propagated to other registered dataframes.</td>
 </tr>
 </tbody>
@@ -554,33 +554,33 @@ Search for structures spatially similar to the input structures. <strong><em>Ret
 <table>
 <thead>
 <tr>
-<th align="center">Parameter &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+<th style="text-align: center;">Parameter &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
 <th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="center"><strong><code>pdb_id</code></strong></td>
+<td style="text-align: center;"><strong><code>pdb_id</code></strong></td>
 <td>Input structure identifier.</td>
 </tr>
 <tr>
-<td align="center"><strong><code>assembly_id</code></strong></td>
+<td style="text-align: center;"><strong><code>assembly_id</code></strong></td>
 <td>Assembly identifier of the input structure.</td>
 </tr>
 <tr>
-<td align="center"><strong><code>operator</code></strong></td>
+<td style="text-align: center;"><strong><code>operator</code></strong></td>
 <td>Match mode type - either <code>relaxed_shape_match</code> or <code>strict_shape_match</code>.</td>
 </tr>
 <tr>
-<td align="center"><strong><code>return_type</code></strong></td>
+<td style="text-align: center;"><strong><code>return_type</code></strong></td>
 <td>Format of the returned entries that satisfy the query. Available options are <code>entry</code> (<code>PDBID</code>), <code>polymer_entity</code> (<code>PDBID_ENTITY</code>), <code>polymer_instance</code> (<code>PDBID_CHAIN</code>),</td>
 </tr>
 <tr>
-<td align="center"><strong><code>no_hits</code></strong></td>
+<td style="text-align: center;"><strong><code>no_hits</code></strong></td>
 <td>Number of presented hits. Default: <code>no_hits=1000</code>, use <code>no_hits=-1</code> to get all hits.</td>
 </tr>
 <tr>
-<td align="center"><strong><code>select</code></strong></td>
+<td style="text-align: center;"><strong><code>select</code></strong></td>
 <td>If True the results of the query will be used to perform selection on <code>lpdb.entries</code> (if <code>return_type=='entries'</code>) or <code>lpdb.chains</code> (if <code>return_type=='polymer_instance'</code>). Moreover, if <code>lpdb</code> is instantiated with <code>auto_filter</code> mode, the selection will be propagated to other registered dataframes.</td>
 </tr>
 </tbody>
@@ -591,29 +591,29 @@ Search for a sequence motif in entries available in the PDB database. <strong><e
 <table>
 <thead>
 <tr>
-<th align="center">Parameter &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+<th style="text-align: center;">Parameter &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
 <th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="center"><strong><code>query</code></strong></td>
+<td style="text-align: center;"><strong><code>query</code></strong></td>
 <td>Query motif to find in the PDB sequences, according to given type_ (i.e prosite)</td>
 </tr>
 <tr>
-<td align="center"><strong><code>type_</code></strong></td>
+<td style="text-align: center;"><strong><code>type_</code></strong></td>
 <td>Type of the specified motif. Available: <code>simple</code> (e.g., <code>CXCXXL</code>), <code>prosite</code> (e.g., <code>C-X-C-X(2)-[LIVMYFWC]</code>), <code>regex</code> (e.g., <code>CXCX{2}[LIVMYFWC]</code>)</td>
 </tr>
 <tr>
-<td align="center"><strong><code>return_type</code></strong></td>
+<td style="text-align: center;"><strong><code>return_type</code></strong></td>
 <td>Format of the returned entries that satisfy the query. Available options are <code>entry</code> (<code>PDBID</code>), <code>polymer_entity</code> (<code>PDBID_ENTITY</code>), <code>polymer_instance</code> (<code>PDBID_CHAIN</code>),</td>
 </tr>
 <tr>
-<td align="center"><strong><code>no_hits</code></strong></td>
+<td style="text-align: center;"><strong><code>no_hits</code></strong></td>
 <td>Number of presented hits. Default: <code>no_hits=1000</code>, use <code>no_hits=-1</code> to get all hits.</td>
 </tr>
 <tr>
-<td align="center"><strong><code>select</code></strong></td>
+<td style="text-align: center;"><strong><code>select</code></strong></td>
 <td>If True the results of the query will be used to perform selection on <code>lpdb.entries</code> (if <code>return_type=='entries'</code>) or <code>lpdb.chains</code> (if <code>return_type=='polymer_instance'</code>). Moreover, if <code>lpdb</code> is instantiated with <code>auto_filter</code> mode, the selection will be propagated to other registered dataframes.</td>
 </tr>
 </tbody>
@@ -690,7 +690,7 @@ Search for a sequence motif in entries available in the PDB database. <strong><e
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.fcfe8b6d.min.js", "version": null}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.fcfe8b6d.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": null}</script>
     
     
       <script src="../assets/javascripts/bundle.b1047164.min.js"></script>

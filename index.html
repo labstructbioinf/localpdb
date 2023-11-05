@@ -12,7 +12,7 @@
       
       
       <link rel="icon" href="img/favicon.ico">
-      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-7.3.6">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-7.3.6">
     
     
       
@@ -112,7 +112,7 @@
     
       <div class="md-header__source">
         
-<a href="https://github.com/labstructbioinf/localpdb/" title="Go to repository" class="md-source" data-md-component="source">
+<a href="https://github.com/labstructbioinf/localpdb" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
@@ -157,7 +157,7 @@
   
     <div class="md-nav__source">
       
-<a href="https://github.com/labstructbioinf/localpdb/" title="Go to repository" class="md-source" data-md-component="source">
+<a href="https://github.com/labstructbioinf/localpdb" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
@@ -652,10 +652,10 @@ Update mechanism allows following the weekly PDB releases while retaining the po
 <p><img alt="Overview" src="img/overview.png?raw=true" />
 To find more about the package and its functionalities please follow the <a href="https://labstructbioinf.github.io/localpdb/overview">docs</a>. In case of any troubles free to <a href="https://lbs.cent.uw.edu.pl">contact us</a> or open an issue.</p>
 <h2 id="installation">Installation</h2>
-<p><div class="highlight"><pre><span></span><code>pip install localpdb
+<p><div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>localpdb
 </code></pre></div>
 Setup the database and sync protein structures in the mmCIF format:
-<div class="highlight"><pre><span></span><code>localpdb_setup -db_path /path/to/localpdb --fetch_cif
+<div class="highlight"><pre><span></span><code>localpdb_setup<span class="w"> </span>-db_path<span class="w"> </span>/path/to/localpdb<span class="w"> </span>--fetch_cif
 </code></pre></div>
 More information on the setup options are available via <a href="https://labstructbioinf.github.io/localpdb/setup">docs</a>.</p>
 <h2 id="examples">Examples</h2>
@@ -679,7 +679,7 @@ More information on the setup options are available via <a href="https://labstru
 <li>deposited <strong>after 2010</strong>. </li>
 <li>remove the redundancy at the <strong>90% sequence identity</strong>,
 <div class="highlight"><pre><span></span><code><span class="c1"># Install plugins providing additional data</span>
-localpdb_setup -db_path /path/to/your/localpdb -plugins SIFTS ECOD PDBClustering
+localpdb_setup<span class="w"> </span>-db_path<span class="w"> </span>/path/to/your/localpdb<span class="w"> </span>-plugins<span class="w"> </span>SIFTS<span class="w"> </span>ECOD<span class="w"> </span>PDBClustering
 </code></pre></div>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">localpdb</span> <span class="kn">import</span> <span class="n">PDB</span>
 <span class="kn">import</span> <span class="nn">gzip</span>
@@ -774,7 +774,7 @@ localpdb_setup -db_path /path/to/your/localpdb -plugins SIFTS ECOD PDBClustering
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": ".", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "assets/javascripts/workers/search.fcfe8b6d.min.js", "version": null}</script>
+    <script id="__config" type="application/json">{"base": ".", "features": [], "search": "assets/javascripts/workers/search.fcfe8b6d.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": null}</script>
     
     
       <script src="assets/javascripts/bundle.b1047164.min.js"></script>

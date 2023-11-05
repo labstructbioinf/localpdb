@@ -12,7 +12,7 @@
       
       
       <link rel="icon" href="../img/favicon.ico">
-      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-7.3.6">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-7.3.6">
     
     
       
@@ -112,7 +112,7 @@
     
       <div class="md-header__source">
         
-<a href="https://github.com/labstructbioinf/localpdb/" title="Go to repository" class="md-source" data-md-component="source">
+<a href="https://github.com/labstructbioinf/localpdb" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
@@ -157,7 +157,7 @@
   
     <div class="md-nav__source">
       
-<a href="https://github.com/labstructbioinf/localpdb/" title="Go to repository" class="md-source" data-md-component="source">
+<a href="https://github.com/labstructbioinf/localpdb" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
@@ -555,55 +555,55 @@
 <p>The setup of the <code>localpdb</code> is simple and straightforward.
 Recommended installation way is to use <code>pip</code>
 (this will also make the <code>localpdb_setup</code> script available in your <code>PATH</code>):
-<div class="highlight"><pre><span></span><code>pip install localpdb
+<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>localpdb
 </code></pre></div>
 The most recent version of <code>localpdb</code> can be installed directly from the repository:
-<div class="highlight"><pre><span></span><code>pip install git+https://github.com/labstructbioinf/localpdb.git
+<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>git+https://github.com/labstructbioinf/localpdb.git
 </code></pre></div></p>
 <h3 id="setting-up-localpdb">Setting up localpdb</h3>
 <p>Once installed <code>localpdb</code> you need to setup the database in a suitable directory:
-<div class="highlight"><pre><span></span><code>localpdb_setup -db_path /path/to/localpdb
+<div class="highlight"><pre><span></span><code>localpdb_setup<span class="w"> </span>-db_path<span class="w"> </span>/path/to/localpdb
 </code></pre></div>
 Setup script provides additional options if you want to additionally keep the
 updatable archive of the raw protein structures in various formats or to select the desired PDB mirror:</p>
 <table>
 <thead>
 <tr>
-<th align="center">Option</th>
+<th style="text-align: center;">Option</th>
 <th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="center"><strong><code>-db_path PATH</code></strong></td>
+<td style="text-align: center;"><strong><code>-db_path PATH</code></strong></td>
 <td>Path to store the <code>localpdb</code> database.</td>
 </tr>
 <tr>
-<td align="center"><strong><code>-mirror MIRROR</code></strong></td>
+<td style="text-align: center;"><strong><code>-mirror MIRROR</code></strong></td>
 <td>PDB mirror used to download the raw files. Valid options are:<br/> - <code>rcsb</code> (RCSB PDB - US - <strong>default</strong>), <br /> - <code>pdbe</code> (PDBe - UK), <br /> - <code>pdbj</code> (PDBj - Japan).</td>
 </tr>
 <tr>
-<td align="center"><strong><code>-plugins PLUGINS</code></strong></td>
+<td style="text-align: center;"><strong><code>-plugins PLUGINS</code></strong></td>
 <td>Install plugins fetching additional data. More on plugins.</td>
 </tr>
 <tr>
-<td align="center"><strong><code>-tmp_path TMP_PATH</code></strong></td>
+<td style="text-align: center;"><strong><code>-tmp_path TMP_PATH</code></strong></td>
 <td>Path to store the temporary installation files. Default: <code>/tmp/</code></td>
 </tr>
 <tr>
-<td align="center"><strong><code>--fetch_pdb</code></strong></td>
+<td style="text-align: center;"><strong><code>--fetch_pdb</code></strong></td>
 <td>Download the protein structures in the <code>PDB</code> format.</td>
 </tr>
 <tr>
-<td align="center"><strong><code>--fetch_cif</code></strong></td>
+<td style="text-align: center;"><strong><code>--fetch_cif</code></strong></td>
 <td>Download the protein structures in the <code>mmCIF</code> format.</td>
 </tr>
 <tr>
-<td align="center"><strong><code>--update</code></strong></td>
+<td style="text-align: center;"><strong><code>--update</code></strong></td>
 <td>Update  <code>localpdb</code> database instead of setting up. More on updates.</td>
 </tr>
 <tr>
-<td align="center"><strong><code>--from_config FILE</code></strong></td>
+<td style="text-align: center;"><strong><code>--from_config FILE</code></strong></td>
 <td>Setup  <code>localpdb</code> from config file. This enables recreation of the historical PDB versions.</td>
 </tr>
 </tbody>
@@ -612,7 +612,7 @@ updatable archive of the raw protein structures in various formats or to select 
 <p class="admonition-title">Example</p>
 <p><strong>Setting up <code>localpdb</code> in directory <code>/ssd/db/localpdb</code>, syncing structures in <code>PDB</code> and <code>mmCIF</code> formats 
 and installing plugins <code>PDBClustering</code> and <code>ECOD</code>:</strong>
-<div class="highlight"><pre><span></span><code>localpdb_setup -db_path /ssd/db/localpdb --fetch_pdb --fetch_cif -plugins ECOD PDBClustering
+<div class="highlight"><pre><span></span><code>localpdb_setup<span class="w"> </span>-db_path<span class="w"> </span>/ssd/db/localpdb<span class="w"> </span>--fetch_pdb<span class="w"> </span>--fetch_cif<span class="w"> </span>-plugins<span class="w"> </span>ECOD<span class="w"> </span>PDBClustering
 </code></pre></div></p>
 </div>
                 
@@ -687,7 +687,7 @@ and installing plugins <code>PDBClustering</code> and <code>ECOD</code>:</strong
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.fcfe8b6d.min.js", "version": null}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.fcfe8b6d.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": null}</script>
     
     
       <script src="../assets/javascripts/bundle.b1047164.min.js"></script>

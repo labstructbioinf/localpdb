@@ -12,7 +12,7 @@
       
       
       <link rel="icon" href="../img/favicon.ico">
-      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-7.3.6">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-7.3.6">
     
     
       
@@ -112,7 +112,7 @@
     
       <div class="md-header__source">
         
-<a href="https://github.com/labstructbioinf/localpdb/" title="Go to repository" class="md-source" data-md-component="source">
+<a href="https://github.com/labstructbioinf/localpdb" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
@@ -157,7 +157,7 @@
   
     <div class="md-nav__source">
       
-<a href="https://github.com/labstructbioinf/localpdb/" title="Go to repository" class="md-source" data-md-component="source">
+<a href="https://github.com/labstructbioinf/localpdb" title="Go to repository" class="md-source" data-md-component="source">
   <div class="md-source__icon md-icon">
     
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
@@ -539,41 +539,41 @@
 <table>
 <thead>
 <tr>
-<th align="center">Plugin &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+<th style="text-align: center;">Plugin &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
 <th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="center"><strong><code>SIFTS</code></strong></td>
+<td style="text-align: center;"><strong><code>SIFTS</code></strong></td>
 <td>Provides easy access to the <a href="https://www.ebi.ac.uk/pdbe/docs/sifts/overview.html">SIFTS</a> data. Adds new dataframes <code>lpdb.pfam</code>, <code>lpdb.scop</code>, <code>lpdb.ec</code>, <code>lpdb.cath</code> and an additional column in the <code>lpdb.chains</code> dataframes containing taxonomy information.</td>
 </tr>
 <tr>
-<td align="center"><strong><code>Biounit</code></strong></td>
+<td style="text-align: center;"><strong><code>Biounit</code></strong></td>
 <td>Precalculates the biological assemblies from the raw PDB entries with the <a href="http://watcut.uwaterloo.ca/tools/makemultimer/">MakeMultimer</a> script.</td>
 </tr>
 <tr>
-<td align="center"><strong><code>ECOD</code></strong></td>
+<td style="text-align: center;"><strong><code>ECOD</code></strong></td>
 <td>Provides access to the <a href="http://prodata.swmed.edu/ecod/">ECOD</a> data. Adds new dataframe <code>lpdb.ecod</code>.</td>
 </tr>
 <tr>
-<td align="center"><strong><code>DSSP</code></strong></td>
+<td style="text-align: center;"><strong><code>DSSP</code></strong></td>
 <td>Precalculates the <a href="https://swift.cmbi.umcn.nl/gv/dssp/DSSP_3.html">DSSP</a> output for each entry in the PDB. Adds a <code>dssp</code> in the <code>lpdb.entries</code>.</td>
 </tr>
 <tr>
-<td align="center"><strong><code>PDBClustering</code></strong></td>
+<td style="text-align: center;"><strong><code>PDBClustering</code></strong></td>
 <td>Enables the access to the precomputed clustering results from the <a href="https://www.rcsb.org/docs/programmatic-access/file-download-services#sequence-data">RCSB</a>. Adds the <code>localpdb.PDB.load_clustering_data</code> function and subsequently the <code>clust-*</code> column(s) in the <code>lpdb.chains</code> DataFrame.</td>
 </tr>
 <tr>
-<td align="center"><strong><code>PDBSeqresMapper</code></strong></td>
-<td>Provides the mapping between the names of residues in the PDB/mmCIF file and SEQRES (natural) protein sequence. Mapping is available through the <code>localpdb.PDB.get_pdbseqres_mapping()</code> function.</td>
+<td style="text-align: center;"><strong><code>PDBSeqresMapper</code></strong></td>
+<td>Provides the mapping between the names of residues in the PDB/mmCIF file and SEQRES (natural) protein sequence. Mapping is available through the <code>localpdb.PDB.get_pdbseqres_mapping()</code> function. <br />  <br /> <b> Change in Nov 2023: We discontinued releases of this plugin through <code>lbs.cent.uw.edu.pl</code> mirror. <br /> In order to set it up, please use the <code>localpdb_pdbseqresmapper</code> script, e.g.: <br />  <code>localpdb_pdbseqresmapper -db_path /home/db/localpdb -version XXXXXX</code> (should take around 60 minutes on 20 core machine). </b></td>
 </tr>
 <tr>
-<td align="center"><strong><code>Socket</code></strong></td>
+<td style="text-align: center;"><strong><code>Socket</code></strong></td>
 <td>Calculates the coiled-coil domain annotations in the available protein structures with the <a href="http://coiledcoils.chm.bris.ac.uk/socket/">Socket</a> program. Adds a <code>localpdb.PDB.get_socket_dict</code> function that returns the parsed annotation for the current <code>lpdb.entries</code> selection.</td>
 </tr>
 <tr>
-<td align="center"><strong><code>PDBChain</code></strong></td>
+<td style="text-align: center;"><strong><code>PDBChain</code></strong></td>
 <td>Provides easy access to the precalculated PDB files corresponding to the individual chains (polymer instances)</td>
 </tr>
 </tbody>
@@ -650,7 +650,7 @@
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.fcfe8b6d.min.js", "version": null}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.fcfe8b6d.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "version": null}</script>
     
     
       <script src="../assets/javascripts/bundle.b1047164.min.js"></script>
