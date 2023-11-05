@@ -1,7 +1,8 @@
 ---
 mirrors:
   rcsb:
-    url: "ftp.rcsb.org/pub/pdb"
+    url: "files.rcsb.org/pub/pdb/"
+    ftp_url: "ftp.rcsb.org/pub/pdb/"
     versioned_url: "ftp-versioned.rcsb.org/pdb_versioned"
     download_proto: "https"
     rsync_url: "rsync.rcsb.org::ftp_data/structures/divided"
@@ -9,6 +10,7 @@ mirrors:
 
   pdbe:
     url: "ftp.ebi.ac.uk/pub/databases/pdb"
+    ftp_url: "ftp.ebi.ac.uk/pub/databases/pdb"
     versioned_url: "ftp.ebi.ac.uk/pub/databases/pdb_versioned"
     download_proto: "http"
     rsync_url: "ftp.ebi.ac.uk::pub/databases/pdb/data/structures/divided"
@@ -16,6 +18,7 @@ mirrors:
 
   pdbj:
     url: "ftp.pdbj.org/pub/pdb"
+    ftp_url: "ftp.pdbj.org/pub/pdb"
     versioned_url: "ftp-versioned.pdbj.org/pdb_versioned/views"
     download_proto: "http"
     rsync_url: "ftp.pdbj.org::ftp_data/structures/divided"
