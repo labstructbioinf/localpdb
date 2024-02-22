@@ -211,7 +211,7 @@ class PDB:
                     tmp_ids = {line.rstrip() for line in f}
                     ids = ids | tmp_ids
         curr_ids = set(self.entries.index.values)
-        self.entries = self.entries.loc[ids & curr_ids]
+        self.entries = self.entries.loc[list(ids & curr_ids)]
 
     def reset(self):
         """
