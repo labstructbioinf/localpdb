@@ -182,9 +182,13 @@ class PDBDownloader:
             if merged else f'{self.db_path}/data/{self.version}/modified_major.txt'
         with open(in_fn) as f:
             entries = {line.rstrip() for line in f}
+        modified_dict = dict()
+        n_chunks = len(entries) % 100
         try:
-            modified_dict = query_major_revisions(entries, self.versions[0], self.versions[-1]) \
-                if merged else query_major_revisions(entries, self.version, self.version)
+            for entry_chunk in np.array_split(list(entries), n_chunks):
+                chunk_dict = query_major_revisions(entry_chunk, self.versions[0], self.versions[-1]) \
+                if merged else query_major_revisions(entry_chunk, self.version, self.version)
+                modified_dict.update(chunk_dict)
         except requests.exceptions.RequestException:
             return {}, False
         with open(out_fn, 'w') as f:

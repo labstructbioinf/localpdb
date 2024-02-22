@@ -36,7 +36,7 @@ class DSSP(Plugin):
 
     def _setup(self):
         self.lpdb.entries = self.lpdb.entries[self.lpdb.entries['mmCIF_fn'].notnull()]
-        cmds = {pdb_id: f'{self.dssp_loc} -i {fn_struct} -o {self.plugin_dir}/{pdb_id[1:3]}/{pdb_id}.dssp.gz' for
+        cmds = {pdb_id: f'timeout 30s {self.dssp_loc} -i {fn_struct} -o {self.plugin_dir}/{pdb_id[1:3]}/{pdb_id}.dssp.gz' for
                 pdb_id, fn_struct in self.lpdb.entries['mmCIF_fn'].to_dict().items()}
         status = multiprocess(os_cmd, cmds, return_type='failed', process_executor=True)
         out_log = {'no_entries': len(cmds), 'no_failed_entries': len(status), 'failed_entries_ids': list(status)}
