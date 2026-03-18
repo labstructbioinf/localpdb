@@ -2,8 +2,8 @@ import os
 import ftplib
 import logging
 import json
-import datetime
 import warnings
+from datetime import date, datetime, timedelta
 from pathlib import Path
 from urllib.parse import urlparse
 from localpdb.utils.os import create_directory, custom_warning
@@ -33,7 +33,7 @@ class PDBVersioneer:
     def update_logs(self, first=False, version=None):
         ver = self.current_remote_version if version is None else version
         logs_fn = f'{self.db_path}/data/status.log'
-        status = ['OK', datetime.datetime.now().strftime("%Y-%m-%d %H:%M")]
+        status = ['OK', datetime.now().strftime("%Y-%m-%d %H:%M")]
         if first:
             logs = {ver: status}
         else:
@@ -125,17 +125,64 @@ class PDBVersioneer:
                                         self.remote_pdb_versions.index(self.current_remote_version)+1]
 
     @property
-    def remote_pdb_versions(self):
+    def remote_pdb_versions(self, start="20070425", seed="20260206", include_start=False):
         """
-        Checks for the remote PDB versions in the PDB ftp mirror
-        @return: sorted list of the remote PDB versions available in the PDB ftp mirror
+        Return all weekly version strings (YYYYMMDD) from the first date aligned with
+        the observed cadence up to ref_date.
+
+        Parameters
+        ----------
+        ref_date : date | str | None
+            End date, inclusive. If None, uses date.today().
+        start : str
+            Lower bound in YYYYMMDD format.
+        seed : str
+            Any known valid version date from the real sequence, e.g. '20260206'.
+            The whole cadence is inferred from this date with a 7-day step.
+        include_start : bool
+            If True, prepend `start` even when it is not aligned to the cadence.
+            Useful if you want to keep a historical special case like 20070425.
+
+        Returns
+        -------
+        list[str]
         """
-        p = urlparse('ftp://' + self.config['ftp_url'])
-        ftp = ftplib.FTP(p.netloc, timeout=10)
-        ftp.login("anonymous", "")
-        raw_data = []
-        ftp.dir(f'{p.path}/data/status/', raw_data.append)
-        remote_pdb_versions = sorted([int(entry.split(' ')[-1]) for entry in raw_data if entry.split(' ')[-1].isnumeric()])
-        if len(remote_pdb_versions) == 0:
-            raise ValueError('No valid PDB versions found in the remote source!')
-        return remote_pdb_versions
+        ref_date = date.today()
+        def parse_yyyymmdd(x):
+            if isinstance(x, date):
+                return x
+            return datetime.strptime(x, "%Y%m%d").date()
+
+        start_date = parse_yyyymmdd(start)
+        seed_date = parse_yyyymmdd(seed)
+
+        if ref_date is None:
+            ref_date = date.today()
+        else:
+            ref_date = parse_yyyymmdd(ref_date)
+
+        if ref_date < start_date:
+            return []
+
+        # First date on the seed-based 7-day cadence that is >= start_date
+        offset_from_seed = (start_date - seed_date).days % 7
+        days_to_next_aligned = (7 - offset_from_seed) % 7
+        first_aligned = start_date + timedelta(days=days_to_next_aligned)
+
+        # Last date on the seed-based 7-day cadence that is <= ref_date
+        days_since_seed = (ref_date - seed_date).days % 7
+        last_aligned = ref_date - timedelta(days=days_since_seed)
+
+        versions = []
+
+        if include_start:
+            versions.append(start_date.strftime("%Y%m%d"))
+
+        current = first_aligned
+        while current <= last_aligned:
+            value = current.strftime("%Y%m%d")
+            if not versions or versions[-1] != value:
+                versions.append(value)
+            current += timedelta(days=7)
+
+        return [int(version) for version in versions]
